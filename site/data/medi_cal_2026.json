@@ -1,0 +1,3336 @@
+{
+  "source": {
+    "title": "County Medi-Cal Call Center Data",
+    "publisher": "California Department of Health Care Services",
+    "dataset_url": "https://publish.data.ca.gov/dataset/county-medi-cal-call-center-data",
+    "license": "Creative Commons Attribution (CC BY)",
+    "coverage": "January–June 2026",
+    "data_updated": "2026-09-30",
+    "metadata_updated": "2026-10-08",
+    "snapshot_retrieved": "2026-10-23"
+  },
+  "months": [
+    {
+      "month": "2026-01",
+      "label": "Jan 2026",
+      "total_calls": 1759226,
+      "working_hours_calls": 1598211,
+      "after_hours_calls": 161015,
+      "counties_with_volume": 34,
+      "county_median_wait_seconds": 2151,
+      "counties_with_wait": 34,
+      "county_median_abandonment_rate": 0.33,
+      "counties_with_abandonment": 29,
+      "counties": [
+        {
+          "county": "Humboldt",
+          "calls_working_hours": 9373,
+          "calls_after_hours": 848,
+          "total_calls": 10221,
+          "average_wait_seconds": 9912,
+          "language_wait_seconds": {
+            "Chinese": 1041,
+            "English": 10024,
+            "Filipino": 4501,
+            "Spanish": 5155,
+            "Vietnamese": 1613
+          },
+          "abandonment_rate": 0.42
+        },
+        {
+          "county": "Tulare",
+          "calls_working_hours": 45551,
+          "calls_after_hours": 7587,
+          "total_calls": 53138,
+          "average_wait_seconds": 8298,
+          "language_wait_seconds": {
+            "Chinese": 7154,
+            "English": 10073,
+            "Spanish": 3700,
+            "Vietnamese": 2540
+          },
+          "abandonment_rate": 0.51
+        },
+        {
+          "county": "Sacramento",
+          "calls_working_hours": 141541,
+          "calls_after_hours": 19785,
+          "total_calls": 161326,
+          "average_wait_seconds": 5510,
+          "language_wait_seconds": {
+            "Arabic": 6007,
+            "Armenian": 3606,
+            "Cambodian": 205,
+            "Chinese": 6079,
+            "English": 5744,
+            "Farsi": 4475,
+            "Filipino": 4387,
+            "Hmong": 6495,
+            "Korean": 6200,
+            "Laotian": 5771,
+            "Russian": 1837,
+            "Spanish": 5500,
+            "Vietnamese": 5654
+          },
+          "abandonment_rate": 0.31
+        },
+        {
+          "county": "Orange",
+          "calls_working_hours": 161997,
+          "calls_after_hours": 11575,
+          "total_calls": 173572,
+          "average_wait_seconds": 4611,
+          "language_wait_seconds": {
+            "Arabic": 3287,
+            "Cambodian": 6601,
+            "Chinese": 1724,
+            "English": 4557,
+            "Farsi": 514,
+            "Filipino": 1419,
+            "Korean": 2179,
+            "Russian": 2675,
+            "Spanish": 5156,
+            "Vietnamese": 2335,
+            "Other": 399
+          },
+          "abandonment_rate": 0.34
+        },
+        {
+          "county": "Shasta",
+          "calls_working_hours": 12534,
+          "calls_after_hours": 2793,
+          "total_calls": 15327,
+          "average_wait_seconds": 4426,
+          "language_wait_seconds": {
+            "Chinese": 2430,
+            "English": 4447,
+            "Spanish": 3701
+          },
+          "abandonment_rate": 0.29
+        },
+        {
+          "county": "Monterey",
+          "calls_working_hours": 26331,
+          "calls_after_hours": 3648,
+          "total_calls": 29979,
+          "average_wait_seconds": 4169,
+          "language_wait_seconds": {
+            "Chinese": 2061,
+            "English": 4133,
+            "Farsi": 11,
+            "Russian": 2637,
+            "Spanish": 4216
+          },
+          "abandonment_rate": 0.39
+        },
+        {
+          "county": "Santa Barbara",
+          "calls_working_hours": 29494,
+          "calls_after_hours": 3684,
+          "total_calls": 33178,
+          "average_wait_seconds": 4144,
+          "language_wait_seconds": {
+            "Chinese": 881,
+            "English": 3851,
+            "Korean": 10,
+            "Spanish": 4497,
+            "Vietnamese": 492
+          },
+          "abandonment_rate": 0.38
+        },
+        {
+          "county": "Kern",
+          "calls_working_hours": 64431,
+          "calls_after_hours": 8140,
+          "total_calls": 72571,
+          "average_wait_seconds": 3895,
+          "language_wait_seconds": {
+            "Armenian": 2652,
+            "Cambodian": 2,
+            "English": 3761,
+            "Spanish": 4202
+          },
+          "abandonment_rate": 0.33
+        },
+        {
+          "county": "Contra Costa",
+          "calls_working_hours": 74205,
+          "calls_after_hours": 10089,
+          "total_calls": 84294,
+          "average_wait_seconds": 3627,
+          "language_wait_seconds": {
+            "Arabic": 4269,
+            "Chinese": 3613,
+            "English": 3299,
+            "Farsi": 1707,
+            "Filipino": 3078,
+            "Korean": 3813,
+            "Russian": 3023,
+            "Spanish": 4431,
+            "Vietnamese": 3473,
+            "Other": 4406
+          },
+          "abandonment_rate": 0.27
+        },
+        {
+          "county": "Stanislaus",
+          "calls_working_hours": 37437,
+          "calls_after_hours": 3079,
+          "total_calls": 40516,
+          "average_wait_seconds": 3102,
+          "language_wait_seconds": {
+            "Chinese": 2215,
+            "English": 3120,
+            "Farsi": 111,
+            "Russian": 2394,
+            "Spanish": 3054,
+            "Vietnamese": 4656
+          },
+          "abandonment_rate": 0.32
+        },
+        {
+          "county": "Los Angeles",
+          "calls_working_hours": 181180,
+          "calls_after_hours": null,
+          "total_calls": 181180,
+          "average_wait_seconds": 3059,
+          "language_wait_seconds": {
+            "Armenian": 3210,
+            "Cambodian": 3364,
+            "Chinese": 3370,
+            "English": 1991,
+            "Farsi": 3679,
+            "Filipino": 3317,
+            "Korean": 3489,
+            "Russian": 3843,
+            "Spanish": 2109,
+            "Vietnamese": 3257
+          },
+          "abandonment_rate": 0.42
+        },
+        {
+          "county": "Ventura",
+          "calls_working_hours": 46102,
+          "calls_after_hours": 3915,
+          "total_calls": 50017,
+          "average_wait_seconds": 2809,
+          "language_wait_seconds": {
+            "Armenian": 2347,
+            "Chinese": 2909,
+            "English": 2372,
+            "Farsi": 117,
+            "Filipino": 300,
+            "Korean": 414,
+            "Russian": 1782,
+            "Spanish": 3600,
+            "Vietnamese": 2739
+          },
+          "abandonment_rate": 0.29
+        },
+        {
+          "county": "San Mateo",
+          "calls_working_hours": 28624,
+          "calls_after_hours": 2350,
+          "total_calls": 30974,
+          "average_wait_seconds": 2763,
+          "language_wait_seconds": {
+            "Arabic": 3716,
+            "Chinese": 2312,
+            "English": 2814,
+            "Farsi": 585,
+            "Filipino": 2148,
+            "Korean": 4913,
+            "Russian": 2675,
+            "Spanish": 2714,
+            "Vietnamese": 1214,
+            "Other": 2579
+          },
+          "abandonment_rate": 0.39
+        },
+        {
+          "county": "Butte",
+          "calls_working_hours": 12545,
+          "calls_after_hours": 1004,
+          "total_calls": 13549,
+          "average_wait_seconds": 2495,
+          "language_wait_seconds": {
+            "English": 2640,
+            "Spanish": 755
+          },
+          "abandonment_rate": 0.47
+        },
+        {
+          "county": "Santa Cruz",
+          "calls_working_hours": 15110,
+          "calls_after_hours": 2135,
+          "total_calls": 17245,
+          "average_wait_seconds": 2440,
+          "language_wait_seconds": {
+            "Chinese": 1716,
+            "English": 2436,
+            "Spanish": 2454
+          },
+          "abandonment_rate": 0.25
+        },
+        {
+          "county": "Fresno",
+          "calls_working_hours": 88179,
+          "calls_after_hours": 26237,
+          "total_calls": 114416,
+          "average_wait_seconds": 2321,
+          "language_wait_seconds": {
+            "Arabic": 1638,
+            "Armenian": 2127,
+            "Chinese": 2585,
+            "English": 2244,
+            "Filipino": 392,
+            "Hmong": 2024,
+            "Laotian": 1713,
+            "Russian": 3116,
+            "Spanish": 2573,
+            "Vietnamese": 2040,
+            "Other": 2163
+          },
+          "abandonment_rate": 0.47
+        },
+        {
+          "county": "Yuba",
+          "calls_working_hours": 7411,
+          "calls_after_hours": 354,
+          "total_calls": 7765,
+          "average_wait_seconds": 2169,
+          "language_wait_seconds": {
+            "Chinese": 530,
+            "English": 2145,
+            "Spanish": 2284
+          },
+          "abandonment_rate": 0.54
+        },
+        {
+          "county": "San Bernardino",
+          "calls_working_hours": 157140,
+          "calls_after_hours": 10239,
+          "total_calls": 167379,
+          "average_wait_seconds": 2133,
+          "language_wait_seconds": {
+            "Arabic": 2093,
+            "Chinese": 2074,
+            "English": 2100,
+            "Filipino": 70,
+            "Korean": 1671,
+            "Russian": 2368,
+            "Spanish": 2314,
+            "Vietnamese": 1843
+          },
+          "abandonment_rate": 0.3
+        },
+        {
+          "county": "Solano",
+          "calls_working_hours": 21967,
+          "calls_after_hours": 1525,
+          "total_calls": 23492,
+          "average_wait_seconds": 1975,
+          "language_wait_seconds": {
+            "Cambodian": 309,
+            "Chinese": 2975,
+            "English": 1791,
+            "Filipino": 810,
+            "Korean": 498,
+            "Russian": 4922,
+            "Spanish": 2715,
+            "Vietnamese": 2114,
+            "Other": 1888
+          },
+          "abandonment_rate": 0.32
+        },
+        {
+          "county": "Placer",
+          "calls_working_hours": 16799,
+          "calls_after_hours": 1121,
+          "total_calls": 17920,
+          "average_wait_seconds": 1607,
+          "language_wait_seconds": {
+            "Arabic": 3408,
+            "English": 1579,
+            "Farsi": 1526,
+            "Filipino": 3924,
+            "Russian": 2341,
+            "Spanish": 1797,
+            "Other": 1154
+          },
+          "abandonment_rate": 0.34
+        },
+        {
+          "county": "Alameda",
+          "calls_working_hours": 54960,
+          "calls_after_hours": 3658,
+          "total_calls": 58618,
+          "average_wait_seconds": 1524,
+          "language_wait_seconds": {
+            "Arabic": 1858,
+            "Cambodian": 739,
+            "Chinese": 1448,
+            "English": 1543,
+            "Farsi": 568,
+            "Filipino": 1082,
+            "Korean": 1238,
+            "Russian": 1772,
+            "Spanish": 1451,
+            "Vietnamese": 1567
+          },
+          "abandonment_rate": 0.43
+        },
+        {
+          "county": "Yolo",
+          "calls_working_hours": 10589,
+          "calls_after_hours": 1274,
+          "total_calls": 11863,
+          "average_wait_seconds": 1460,
+          "language_wait_seconds": {
+            "Chinese": 862,
+            "English": 1441,
+            "Farsi": 546,
+            "Russian": 1655,
+            "Spanish": 1571
+          },
+          "abandonment_rate": 0.22
+        },
+        {
+          "county": "Kings",
+          "calls_working_hours": 12225,
+          "calls_after_hours": 1791,
+          "total_calls": 14016,
+          "average_wait_seconds": 1357,
+          "language_wait_seconds": {
+            "Arabic": 1775,
+            "English": 1292,
+            "Russian": 1683,
+            "Spanish": 1546,
+            "Vietnamese": 66
+          },
+          "abandonment_rate": 0.45
+        },
+        {
+          "county": "Sutter",
+          "calls_working_hours": 7562,
+          "calls_after_hours": 620,
+          "total_calls": 8182,
+          "average_wait_seconds": 1204,
+          "language_wait_seconds": {
+            "English": 1260,
+            "Spanish": 961
+          },
+          "abandonment_rate": 0.38
+        },
+        {
+          "county": "Sonoma",
+          "calls_working_hours": 19093,
+          "calls_after_hours": 5661,
+          "total_calls": 24754,
+          "average_wait_seconds": 1036,
+          "language_wait_seconds": {
+            "English": 910,
+            "Farsi": 682,
+            "Filipino": 639,
+            "Russian": 559,
+            "Spanish": 1332,
+            "Vietnamese": 922,
+            "Other": 736
+          },
+          "abandonment_rate": 0.22
+        },
+        {
+          "county": "Marin",
+          "calls_working_hours": 5157,
+          "calls_after_hours": 1628,
+          "total_calls": 6785,
+          "average_wait_seconds": 892,
+          "language_wait_seconds": {
+            "Chinese": 137,
+            "English": 877,
+            "Spanish": 934
+          },
+          "abandonment_rate": 0.21
+        },
+        {
+          "county": "Santa Clara",
+          "calls_working_hours": 65106,
+          "calls_after_hours": 6869,
+          "total_calls": 71975,
+          "average_wait_seconds": 757,
+          "language_wait_seconds": {
+            "Arabic": 413,
+            "Cambodian": 19,
+            "Chinese": 703,
+            "English": 759,
+            "Farsi": 436,
+            "Filipino": 523,
+            "Korean": 866,
+            "Russian": 687,
+            "Spanish": 753,
+            "Vietnamese": 789,
+            "Other": 53
+          },
+          "abandonment_rate": 0.1
+        },
+        {
+          "county": "Napa",
+          "calls_working_hours": 4906,
+          "calls_after_hours": 0,
+          "total_calls": 4906,
+          "average_wait_seconds": 348,
+          "language_wait_seconds": {
+            "English": 351,
+            "Spanish": 341
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "Merced",
+          "calls_working_hours": 56,
+          "calls_after_hours": 0,
+          "total_calls": 56,
+          "average_wait_seconds": 234,
+          "language_wait_seconds": {
+            "English": 225,
+            "Spanish": 248
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Luis Obispo",
+          "calls_working_hours": 3583,
+          "calls_after_hours": 203,
+          "total_calls": 3786,
+          "average_wait_seconds": 184,
+          "language_wait_seconds": {
+            "English": 166,
+            "Spanish": 258
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Francisco",
+          "calls_working_hours": 53028,
+          "calls_after_hours": 4585,
+          "total_calls": 57613,
+          "average_wait_seconds": 132,
+          "language_wait_seconds": {
+            "Arabic": 97,
+            "Cambodian": 36,
+            "Chinese": 103,
+            "English": 131,
+            "Filipino": 284,
+            "Russian": 253,
+            "Spanish": 147,
+            "Vietnamese": 250,
+            "Other": 121
+          },
+          "abandonment_rate": 0.03
+        },
+        {
+          "county": "San Diego",
+          "calls_working_hours": 183736,
+          "calls_after_hours": 14618,
+          "total_calls": 198354,
+          "average_wait_seconds": 117,
+          "language_wait_seconds": {
+            "English": 123,
+            "Spanish": 102
+          },
+          "abandonment_rate": 0.05
+        },
+        {
+          "county": "San Joaquin",
+          "calls_working_hours": 81,
+          "calls_after_hours": 0,
+          "total_calls": 81,
+          "average_wait_seconds": 50,
+          "language_wait_seconds": {
+            "English": 31,
+            "Filipino": 21,
+            "Spanish": 109
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "Riverside",
+          "calls_working_hours": 178,
+          "calls_after_hours": 0,
+          "total_calls": 178,
+          "average_wait_seconds": 30,
+          "language_wait_seconds": {
+            "Arabic": 2,
+            "Chinese": 3,
+            "English": 9,
+            "Filipino": 314,
+            "Spanish": 78,
+            "Vietnamese": 3
+          },
+          "abandonment_rate": null
+        }
+      ]
+    },
+    {
+      "month": "2026-02",
+      "label": "Feb 2026",
+      "total_calls": 1535245,
+      "working_hours_calls": 1385401,
+      "after_hours_calls": 149844,
+      "counties_with_volume": 34,
+      "county_median_wait_seconds": 1856,
+      "counties_with_wait": 34,
+      "county_median_abandonment_rate": 0.29,
+      "counties_with_abandonment": 29,
+      "counties": [
+        {
+          "county": "Tulare",
+          "calls_working_hours": 36610,
+          "calls_after_hours": 6010,
+          "total_calls": 42620,
+          "average_wait_seconds": 7425,
+          "language_wait_seconds": {
+            "Cambodian": 215,
+            "Chinese": 2076,
+            "English": 9348,
+            "Filipino": 13631,
+            "Korean": 17,
+            "Spanish": 2427,
+            "Vietnamese": 1640
+          },
+          "abandonment_rate": 0.45
+        },
+        {
+          "county": "Orange",
+          "calls_working_hours": 145138,
+          "calls_after_hours": 15286,
+          "total_calls": 160424,
+          "average_wait_seconds": 6096,
+          "language_wait_seconds": {
+            "Arabic": 1659,
+            "Chinese": 3380,
+            "English": 5934,
+            "Farsi": 463,
+            "Filipino": 5168,
+            "Korean": 3358,
+            "Russian": 5074,
+            "Spanish": 6889,
+            "Vietnamese": 2589
+          },
+          "abandonment_rate": 0.27
+        },
+        {
+          "county": "Sacramento",
+          "calls_working_hours": 116317,
+          "calls_after_hours": 21741,
+          "total_calls": 138058,
+          "average_wait_seconds": 4377,
+          "language_wait_seconds": {
+            "Arabic": 5138,
+            "Armenian": 3667,
+            "Chinese": 4963,
+            "English": 4694,
+            "Farsi": 3679,
+            "Filipino": 4378,
+            "Hmong": 5386,
+            "Korean": 2775,
+            "Russian": 1165,
+            "Spanish": 3765,
+            "Vietnamese": 4537
+          },
+          "abandonment_rate": 0.3
+        },
+        {
+          "county": "Santa Barbara",
+          "calls_working_hours": 25573,
+          "calls_after_hours": 3132,
+          "total_calls": 28705,
+          "average_wait_seconds": 4149,
+          "language_wait_seconds": {
+            "Chinese": 1919,
+            "English": 3909,
+            "Spanish": 4422
+          },
+          "abandonment_rate": 0.38
+        },
+        {
+          "county": "Kern",
+          "calls_working_hours": 57763,
+          "calls_after_hours": 7288,
+          "total_calls": 65051,
+          "average_wait_seconds": 3827,
+          "language_wait_seconds": {
+            "English": 3759,
+            "Spanish": 3974,
+            "Vietnamese": 13
+          },
+          "abandonment_rate": 0.33
+        },
+        {
+          "county": "Shasta",
+          "calls_working_hours": 10355,
+          "calls_after_hours": 2591,
+          "total_calls": 12946,
+          "average_wait_seconds": 3765,
+          "language_wait_seconds": {
+            "Chinese": 4266,
+            "English": 3766,
+            "Russian": 1811,
+            "Spanish": 3764
+          },
+          "abandonment_rate": 0.27
+        },
+        {
+          "county": "Contra Costa",
+          "calls_working_hours": 61653,
+          "calls_after_hours": 8173,
+          "total_calls": 69826,
+          "average_wait_seconds": 3386,
+          "language_wait_seconds": {
+            "Arabic": 4292,
+            "Cambodian": 1721,
+            "Chinese": 2981,
+            "English": 3086,
+            "Farsi": 1786,
+            "Filipino": 2991,
+            "Korean": 2352,
+            "Russian": 3390,
+            "Spanish": 4156,
+            "Vietnamese": 3097,
+            "Other": 2957
+          },
+          "abandonment_rate": 0.26
+        },
+        {
+          "county": "Monterey",
+          "calls_working_hours": 20202,
+          "calls_after_hours": 2813,
+          "total_calls": 23015,
+          "average_wait_seconds": 3334,
+          "language_wait_seconds": {
+            "Chinese": 2855,
+            "English": 3291,
+            "Filipino": 804,
+            "Russian": 999,
+            "Spanish": 3389
+          },
+          "abandonment_rate": 0.35
+        },
+        {
+          "county": "Los Angeles",
+          "calls_working_hours": 164048,
+          "calls_after_hours": null,
+          "total_calls": 164048,
+          "average_wait_seconds": 3120,
+          "language_wait_seconds": {
+            "Armenian": 3193,
+            "Cambodian": 3579,
+            "Chinese": 3477,
+            "English": 1893,
+            "Farsi": 3067,
+            "Filipino": 3744,
+            "Korean": 3758,
+            "Russian": 3526,
+            "Spanish": 2011,
+            "Vietnamese": 4147
+          },
+          "abandonment_rate": 0.42
+        },
+        {
+          "county": "Humboldt",
+          "calls_working_hours": 8130,
+          "calls_after_hours": 966,
+          "total_calls": 9096,
+          "average_wait_seconds": 3052,
+          "language_wait_seconds": {
+            "Chinese": 229,
+            "English": 3036,
+            "Russian": 513,
+            "Spanish": 3739
+          },
+          "abandonment_rate": 0.41
+        },
+        {
+          "county": "Stanislaus",
+          "calls_working_hours": 31489,
+          "calls_after_hours": 2438,
+          "total_calls": 33927,
+          "average_wait_seconds": 2772,
+          "language_wait_seconds": {
+            "Chinese": 2254,
+            "English": 2872,
+            "Farsi": 1544,
+            "Russian": 1131,
+            "Spanish": 2510,
+            "Other": 2
+          },
+          "abandonment_rate": 0.31
+        },
+        {
+          "county": "Ventura",
+          "calls_working_hours": 37620,
+          "calls_after_hours": 3259,
+          "total_calls": 40879,
+          "average_wait_seconds": 2449,
+          "language_wait_seconds": {
+            "Chinese": 2761,
+            "English": 2367,
+            "Farsi": 5877,
+            "Filipino": 1183,
+            "Korean": 2484,
+            "Russian": 4073,
+            "Spanish": 2593,
+            "Vietnamese": 2378
+          },
+          "abandonment_rate": 0.26
+        },
+        {
+          "county": "San Mateo",
+          "calls_working_hours": 26088,
+          "calls_after_hours": 2426,
+          "total_calls": 28514,
+          "average_wait_seconds": 2272,
+          "language_wait_seconds": {
+            "Arabic": 2999,
+            "Armenian": 1287,
+            "Chinese": 2096,
+            "English": 2271,
+            "Farsi": 2023,
+            "Filipino": 1968,
+            "Korean": 2746,
+            "Russian": 2455,
+            "Spanish": 2290,
+            "Vietnamese": 889,
+            "Other": 1658
+          },
+          "abandonment_rate": 0.36
+        },
+        {
+          "county": "Fresno",
+          "calls_working_hours": 75700,
+          "calls_after_hours": 23567,
+          "total_calls": 99267,
+          "average_wait_seconds": 2185,
+          "language_wait_seconds": {
+            "Arabic": 1941,
+            "Armenian": 2735,
+            "Chinese": 2833,
+            "English": 2102,
+            "Farsi": 1,
+            "Hmong": 1642,
+            "Russian": 1873,
+            "Spanish": 2459,
+            "Vietnamese": 1265
+          },
+          "abandonment_rate": 0.47
+        },
+        {
+          "county": "San Bernardino",
+          "calls_working_hours": 136625,
+          "calls_after_hours": 9380,
+          "total_calls": 146005,
+          "average_wait_seconds": 2142,
+          "language_wait_seconds": {
+            "Arabic": 1852,
+            "Chinese": 2182,
+            "English": 2111,
+            "Farsi": 5,
+            "Filipino": 1083,
+            "Korean": 1440,
+            "Russian": 2465,
+            "Spanish": 2309,
+            "Vietnamese": 1557
+          },
+          "abandonment_rate": 0.27
+        },
+        {
+          "county": "Santa Cruz",
+          "calls_working_hours": 13298,
+          "calls_after_hours": 1830,
+          "total_calls": 15128,
+          "average_wait_seconds": 2049,
+          "language_wait_seconds": {
+            "Chinese": 1226,
+            "English": 2126,
+            "Spanish": 1870
+          },
+          "abandonment_rate": 0.21
+        },
+        {
+          "county": "Butte",
+          "calls_working_hours": 10309,
+          "calls_after_hours": 810,
+          "total_calls": 11119,
+          "average_wait_seconds": 2005,
+          "language_wait_seconds": {
+            "English": 2115,
+            "Hmong": 3730,
+            "Spanish": 624
+          },
+          "abandonment_rate": 0.44
+        },
+        {
+          "county": "Solano",
+          "calls_working_hours": 16840,
+          "calls_after_hours": 1874,
+          "total_calls": 18714,
+          "average_wait_seconds": 1707,
+          "language_wait_seconds": {
+            "Chinese": 1445,
+            "English": 1482,
+            "Filipino": 972,
+            "Russian": 200,
+            "Spanish": 2451,
+            "Vietnamese": 1408
+          },
+          "abandonment_rate": 0.29
+        },
+        {
+          "county": "Sonoma",
+          "calls_working_hours": 19588,
+          "calls_after_hours": 5331,
+          "total_calls": 24919,
+          "average_wait_seconds": 1500,
+          "language_wait_seconds": {
+            "Cambodian": 1683,
+            "Chinese": 77,
+            "English": 1300,
+            "Spanish": 1886,
+            "Vietnamese": 1527
+          },
+          "abandonment_rate": 0.27
+        },
+        {
+          "county": "Alameda",
+          "calls_working_hours": 42612,
+          "calls_after_hours": 4652,
+          "total_calls": 47264,
+          "average_wait_seconds": 1424,
+          "language_wait_seconds": {
+            "Arabic": 1553,
+            "Armenian": 1306,
+            "Cambodian": 831,
+            "Chinese": 1243,
+            "English": 1440,
+            "Farsi": 1014,
+            "Filipino": 1466,
+            "Korean": 1400,
+            "Russian": 867,
+            "Spanish": 1386,
+            "Vietnamese": 1190,
+            "Other": 3688
+          },
+          "abandonment_rate": 0.43
+        },
+        {
+          "county": "Yolo",
+          "calls_working_hours": 9195,
+          "calls_after_hours": 1049,
+          "total_calls": 10244,
+          "average_wait_seconds": 1305,
+          "language_wait_seconds": {
+            "Chinese": 1033,
+            "English": 1273,
+            "Farsi": 847,
+            "Korean": 1588,
+            "Russian": 1362,
+            "Spanish": 1527,
+            "Vietnamese": 3670
+          },
+          "abandonment_rate": 0.2
+        },
+        {
+          "county": "Kings",
+          "calls_working_hours": 9662,
+          "calls_after_hours": 1352,
+          "total_calls": 11014,
+          "average_wait_seconds": 1281,
+          "language_wait_seconds": {
+            "Arabic": 969,
+            "English": 1240,
+            "Spanish": 1388
+          },
+          "abandonment_rate": 0.34
+        },
+        {
+          "county": "Yuba",
+          "calls_working_hours": 5618,
+          "calls_after_hours": 272,
+          "total_calls": 5890,
+          "average_wait_seconds": 1134,
+          "language_wait_seconds": {
+            "Chinese": 467,
+            "English": 1167,
+            "Hmong": 634,
+            "Spanish": 981
+          },
+          "abandonment_rate": 0.34
+        },
+        {
+          "county": "Placer",
+          "calls_working_hours": 12878,
+          "calls_after_hours": 1934,
+          "total_calls": 14812,
+          "average_wait_seconds": 1014,
+          "language_wait_seconds": {
+            "Chinese": 2055,
+            "English": 979,
+            "Farsi": 1831,
+            "Russian": 1521,
+            "Spanish": 1358
+          },
+          "abandonment_rate": 0.28
+        },
+        {
+          "county": "Santa Clara",
+          "calls_working_hours": 56577,
+          "calls_after_hours": 5919,
+          "total_calls": 62496,
+          "average_wait_seconds": 778,
+          "language_wait_seconds": {
+            "Arabic": 204,
+            "Chinese": 598,
+            "English": 777,
+            "Farsi": 842,
+            "Filipino": 665,
+            "Korean": 521,
+            "Russian": 746,
+            "Spanish": 798,
+            "Vietnamese": 744,
+            "Other": 380
+          },
+          "abandonment_rate": 0.11
+        },
+        {
+          "county": "Sutter",
+          "calls_working_hours": 6394,
+          "calls_after_hours": 555,
+          "total_calls": 6949,
+          "average_wait_seconds": 745,
+          "language_wait_seconds": {
+            "English": 719,
+            "Spanish": 846
+          },
+          "abandonment_rate": 0.23
+        },
+        {
+          "county": "Marin",
+          "calls_working_hours": 4488,
+          "calls_after_hours": 1493,
+          "total_calls": 5981,
+          "average_wait_seconds": 683,
+          "language_wait_seconds": {
+            "Chinese": 289,
+            "English": 669,
+            "Russian": 652,
+            "Spanish": 715,
+            "Vietnamese": 221
+          },
+          "abandonment_rate": 0.14
+        },
+        {
+          "county": "Napa",
+          "calls_working_hours": 4301,
+          "calls_after_hours": 0,
+          "total_calls": 4301,
+          "average_wait_seconds": 273,
+          "language_wait_seconds": {
+            "English": 276,
+            "Spanish": 267
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Luis Obispo",
+          "calls_working_hours": 3504,
+          "calls_after_hours": 357,
+          "total_calls": 3861,
+          "average_wait_seconds": 160,
+          "language_wait_seconds": {
+            "English": 156,
+            "Spanish": 177
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Diego",
+          "calls_working_hours": 172155,
+          "calls_after_hours": 9507,
+          "total_calls": 181662,
+          "average_wait_seconds": 134,
+          "language_wait_seconds": {
+            "English": 141,
+            "Spanish": 116
+          },
+          "abandonment_rate": 0.06
+        },
+        {
+          "county": "San Francisco",
+          "calls_working_hours": 44425,
+          "calls_after_hours": 3839,
+          "total_calls": 48264,
+          "average_wait_seconds": 64,
+          "language_wait_seconds": {
+            "Arabic": 42,
+            "Cambodian": 5,
+            "Chinese": 43,
+            "English": 58,
+            "Farsi": 7,
+            "Filipino": 134,
+            "Korean": 15,
+            "Laotian": 17,
+            "Russian": 131,
+            "Spanish": 99,
+            "Vietnamese": 135
+          },
+          "abandonment_rate": 0.01
+        },
+        {
+          "county": "Merced",
+          "calls_working_hours": 41,
+          "calls_after_hours": 0,
+          "total_calls": 41,
+          "average_wait_seconds": 46,
+          "language_wait_seconds": {
+            "English": 53,
+            "Russian": 4,
+            "Spanish": 14
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Joaquin",
+          "calls_working_hours": 62,
+          "calls_after_hours": 0,
+          "total_calls": 62,
+          "average_wait_seconds": 29,
+          "language_wait_seconds": {
+            "English": 34,
+            "Spanish": 9
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "Riverside",
+          "calls_working_hours": 143,
+          "calls_after_hours": 0,
+          "total_calls": 143,
+          "average_wait_seconds": 15,
+          "language_wait_seconds": {
+            "Arabic": 3,
+            "Chinese": 5,
+            "English": 17,
+            "Spanish": 5
+          },
+          "abandonment_rate": null
+        }
+      ]
+    },
+    {
+      "month": "2026-03",
+      "label": "Mar 2026",
+      "total_calls": 1660271,
+      "working_hours_calls": 1509064,
+      "after_hours_calls": 151207,
+      "counties_with_volume": 34,
+      "county_median_wait_seconds": 1821,
+      "counties_with_wait": 34,
+      "county_median_abandonment_rate": 0.28500000000000003,
+      "counties_with_abandonment": 30,
+      "counties": [
+        {
+          "county": "Tulare",
+          "calls_working_hours": 36226,
+          "calls_after_hours": 5635,
+          "total_calls": 41861,
+          "average_wait_seconds": 6653,
+          "language_wait_seconds": {
+            "Chinese": 2530,
+            "English": 8655,
+            "Farsi": 3193,
+            "Spanish": 1989,
+            "Vietnamese": 5631
+          },
+          "abandonment_rate": 0.39
+        },
+        {
+          "county": "Orange",
+          "calls_working_hours": 155537,
+          "calls_after_hours": 10149,
+          "total_calls": 165686,
+          "average_wait_seconds": 4925,
+          "language_wait_seconds": {
+            "Arabic": 1859,
+            "Cambodian": 740,
+            "Chinese": 2412,
+            "English": 4810,
+            "Farsi": 641,
+            "Filipino": 4521,
+            "Korean": 2319,
+            "Russian": 3095,
+            "Spanish": 5541,
+            "Vietnamese": 2429,
+            "Other": 9
+          },
+          "abandonment_rate": 0.23
+        },
+        {
+          "county": "Santa Barbara",
+          "calls_working_hours": 28194,
+          "calls_after_hours": 3172,
+          "total_calls": 31366,
+          "average_wait_seconds": 4078,
+          "language_wait_seconds": {
+            "Chinese": 1775,
+            "English": 3822,
+            "Filipino": 1543,
+            "Spanish": 4392
+          },
+          "abandonment_rate": 0.37
+        },
+        {
+          "county": "Sacramento",
+          "calls_working_hours": 128453,
+          "calls_after_hours": 21690,
+          "total_calls": 150143,
+          "average_wait_seconds": 3998,
+          "language_wait_seconds": {
+            "Arabic": 3817,
+            "Armenian": 4375,
+            "Chinese": 3837,
+            "English": 4463,
+            "Farsi": 4649,
+            "Filipino": 3989,
+            "Hmong": 4746,
+            "Korean": 5130,
+            "Russian": 885,
+            "Spanish": 2750,
+            "Vietnamese": 4888,
+            "Other": 1257
+          },
+          "abandonment_rate": 0.29
+        },
+        {
+          "county": "Kern",
+          "calls_working_hours": 63321,
+          "calls_after_hours": 6826,
+          "total_calls": 70147,
+          "average_wait_seconds": 3738,
+          "language_wait_seconds": {
+            "English": 3830,
+            "Spanish": 3545
+          },
+          "abandonment_rate": 0.31
+        },
+        {
+          "county": "Contra Costa",
+          "calls_working_hours": 67228,
+          "calls_after_hours": 8670,
+          "total_calls": 75898,
+          "average_wait_seconds": 3344,
+          "language_wait_seconds": {
+            "Arabic": 4274,
+            "Cambodian": 8247,
+            "Chinese": 3800,
+            "English": 3047,
+            "Farsi": 3748,
+            "Filipino": 2720,
+            "Korean": 2133,
+            "Laotian": 5411,
+            "Russian": 2129,
+            "Spanish": 4077,
+            "Vietnamese": 2979,
+            "Other": 4502
+          },
+          "abandonment_rate": 0.25
+        },
+        {
+          "county": "Monterey",
+          "calls_working_hours": 22841,
+          "calls_after_hours": 4289,
+          "total_calls": 27130,
+          "average_wait_seconds": 3083,
+          "language_wait_seconds": {
+            "Arabic": 847,
+            "Chinese": 1102,
+            "English": 3057,
+            "Russian": 1862,
+            "Spanish": 3117
+          },
+          "abandonment_rate": 0.35
+        },
+        {
+          "county": "Shasta",
+          "calls_working_hours": 10334,
+          "calls_after_hours": 2105,
+          "total_calls": 12439,
+          "average_wait_seconds": 3068,
+          "language_wait_seconds": {
+            "Chinese": 2456,
+            "English": 3068,
+            "Russian": 230,
+            "Spanish": 3209,
+            "Other": 10
+          },
+          "abandonment_rate": 0.23
+        },
+        {
+          "county": "Los Angeles",
+          "calls_working_hours": 181607,
+          "calls_after_hours": null,
+          "total_calls": 181607,
+          "average_wait_seconds": 2695,
+          "language_wait_seconds": {
+            "Armenian": 2873,
+            "Cambodian": 3351,
+            "Chinese": 3038,
+            "English": 1667,
+            "Farsi": 2892,
+            "Filipino": 3064,
+            "Korean": 3117,
+            "Russian": 2942,
+            "Spanish": 1781,
+            "Vietnamese": 3173
+          },
+          "abandonment_rate": 0.39
+        },
+        {
+          "county": "Stanislaus",
+          "calls_working_hours": 35418,
+          "calls_after_hours": 2343,
+          "total_calls": 37761,
+          "average_wait_seconds": 2663,
+          "language_wait_seconds": {
+            "Chinese": 3611,
+            "English": 2739,
+            "Farsi": 2402,
+            "Filipino": 477,
+            "Russian": 3603,
+            "Spanish": 2454,
+            "Vietnamese": 1316
+          },
+          "abandonment_rate": 0.31
+        },
+        {
+          "county": "Humboldt",
+          "calls_working_hours": 8545,
+          "calls_after_hours": 936,
+          "total_calls": 9481,
+          "average_wait_seconds": 2552,
+          "language_wait_seconds": {
+            "Chinese": 11,
+            "English": 2556,
+            "Filipino": 2005,
+            "Russian": 42,
+            "Spanish": 2460,
+            "Vietnamese": 804
+          },
+          "abandonment_rate": 0.42
+        },
+        {
+          "county": "San Bernardino",
+          "calls_working_hours": 154868,
+          "calls_after_hours": 7827,
+          "total_calls": 162695,
+          "average_wait_seconds": 2247,
+          "language_wait_seconds": {
+            "Arabic": 1458,
+            "Chinese": 2136,
+            "English": 2207,
+            "Filipino": 3180,
+            "Korean": 1991,
+            "Russian": 1770,
+            "Spanish": 2469,
+            "Vietnamese": 2276,
+            "Other": 2333
+          },
+          "abandonment_rate": 0.27
+        },
+        {
+          "county": "San Mateo",
+          "calls_working_hours": 28676,
+          "calls_after_hours": 3457,
+          "total_calls": 32133,
+          "average_wait_seconds": 2136,
+          "language_wait_seconds": {
+            "Arabic": 2364,
+            "Chinese": 1756,
+            "English": 2147,
+            "Farsi": 15,
+            "Filipino": 2022,
+            "Korean": 2092,
+            "Laotian": 1478,
+            "Russian": 2178,
+            "Spanish": 2143,
+            "Other": 2137
+          },
+          "abandonment_rate": 0.34
+        },
+        {
+          "county": "Santa Cruz",
+          "calls_working_hours": 15211,
+          "calls_after_hours": 2610,
+          "total_calls": 17821,
+          "average_wait_seconds": 2114,
+          "language_wait_seconds": {
+            "Chinese": 1358,
+            "English": 2147,
+            "Spanish": 2036
+          },
+          "abandonment_rate": 0.21
+        },
+        {
+          "county": "Ventura",
+          "calls_working_hours": 39611,
+          "calls_after_hours": 3063,
+          "total_calls": 42674,
+          "average_wait_seconds": 2019,
+          "language_wait_seconds": {
+            "Arabic": 560,
+            "Chinese": 2381,
+            "English": 2226,
+            "Farsi": 1851,
+            "Filipino": 4233,
+            "Korean": 1720,
+            "Russian": 2212,
+            "Spanish": 1615,
+            "Vietnamese": 1138
+          },
+          "abandonment_rate": 0.23
+        },
+        {
+          "county": "Solano",
+          "calls_working_hours": 24250,
+          "calls_after_hours": 1312,
+          "total_calls": 25562,
+          "average_wait_seconds": 1964,
+          "language_wait_seconds": {
+            "Chinese": 13,
+            "English": 1759,
+            "Filipino": 1273,
+            "Russian": 1227,
+            "Spanish": 2719,
+            "Vietnamese": 1162
+          },
+          "abandonment_rate": 0.3
+        },
+        {
+          "county": "Fresno",
+          "calls_working_hours": 77715,
+          "calls_after_hours": 25461,
+          "total_calls": 103176,
+          "average_wait_seconds": 1947,
+          "language_wait_seconds": {
+            "Arabic": 2837,
+            "Armenian": 4470,
+            "Chinese": 1909,
+            "English": 1891,
+            "Hmong": 1391,
+            "Korean": 1369,
+            "Russian": 1058,
+            "Spanish": 2132,
+            "Vietnamese": 1822
+          },
+          "abandonment_rate": 0.43
+        },
+        {
+          "county": "Butte",
+          "calls_working_hours": 10254,
+          "calls_after_hours": 1118,
+          "total_calls": 11372,
+          "average_wait_seconds": 1695,
+          "language_wait_seconds": {
+            "English": 1776,
+            "Spanish": 630
+          },
+          "abandonment_rate": 0.37
+        },
+        {
+          "county": "Yuba",
+          "calls_working_hours": 6579,
+          "calls_after_hours": 222,
+          "total_calls": 6801,
+          "average_wait_seconds": 1633,
+          "language_wait_seconds": {
+            "English": 1659,
+            "Hmong": 1768,
+            "Spanish": 1506
+          },
+          "abandonment_rate": 0.44
+        },
+        {
+          "county": "Alameda",
+          "calls_working_hours": 48933,
+          "calls_after_hours": 2716,
+          "total_calls": 51649,
+          "average_wait_seconds": 1474,
+          "language_wait_seconds": {
+            "Arabic": 2145,
+            "Chinese": 1265,
+            "English": 1495,
+            "Farsi": 488,
+            "Filipino": 596,
+            "Korean": 1319,
+            "Russian": 1867,
+            "Spanish": 1426,
+            "Vietnamese": 1362,
+            "Other": 199
+          },
+          "abandonment_rate": 0.44
+        },
+        {
+          "county": "Yolo",
+          "calls_working_hours": 9819,
+          "calls_after_hours": 1574,
+          "total_calls": 11393,
+          "average_wait_seconds": 1421,
+          "language_wait_seconds": {
+            "Arabic": 965,
+            "Chinese": 2420,
+            "English": 1394,
+            "Farsi": 613,
+            "Filipino": 15,
+            "Korean": 879,
+            "Russian": 1398,
+            "Spanish": 1584,
+            "Vietnamese": 984
+          },
+          "abandonment_rate": 0.21
+        },
+        {
+          "county": "Sutter",
+          "calls_working_hours": 7170,
+          "calls_after_hours": 774,
+          "total_calls": 7944,
+          "average_wait_seconds": 1043,
+          "language_wait_seconds": {
+            "English": 1057,
+            "Spanish": 992
+          },
+          "abandonment_rate": 0.33
+        },
+        {
+          "county": "Sonoma",
+          "calls_working_hours": 18189,
+          "calls_after_hours": 5533,
+          "total_calls": 23722,
+          "average_wait_seconds": 959,
+          "language_wait_seconds": {
+            "Arabic": 277,
+            "Cambodian": 389,
+            "English": 839,
+            "Farsi": 1073,
+            "Filipino": 207,
+            "Spanish": 1240,
+            "Vietnamese": 678
+          },
+          "abandonment_rate": 0.2
+        },
+        {
+          "county": "Kings",
+          "calls_working_hours": 10001,
+          "calls_after_hours": 1083,
+          "total_calls": 11084,
+          "average_wait_seconds": 884,
+          "language_wait_seconds": {
+            "English": 835,
+            "Filipino": 1279,
+            "Spanish": 1015,
+            "Vietnamese": 252
+          },
+          "abandonment_rate": 0.28
+        },
+        {
+          "county": "Placer",
+          "calls_working_hours": 14853,
+          "calls_after_hours": 787,
+          "total_calls": 15640,
+          "average_wait_seconds": 850,
+          "language_wait_seconds": {
+            "Arabic": 2815,
+            "Chinese": 120,
+            "English": 837,
+            "Farsi": 379,
+            "Russian": 1469,
+            "Spanish": 907
+          },
+          "abandonment_rate": 0.23
+        },
+        {
+          "county": "Santa Clara",
+          "calls_working_hours": 61087,
+          "calls_after_hours": 8300,
+          "total_calls": 69387,
+          "average_wait_seconds": 612,
+          "language_wait_seconds": {
+            "Arabic": 1409,
+            "Armenian": 509,
+            "Chinese": 520,
+            "English": 623,
+            "Farsi": 171,
+            "Filipino": 588,
+            "Korean": 321,
+            "Russian": 522,
+            "Spanish": 608,
+            "Vietnamese": 559,
+            "Other": 508
+          },
+          "abandonment_rate": 0.09
+        },
+        {
+          "county": "Merced",
+          "calls_working_hours": 28,
+          "calls_after_hours": 0,
+          "total_calls": 28,
+          "average_wait_seconds": 562,
+          "language_wait_seconds": {
+            "English": 826,
+            "Spanish": 4
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "Marin",
+          "calls_working_hours": 5037,
+          "calls_after_hours": 1711,
+          "total_calls": 6748,
+          "average_wait_seconds": 558,
+          "language_wait_seconds": {
+            "English": 549,
+            "Russian": 323,
+            "Spanish": 578
+          },
+          "abandonment_rate": 0.12
+        },
+        {
+          "county": "Napa",
+          "calls_working_hours": 4492,
+          "calls_after_hours": 0,
+          "total_calls": 4492,
+          "average_wait_seconds": 218,
+          "language_wait_seconds": {
+            "English": 217,
+            "Spanish": 222
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Luis Obispo",
+          "calls_working_hours": 3703,
+          "calls_after_hours": 159,
+          "total_calls": 3862,
+          "average_wait_seconds": 135,
+          "language_wait_seconds": {
+            "Chinese": 229,
+            "English": 129,
+            "Spanish": 158
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Francisco",
+          "calls_working_hours": 48341,
+          "calls_after_hours": 3218,
+          "total_calls": 51559,
+          "average_wait_seconds": 72,
+          "language_wait_seconds": {
+            "Arabic": 28,
+            "Chinese": 50,
+            "English": 67,
+            "Filipino": 165,
+            "Korean": 9,
+            "Laotian": 70,
+            "Russian": 157,
+            "Spanish": 103,
+            "Vietnamese": 149,
+            "Other": 29
+          },
+          "abandonment_rate": 0.01
+        },
+        {
+          "county": "San Diego",
+          "calls_working_hours": 182364,
+          "calls_after_hours": 14467,
+          "total_calls": 196831,
+          "average_wait_seconds": 63,
+          "language_wait_seconds": {
+            "English": 65,
+            "Spanish": 58
+          },
+          "abandonment_rate": 0.02
+        },
+        {
+          "county": "San Joaquin",
+          "calls_working_hours": 54,
+          "calls_after_hours": 0,
+          "total_calls": 54,
+          "average_wait_seconds": 29,
+          "language_wait_seconds": {
+            "English": 36,
+            "Spanish": 11
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "Riverside",
+          "calls_working_hours": 125,
+          "calls_after_hours": 0,
+          "total_calls": 125,
+          "average_wait_seconds": 5,
+          "language_wait_seconds": {
+            "Armenian": 8,
+            "Chinese": 4,
+            "English": 5,
+            "Korean": 4,
+            "Spanish": 4
+          },
+          "abandonment_rate": 0.0
+        }
+      ]
+    },
+    {
+      "month": "2026-04",
+      "label": "Apr 2026",
+      "total_calls": 1609932,
+      "working_hours_calls": 1479007,
+      "after_hours_calls": 130925,
+      "counties_with_volume": 34,
+      "county_median_wait_seconds": 1603,
+      "counties_with_wait": 34,
+      "county_median_abandonment_rate": 0.27,
+      "counties_with_abandonment": 31,
+      "counties": [
+        {
+          "county": "Tulare",
+          "calls_working_hours": 35474,
+          "calls_after_hours": 5218,
+          "total_calls": 40692,
+          "average_wait_seconds": 6763,
+          "language_wait_seconds": {
+            "Chinese": 8473,
+            "English": 8341,
+            "Spanish": 2685,
+            "Vietnamese": 106
+          },
+          "abandonment_rate": 0.46
+        },
+        {
+          "county": "Orange",
+          "calls_working_hours": 131742,
+          "calls_after_hours": 9349,
+          "total_calls": 141091,
+          "average_wait_seconds": 4674,
+          "language_wait_seconds": {
+            "Arabic": 2303,
+            "Cambodian": 8,
+            "Chinese": 2225,
+            "English": 4748,
+            "Farsi": 470,
+            "Filipino": 3735,
+            "Hmong": 427,
+            "Korean": 2332,
+            "Russian": 3583,
+            "Spanish": 4765,
+            "Vietnamese": 2312
+          },
+          "abandonment_rate": 0.22
+        },
+        {
+          "county": "Santa Barbara",
+          "calls_working_hours": 25728,
+          "calls_after_hours": 3051,
+          "total_calls": 28779,
+          "average_wait_seconds": 4137,
+          "language_wait_seconds": {
+            "Arabic": 1164,
+            "English": 3802,
+            "Filipino": 2236,
+            "Russian": 5462,
+            "Spanish": 4580
+          },
+          "abandonment_rate": 0.38
+        },
+        {
+          "county": "Monterey",
+          "calls_working_hours": 23937,
+          "calls_after_hours": 3272,
+          "total_calls": 27209,
+          "average_wait_seconds": 3913,
+          "language_wait_seconds": {
+            "Chinese": 3101,
+            "English": 3842,
+            "Spanish": 3988
+          },
+          "abandonment_rate": 0.39
+        },
+        {
+          "county": "Kern",
+          "calls_working_hours": 59789,
+          "calls_after_hours": 6592,
+          "total_calls": 66381,
+          "average_wait_seconds": 3729,
+          "language_wait_seconds": {
+            "English": 3788,
+            "Spanish": 3601
+          },
+          "abandonment_rate": 0.3
+        },
+        {
+          "county": "Sacramento",
+          "calls_working_hours": 146196,
+          "calls_after_hours": 19189,
+          "total_calls": 165385,
+          "average_wait_seconds": 3312,
+          "language_wait_seconds": {
+            "Arabic": 3696,
+            "Armenian": 3221,
+            "Chinese": 3473,
+            "English": 3652,
+            "Farsi": 3477,
+            "Filipino": 2855,
+            "Hmong": 3376,
+            "Korean": 1541,
+            "Russian": 1112,
+            "Spanish": 2348,
+            "Vietnamese": 3571
+          },
+          "abandonment_rate": 0.29
+        },
+        {
+          "county": "Contra Costa",
+          "calls_working_hours": 57981,
+          "calls_after_hours": 7646,
+          "total_calls": 65627,
+          "average_wait_seconds": 2908,
+          "language_wait_seconds": {
+            "Arabic": 5292,
+            "Cambodian": 1130,
+            "Chinese": 2860,
+            "English": 2668,
+            "Farsi": 718,
+            "Filipino": 1437,
+            "Korean": 2866,
+            "Laotian": 6171,
+            "Russian": 2650,
+            "Spanish": 3569,
+            "Vietnamese": 3440,
+            "Other": 3713
+          },
+          "abandonment_rate": 0.23
+        },
+        {
+          "county": "Stanislaus",
+          "calls_working_hours": 33992,
+          "calls_after_hours": 2224,
+          "total_calls": 36216,
+          "average_wait_seconds": 2798,
+          "language_wait_seconds": {
+            "Chinese": 17,
+            "English": 2883,
+            "Farsi": 1412,
+            "Spanish": 2533,
+            "Vietnamese": 2902
+          },
+          "abandonment_rate": 0.31
+        },
+        {
+          "county": "Humboldt",
+          "calls_working_hours": 8903,
+          "calls_after_hours": 505,
+          "total_calls": 9408,
+          "average_wait_seconds": 2639,
+          "language_wait_seconds": {
+            "Cambodian": 3100,
+            "Chinese": 5,
+            "English": 2637,
+            "Russian": 481,
+            "Spanish": 2751,
+            "Other": 5605
+          },
+          "abandonment_rate": 0.42
+        },
+        {
+          "county": "Shasta",
+          "calls_working_hours": 9253,
+          "calls_after_hours": 2120,
+          "total_calls": 11373,
+          "average_wait_seconds": 2590,
+          "language_wait_seconds": {
+            "Chinese": 61,
+            "English": 2595,
+            "Spanish": 2474,
+            "Other": 433
+          },
+          "abandonment_rate": 0.24
+        },
+        {
+          "county": "Los Angeles",
+          "calls_working_hours": 201749,
+          "calls_after_hours": 0,
+          "total_calls": 201749,
+          "average_wait_seconds": 2521,
+          "language_wait_seconds": {
+            "Armenian": 2907,
+            "Cambodian": 3697,
+            "Chinese": 2749,
+            "English": 1431,
+            "Farsi": 2975,
+            "Filipino": 3074,
+            "Korean": 2582,
+            "Russian": 2985,
+            "Spanish": 1661,
+            "Vietnamese": 3311
+          },
+          "abandonment_rate": 0.35
+        },
+        {
+          "county": "San Mateo",
+          "calls_working_hours": 29196,
+          "calls_after_hours": 2080,
+          "total_calls": 31276,
+          "average_wait_seconds": 2289,
+          "language_wait_seconds": {
+            "Arabic": 2159,
+            "Chinese": 1977,
+            "English": 2274,
+            "Filipino": 1653,
+            "Korean": 1918,
+            "Laotian": 273,
+            "Russian": 2289,
+            "Spanish": 2350,
+            "Vietnamese": 3516,
+            "Other": 2807
+          },
+          "abandonment_rate": 0.36
+        },
+        {
+          "county": "Santa Cruz",
+          "calls_working_hours": 15292,
+          "calls_after_hours": 1993,
+          "total_calls": 17285,
+          "average_wait_seconds": 2141,
+          "language_wait_seconds": {
+            "English": 2206,
+            "Spanish": 1984,
+            "Vietnamese": 3
+          },
+          "abandonment_rate": 0.2
+        },
+        {
+          "county": "San Bernardino",
+          "calls_working_hours": 144264,
+          "calls_after_hours": 7038,
+          "total_calls": 151302,
+          "average_wait_seconds": 2140,
+          "language_wait_seconds": {
+            "Arabic": 1757,
+            "Chinese": 2139,
+            "English": 2119,
+            "Filipino": 297,
+            "Korean": 1775,
+            "Russian": 2755,
+            "Spanish": 2245,
+            "Vietnamese": 2208
+          },
+          "abandonment_rate": 0.25
+        },
+        {
+          "county": "Solano",
+          "calls_working_hours": 26509,
+          "calls_after_hours": 1391,
+          "total_calls": 27900,
+          "average_wait_seconds": 2116,
+          "language_wait_seconds": {
+            "Arabic": 68,
+            "English": 1920,
+            "Farsi": 283,
+            "Filipino": 1076,
+            "Korean": 179,
+            "Spanish": 2858,
+            "Vietnamese": 840,
+            "Other": 1026
+          },
+          "abandonment_rate": 0.29
+        },
+        {
+          "county": "Fresno",
+          "calls_working_hours": 80126,
+          "calls_after_hours": 26235,
+          "total_calls": 106361,
+          "average_wait_seconds": 1992,
+          "language_wait_seconds": {
+            "Arabic": 3344,
+            "Armenian": 2026,
+            "Cambodian": 951,
+            "Chinese": 1046,
+            "English": 1926,
+            "Farsi": 1200,
+            "Filipino": 1783,
+            "Hmong": 2026,
+            "Russian": 2089,
+            "Spanish": 2217,
+            "Vietnamese": 1076
+          },
+          "abandonment_rate": 0.43
+        },
+        {
+          "county": "Ventura",
+          "calls_working_hours": 35929,
+          "calls_after_hours": 3122,
+          "total_calls": 39051,
+          "average_wait_seconds": 1665,
+          "language_wait_seconds": {
+            "Arabic": 1127,
+            "Chinese": 1834,
+            "English": 1843,
+            "Farsi": 144,
+            "Filipino": 3160,
+            "Korean": 2734,
+            "Russian": 2043,
+            "Spanish": 1291,
+            "Vietnamese": 1370
+          },
+          "abandonment_rate": 0.2
+        },
+        {
+          "county": "Alameda",
+          "calls_working_hours": 43681,
+          "calls_after_hours": 2424,
+          "total_calls": 46105,
+          "average_wait_seconds": 1541,
+          "language_wait_seconds": {
+            "Arabic": 1448,
+            "Chinese": 1444,
+            "English": 1558,
+            "Farsi": 1148,
+            "Filipino": 1121,
+            "Korean": 1033,
+            "Russian": 1425,
+            "Spanish": 1489,
+            "Vietnamese": 1358
+          },
+          "abandonment_rate": 0.46
+        },
+        {
+          "county": "Butte",
+          "calls_working_hours": 10278,
+          "calls_after_hours": 725,
+          "total_calls": 11003,
+          "average_wait_seconds": 1393,
+          "language_wait_seconds": {
+            "English": 1470,
+            "Russian": 1075,
+            "Spanish": 542
+          },
+          "abandonment_rate": 0.34
+        },
+        {
+          "county": "Yuba",
+          "calls_working_hours": 6054,
+          "calls_after_hours": 243,
+          "total_calls": 6297,
+          "average_wait_seconds": 1364,
+          "language_wait_seconds": {
+            "Chinese": 81,
+            "English": 1373,
+            "Hmong": 1705,
+            "Spanish": 1321
+          },
+          "abandonment_rate": 0.38
+        },
+        {
+          "county": "Yolo",
+          "calls_working_hours": 9359,
+          "calls_after_hours": 986,
+          "total_calls": 10345,
+          "average_wait_seconds": 1048,
+          "language_wait_seconds": {
+            "Chinese": 1824,
+            "English": 1013,
+            "Farsi": 178,
+            "Russian": 920,
+            "Spanish": 1262,
+            "Vietnamese": 1279
+          },
+          "abandonment_rate": 0.17
+        },
+        {
+          "county": "Sutter",
+          "calls_working_hours": 7298,
+          "calls_after_hours": 492,
+          "total_calls": 7790,
+          "average_wait_seconds": 931,
+          "language_wait_seconds": {
+            "English": 935,
+            "Spanish": 914
+          },
+          "abandonment_rate": 0.28
+        },
+        {
+          "county": "Kings",
+          "calls_working_hours": 9543,
+          "calls_after_hours": 1079,
+          "total_calls": 10622,
+          "average_wait_seconds": 782,
+          "language_wait_seconds": {
+            "English": 741,
+            "Spanish": 908
+          },
+          "abandonment_rate": 0.27
+        },
+        {
+          "county": "Marin",
+          "calls_working_hours": 5034,
+          "calls_after_hours": 1712,
+          "total_calls": 6746,
+          "average_wait_seconds": 691,
+          "language_wait_seconds": {
+            "Chinese": 311,
+            "English": 674,
+            "Russian": 7,
+            "Spanish": 725
+          },
+          "abandonment_rate": 0.18
+        },
+        {
+          "county": "Sonoma",
+          "calls_working_hours": 16210,
+          "calls_after_hours": 5355,
+          "total_calls": 21565,
+          "average_wait_seconds": 679,
+          "language_wait_seconds": {
+            "Arabic": 6,
+            "English": 570,
+            "Filipino": 413,
+            "Spanish": 977,
+            "Vietnamese": 1029
+          },
+          "abandonment_rate": 0.14
+        },
+        {
+          "county": "Santa Clara",
+          "calls_working_hours": 62676,
+          "calls_after_hours": 5709,
+          "total_calls": 68385,
+          "average_wait_seconds": 578,
+          "language_wait_seconds": {
+            "Arabic": 474,
+            "Cambodian": 1446,
+            "Chinese": 556,
+            "English": 576,
+            "Farsi": 705,
+            "Filipino": 473,
+            "Korean": 511,
+            "Russian": 628,
+            "Spanish": 580,
+            "Vietnamese": 592,
+            "Other": 1248
+          },
+          "abandonment_rate": 0.08
+        },
+        {
+          "county": "Placer",
+          "calls_working_hours": 13167,
+          "calls_after_hours": 809,
+          "total_calls": 13976,
+          "average_wait_seconds": 419,
+          "language_wait_seconds": {
+            "Chinese": 900,
+            "English": 403,
+            "Farsi": 11,
+            "Korean": 700,
+            "Russian": 660,
+            "Spanish": 552
+          },
+          "abandonment_rate": 0.12
+        },
+        {
+          "county": "Napa",
+          "calls_working_hours": 4271,
+          "calls_after_hours": 0,
+          "total_calls": 4271,
+          "average_wait_seconds": 213,
+          "language_wait_seconds": {
+            "English": 215,
+            "Spanish": 206
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Luis Obispo",
+          "calls_working_hours": 2980,
+          "calls_after_hours": 129,
+          "total_calls": 3109,
+          "average_wait_seconds": 145,
+          "language_wait_seconds": {
+            "Chinese": 267,
+            "English": 134,
+            "Spanish": 190,
+            "Other": 88
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Diego",
+          "calls_working_hours": 176557,
+          "calls_after_hours": 7256,
+          "total_calls": 183813,
+          "average_wait_seconds": 67,
+          "language_wait_seconds": {
+            "English": 70,
+            "Spanish": 62
+          },
+          "abandonment_rate": 0.02
+        },
+        {
+          "county": "San Francisco",
+          "calls_working_hours": 45543,
+          "calls_after_hours": 2981,
+          "total_calls": 48524,
+          "average_wait_seconds": 55,
+          "language_wait_seconds": {
+            "Arabic": 286,
+            "Chinese": 41,
+            "English": 49,
+            "Farsi": 11,
+            "Filipino": 161,
+            "Korean": 21,
+            "Russian": 124,
+            "Spanish": 88,
+            "Vietnamese": 123,
+            "Other": 13
+          },
+          "abandonment_rate": 0.01
+        },
+        {
+          "county": "Merced",
+          "calls_working_hours": 56,
+          "calls_after_hours": 0,
+          "total_calls": 56,
+          "average_wait_seconds": 50,
+          "language_wait_seconds": {
+            "English": 55,
+            "Spanish": 33
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Joaquin",
+          "calls_working_hours": 54,
+          "calls_after_hours": 0,
+          "total_calls": 54,
+          "average_wait_seconds": 15,
+          "language_wait_seconds": {
+            "English": 11,
+            "Spanish": 22
+          },
+          "abandonment_rate": 0.0
+        },
+        {
+          "county": "Riverside",
+          "calls_working_hours": 186,
+          "calls_after_hours": 0,
+          "total_calls": 186,
+          "average_wait_seconds": 5,
+          "language_wait_seconds": {
+            "Chinese": 3,
+            "English": 5,
+            "Korean": 4,
+            "Spanish": 4
+          },
+          "abandonment_rate": 0.0
+        }
+      ]
+    },
+    {
+      "month": "2026-05",
+      "label": "May 2026",
+      "total_calls": 1425221,
+      "working_hours_calls": 1296905,
+      "after_hours_calls": 128316,
+      "counties_with_volume": 34,
+      "county_median_wait_seconds": 1676,
+      "counties_with_wait": 34,
+      "county_median_abandonment_rate": 0.255,
+      "counties_with_abandonment": 30,
+      "counties": [
+        {
+          "county": "Tulare",
+          "calls_working_hours": 33683,
+          "calls_after_hours": 5522,
+          "total_calls": 39205,
+          "average_wait_seconds": 6432,
+          "language_wait_seconds": {
+            "Chinese": 9319,
+            "English": 7874,
+            "Spanish": 2770
+          },
+          "abandonment_rate": 0.47
+        },
+        {
+          "county": "Monterey",
+          "calls_working_hours": 18430,
+          "calls_after_hours": 2910,
+          "total_calls": 21340,
+          "average_wait_seconds": 3996,
+          "language_wait_seconds": {
+            "Chinese": 1915,
+            "English": 3963,
+            "Farsi": 3,
+            "Laotian": 7146,
+            "Russian": 5511,
+            "Spanish": 4033
+          },
+          "abandonment_rate": 0.36
+        },
+        {
+          "county": "Kern",
+          "calls_working_hours": 55913,
+          "calls_after_hours": 7091,
+          "total_calls": 63004,
+          "average_wait_seconds": 3995,
+          "language_wait_seconds": {
+            "English": 4127,
+            "Spanish": 3722
+          },
+          "abandonment_rate": 0.32
+        },
+        {
+          "county": "Santa Barbara",
+          "calls_working_hours": 22246,
+          "calls_after_hours": 2924,
+          "total_calls": 25170,
+          "average_wait_seconds": 3895,
+          "language_wait_seconds": {
+            "Chinese": 1064,
+            "English": 3580,
+            "Spanish": 4321,
+            "Vietnamese": 1112
+          },
+          "abandonment_rate": 0.37
+        },
+        {
+          "county": "Orange",
+          "calls_working_hours": 109909,
+          "calls_after_hours": 9648,
+          "total_calls": 119557,
+          "average_wait_seconds": 3866,
+          "language_wait_seconds": {
+            "Arabic": 904,
+            "Chinese": 1611,
+            "English": 3945,
+            "Farsi": 434,
+            "Filipino": 4468,
+            "Korean": 1870,
+            "Russian": 3351,
+            "Spanish": 3853,
+            "Vietnamese": 1756
+          },
+          "abandonment_rate": 0.17
+        },
+        {
+          "county": "Sacramento",
+          "calls_working_hours": 118350,
+          "calls_after_hours": 16946,
+          "total_calls": 135296,
+          "average_wait_seconds": 3338,
+          "language_wait_seconds": {
+            "Arabic": 3985,
+            "Armenian": 3731,
+            "Chinese": 4099,
+            "English": 3737,
+            "Farsi": 3202,
+            "Filipino": 571,
+            "Hmong": 5113,
+            "Korean": 2784,
+            "Russian": 1001,
+            "Spanish": 2142,
+            "Vietnamese": 3932
+          },
+          "abandonment_rate": 0.31
+        },
+        {
+          "county": "Contra Costa",
+          "calls_working_hours": 51200,
+          "calls_after_hours": 7340,
+          "total_calls": 58540,
+          "average_wait_seconds": 2968,
+          "language_wait_seconds": {
+            "Arabic": 1157,
+            "Cambodian": 7702,
+            "Chinese": 2763,
+            "English": 2734,
+            "Farsi": 1441,
+            "Filipino": 1597,
+            "Korean": 744,
+            "Russian": 3916,
+            "Spanish": 3622,
+            "Vietnamese": 2840,
+            "Other": 3307
+          },
+          "abandonment_rate": 0.22
+        },
+        {
+          "county": "Stanislaus",
+          "calls_working_hours": 29606,
+          "calls_after_hours": 2972,
+          "total_calls": 32578,
+          "average_wait_seconds": 2768,
+          "language_wait_seconds": {
+            "Armenian": 6006,
+            "Chinese": 4776,
+            "English": 2906,
+            "Farsi": 1,
+            "Filipino": 4262,
+            "Russian": 394,
+            "Spanish": 2370,
+            "Vietnamese": 2039,
+            "Other": 4
+          },
+          "abandonment_rate": 0.29
+        },
+        {
+          "county": "Humboldt",
+          "calls_working_hours": 7838,
+          "calls_after_hours": 666,
+          "total_calls": 8504,
+          "average_wait_seconds": 2636,
+          "language_wait_seconds": {
+            "English": 2630,
+            "Russian": 2232,
+            "Spanish": 2840
+          },
+          "abandonment_rate": 0.4
+        },
+        {
+          "county": "Solano",
+          "calls_working_hours": 21988,
+          "calls_after_hours": 1474,
+          "total_calls": 23462,
+          "average_wait_seconds": 2635,
+          "language_wait_seconds": {
+            "Chinese": 8589,
+            "English": 2506,
+            "Filipino": 1570,
+            "Korean": 29,
+            "Spanish": 3075,
+            "Vietnamese": 15423,
+            "Other": 2842
+          },
+          "abandonment_rate": 0.2
+        },
+        {
+          "county": "Shasta",
+          "calls_working_hours": 7972,
+          "calls_after_hours": 1929,
+          "total_calls": 9901,
+          "average_wait_seconds": 2594,
+          "language_wait_seconds": {
+            "Arabic": 3,
+            "Armenian": 3364,
+            "Chinese": 1109,
+            "English": 2620,
+            "Laotian": 3,
+            "Russian": 328,
+            "Spanish": 1457,
+            "Vietnamese": 8
+          },
+          "abandonment_rate": 0.25
+        },
+        {
+          "county": "San Bernardino",
+          "calls_working_hours": 127833,
+          "calls_after_hours": 8140,
+          "total_calls": 135973,
+          "average_wait_seconds": 2340,
+          "language_wait_seconds": {
+            "Arabic": 2618,
+            "Cambodian": 836,
+            "Chinese": 2297,
+            "English": 2303,
+            "Filipino": 1147,
+            "Korean": 2137,
+            "Russian": 3349,
+            "Spanish": 2535,
+            "Vietnamese": 2343
+          },
+          "abandonment_rate": 0.26
+        },
+        {
+          "county": "Los Angeles",
+          "calls_working_hours": 196876,
+          "calls_after_hours": 0,
+          "total_calls": 196876,
+          "average_wait_seconds": 2161,
+          "language_wait_seconds": {
+            "Armenian": 2461,
+            "Cambodian": 2374,
+            "Chinese": 2270,
+            "English": 1305,
+            "Farsi": 2729,
+            "Filipino": 2692,
+            "Korean": 2514,
+            "Russian": 2418,
+            "Spanish": 1490,
+            "Vietnamese": 2967
+          },
+          "abandonment_rate": 0.28
+        },
+        {
+          "county": "Fresno",
+          "calls_working_hours": 69739,
+          "calls_after_hours": 22835,
+          "total_calls": 92574,
+          "average_wait_seconds": 2047,
+          "language_wait_seconds": {
+            "Arabic": 4790,
+            "Armenian": 415,
+            "Chinese": 1502,
+            "English": 1969,
+            "Farsi": 3838,
+            "Filipino": 250,
+            "Hmong": 1578,
+            "Russian": 2910,
+            "Spanish": 2318,
+            "Vietnamese": 1397
+          },
+          "abandonment_rate": 0.42
+        },
+        {
+          "county": "Yuba",
+          "calls_working_hours": 7832,
+          "calls_after_hours": 533,
+          "total_calls": 8365,
+          "average_wait_seconds": 1949,
+          "language_wait_seconds": {
+            "English": 1986,
+            "Spanish": 1716
+          },
+          "abandonment_rate": 0.52
+        },
+        {
+          "county": "San Mateo",
+          "calls_working_hours": 24036,
+          "calls_after_hours": 2120,
+          "total_calls": 26156,
+          "average_wait_seconds": 1777,
+          "language_wait_seconds": {
+            "Arabic": 2167,
+            "Chinese": 1826,
+            "English": 1768,
+            "Farsi": 768,
+            "Filipino": 1552,
+            "Korean": 2042,
+            "Russian": 1335,
+            "Spanish": 1797,
+            "Vietnamese": 2506,
+            "Other": 1292
+          },
+          "abandonment_rate": 0.32
+        },
+        {
+          "county": "Alameda",
+          "calls_working_hours": 42395,
+          "calls_after_hours": 2885,
+          "total_calls": 45280,
+          "average_wait_seconds": 1772,
+          "language_wait_seconds": {
+            "Arabic": 2057,
+            "Armenian": 651,
+            "Cambodian": 1598,
+            "Chinese": 1759,
+            "English": 1804,
+            "Farsi": 558,
+            "Filipino": 1007,
+            "Korean": 1587,
+            "Laotian": 210,
+            "Russian": 3207,
+            "Spanish": 1637,
+            "Vietnamese": 1448
+          },
+          "abandonment_rate": 0.48
+        },
+        {
+          "county": "Santa Cruz",
+          "calls_working_hours": 12165,
+          "calls_after_hours": 1764,
+          "total_calls": 13929,
+          "average_wait_seconds": 1580,
+          "language_wait_seconds": {
+            "Chinese": 3101,
+            "English": 1608,
+            "Spanish": 1506
+          },
+          "abandonment_rate": 0.2
+        },
+        {
+          "county": "Ventura",
+          "calls_working_hours": 26803,
+          "calls_after_hours": 2962,
+          "total_calls": 29765,
+          "average_wait_seconds": 1312,
+          "language_wait_seconds": {
+            "Chinese": 1936,
+            "English": 1248,
+            "Farsi": 731,
+            "Filipino": 6,
+            "Russian": 1830,
+            "Spanish": 1467,
+            "Vietnamese": 457,
+            "Other": 2044
+          },
+          "abandonment_rate": 0.19
+        },
+        {
+          "county": "Butte",
+          "calls_working_hours": 8156,
+          "calls_after_hours": 701,
+          "total_calls": 8857,
+          "average_wait_seconds": 970,
+          "language_wait_seconds": {
+            "English": 994,
+            "Russian": 158,
+            "Spanish": 619
+          },
+          "abandonment_rate": 0.29
+        },
+        {
+          "county": "Kings",
+          "calls_working_hours": 8378,
+          "calls_after_hours": 1346,
+          "total_calls": 9724,
+          "average_wait_seconds": 958,
+          "language_wait_seconds": {
+            "English": 912,
+            "Spanish": 1084
+          },
+          "abandonment_rate": 0.28
+        },
+        {
+          "county": "Yolo",
+          "calls_working_hours": 7368,
+          "calls_after_hours": 875,
+          "total_calls": 8243,
+          "average_wait_seconds": 806,
+          "language_wait_seconds": {
+            "Chinese": 245,
+            "English": 765,
+            "Farsi": 304,
+            "Korean": 165,
+            "Russian": 847,
+            "Spanish": 1059,
+            "Vietnamese": 768
+          },
+          "abandonment_rate": 0.13
+        },
+        {
+          "county": "Sutter",
+          "calls_working_hours": 6066,
+          "calls_after_hours": 554,
+          "total_calls": 6620,
+          "average_wait_seconds": 627,
+          "language_wait_seconds": {
+            "English": 602,
+            "Spanish": 749
+          },
+          "abandonment_rate": 0.19
+        },
+        {
+          "county": "Placer",
+          "calls_working_hours": 12342,
+          "calls_after_hours": 895,
+          "total_calls": 13237,
+          "average_wait_seconds": 583,
+          "language_wait_seconds": {
+            "Chinese": 1019,
+            "English": 567,
+            "Farsi": 266,
+            "Russian": 776,
+            "Spanish": 750
+          },
+          "abandonment_rate": 0.16
+        },
+        {
+          "county": "Marin",
+          "calls_working_hours": 4388,
+          "calls_after_hours": 1448,
+          "total_calls": 5836,
+          "average_wait_seconds": 559,
+          "language_wait_seconds": {
+            "English": 521,
+            "Russian": 22,
+            "Spanish": 641,
+            "Other": 11
+          },
+          "abandonment_rate": 0.15
+        },
+        {
+          "county": "Sonoma",
+          "calls_working_hours": 11912,
+          "calls_after_hours": 4521,
+          "total_calls": 16433,
+          "average_wait_seconds": 363,
+          "language_wait_seconds": {
+            "Chinese": 265,
+            "English": 316,
+            "Spanish": 516,
+            "Vietnamese": 144
+          },
+          "abandonment_rate": 0.08
+        },
+        {
+          "county": "Napa",
+          "calls_working_hours": 3597,
+          "calls_after_hours": 0,
+          "total_calls": 3597,
+          "average_wait_seconds": 190,
+          "language_wait_seconds": {
+            "English": 192,
+            "Spanish": 182
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "Santa Clara",
+          "calls_working_hours": 51509,
+          "calls_after_hours": 5462,
+          "total_calls": 56971,
+          "average_wait_seconds": 188,
+          "language_wait_seconds": {
+            "Arabic": 11,
+            "Chinese": 205,
+            "English": 200,
+            "Farsi": 181,
+            "Filipino": 163,
+            "Korean": 166,
+            "Russian": 232,
+            "Spanish": 164,
+            "Vietnamese": 165,
+            "Other": 75
+          },
+          "abandonment_rate": 0.03
+        },
+        {
+          "county": "San Luis Obispo",
+          "calls_working_hours": 2542,
+          "calls_after_hours": 136,
+          "total_calls": 2678,
+          "average_wait_seconds": 106,
+          "language_wait_seconds": {
+            "Chinese": 10,
+            "English": 103,
+            "Spanish": 117
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Diego",
+          "calls_working_hours": 156215,
+          "calls_after_hours": 8468,
+          "total_calls": 164683,
+          "average_wait_seconds": 84,
+          "language_wait_seconds": {
+            "English": 88,
+            "Spanish": 75
+          },
+          "abandonment_rate": 0.03
+        },
+        {
+          "county": "Merced",
+          "calls_working_hours": 35,
+          "calls_after_hours": 0,
+          "total_calls": 35,
+          "average_wait_seconds": 76,
+          "language_wait_seconds": {
+            "English": 64,
+            "Spanish": 127
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Francisco",
+          "calls_working_hours": 39341,
+          "calls_after_hours": 3249,
+          "total_calls": 42590,
+          "average_wait_seconds": 28,
+          "language_wait_seconds": {
+            "Arabic": 10,
+            "Armenian": 7,
+            "Chinese": 21,
+            "English": 21,
+            "Farsi": 15,
+            "Filipino": 151,
+            "Korean": 9,
+            "Laotian": 223,
+            "Russian": 144,
+            "Spanish": 59,
+            "Vietnamese": 117,
+            "Other": 25
+          },
+          "abandonment_rate": 0.01
+        },
+        {
+          "county": "Riverside",
+          "calls_working_hours": 182,
+          "calls_after_hours": 0,
+          "total_calls": 182,
+          "average_wait_seconds": 23,
+          "language_wait_seconds": {
+            "Chinese": 4,
+            "English": 26,
+            "Spanish": 4
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Joaquin",
+          "calls_working_hours": 60,
+          "calls_after_hours": 0,
+          "total_calls": 60,
+          "average_wait_seconds": 16,
+          "language_wait_seconds": {
+            "English": 13,
+            "Filipino": 23,
+            "Korean": 3,
+            "Spanish": 28
+          },
+          "abandonment_rate": 0.0
+        }
+      ]
+    },
+    {
+      "month": "2026-06",
+      "label": "Jun 2026",
+      "total_calls": 1572554,
+      "working_hours_calls": 1437612,
+      "after_hours_calls": 134942,
+      "counties_with_volume": 34,
+      "county_median_wait_seconds": 1546,
+      "counties_with_wait": 34,
+      "county_median_abandonment_rate": 0.24,
+      "counties_with_abandonment": 31,
+      "counties": [
+        {
+          "county": "Tulare",
+          "calls_working_hours": 41511,
+          "calls_after_hours": 7256,
+          "total_calls": 48767,
+          "average_wait_seconds": 7058,
+          "language_wait_seconds": {
+            "Arabic": 425,
+            "English": 8016,
+            "Spanish": 4635
+          },
+          "abandonment_rate": 0.55
+        },
+        {
+          "county": "Santa Barbara",
+          "calls_working_hours": 23515,
+          "calls_after_hours": 3371,
+          "total_calls": 26886,
+          "average_wait_seconds": 4101,
+          "language_wait_seconds": {
+            "Chinese": 1599,
+            "English": 3913,
+            "Filipino": 5306,
+            "Spanish": 4349
+          },
+          "abandonment_rate": 0.37
+        },
+        {
+          "county": "Kern",
+          "calls_working_hours": 65031,
+          "calls_after_hours": 7082,
+          "total_calls": 72113,
+          "average_wait_seconds": 3849,
+          "language_wait_seconds": {
+            "English": 3865,
+            "Spanish": 3814
+          },
+          "abandonment_rate": 0.32
+        },
+        {
+          "county": "Monterey",
+          "calls_working_hours": 17689,
+          "calls_after_hours": 2830,
+          "total_calls": 20519,
+          "average_wait_seconds": 3736,
+          "language_wait_seconds": {
+            "Arabic": 3701,
+            "English": 3626,
+            "Spanish": 3868
+          },
+          "abandonment_rate": 0.32
+        },
+        {
+          "county": "Sacramento",
+          "calls_working_hours": 143065,
+          "calls_after_hours": 21490,
+          "total_calls": 164555,
+          "average_wait_seconds": 3631,
+          "language_wait_seconds": {
+            "Arabic": 3716,
+            "Armenian": 2234,
+            "Chinese": 4485,
+            "English": 4124,
+            "Farsi": 3936,
+            "Filipino": 3535,
+            "Hmong": 3368,
+            "Korean": 6512,
+            "Russian": 1266,
+            "Spanish": 2199,
+            "Vietnamese": 4030,
+            "Other": 4707
+          },
+          "abandonment_rate": 0.31
+        },
+        {
+          "county": "Orange",
+          "calls_working_hours": 113690,
+          "calls_after_hours": 8349,
+          "total_calls": 122039,
+          "average_wait_seconds": 3431,
+          "language_wait_seconds": {
+            "Arabic": 403,
+            "Chinese": 2112,
+            "English": 3472,
+            "Farsi": 473,
+            "Filipino": 45,
+            "Korean": 1722,
+            "Russian": 2473,
+            "Spanish": 3477,
+            "Vietnamese": 1527
+          },
+          "abandonment_rate": 0.17
+        },
+        {
+          "county": "Stanislaus",
+          "calls_working_hours": 35426,
+          "calls_after_hours": 3020,
+          "total_calls": 38446,
+          "average_wait_seconds": 3276,
+          "language_wait_seconds": {
+            "Arabic": 2459,
+            "Cambodian": 7461,
+            "Chinese": 3257,
+            "English": 3442,
+            "Farsi": 996,
+            "Spanish": 2813,
+            "Vietnamese": 351
+          },
+          "abandonment_rate": 0.32
+        },
+        {
+          "county": "Contra Costa",
+          "calls_working_hours": 55052,
+          "calls_after_hours": 8442,
+          "total_calls": 63494,
+          "average_wait_seconds": 3024,
+          "language_wait_seconds": {
+            "Arabic": 1987,
+            "Chinese": 3083,
+            "English": 2769,
+            "Farsi": 2524,
+            "Filipino": 2578,
+            "Korean": 2100,
+            "Laotian": 324,
+            "Russian": 2234,
+            "Spanish": 3726,
+            "Vietnamese": 2529,
+            "Other": 4434
+          },
+          "abandonment_rate": 0.22
+        },
+        {
+          "county": "Shasta",
+          "calls_working_hours": 9679,
+          "calls_after_hours": 1925,
+          "total_calls": 11604,
+          "average_wait_seconds": 2881,
+          "language_wait_seconds": {
+            "Chinese": 3044,
+            "English": 2904,
+            "Spanish": 1721
+          },
+          "abandonment_rate": 0.28
+        },
+        {
+          "county": "Los Angeles",
+          "calls_working_hours": 220028,
+          "calls_after_hours": null,
+          "total_calls": 220028,
+          "average_wait_seconds": 2461,
+          "language_wait_seconds": {
+            "Armenian": 2881,
+            "Cambodian": 2491,
+            "Chinese": 2640,
+            "English": 1625,
+            "Farsi": 2866,
+            "Filipino": 3507,
+            "Korean": 3004,
+            "Russian": 2728,
+            "Spanish": 1648,
+            "Vietnamese": 2978
+          },
+          "abandonment_rate": 0.28
+        },
+        {
+          "county": "Fresno",
+          "calls_working_hours": 84576,
+          "calls_after_hours": 24391,
+          "total_calls": 108967,
+          "average_wait_seconds": 2365,
+          "language_wait_seconds": {
+            "Arabic": 2329,
+            "Armenian": 3608,
+            "Chinese": 2348,
+            "English": 2267,
+            "Hmong": 1907,
+            "Korean": 3279,
+            "Laotian": 6011,
+            "Spanish": 2698,
+            "Vietnamese": 2364
+          },
+          "abandonment_rate": 0.45
+        },
+        {
+          "county": "San Bernardino",
+          "calls_working_hours": 128268,
+          "calls_after_hours": 9070,
+          "total_calls": 137338,
+          "average_wait_seconds": 2128,
+          "language_wait_seconds": {
+            "Arabic": 3041,
+            "Chinese": 2096,
+            "English": 2102,
+            "Filipino": 1178,
+            "Korean": 2347,
+            "Russian": 2081,
+            "Spanish": 2267,
+            "Vietnamese": 1537
+          },
+          "abandonment_rate": 0.24
+        },
+        {
+          "county": "Humboldt",
+          "calls_working_hours": 8064,
+          "calls_after_hours": 675,
+          "total_calls": 8739,
+          "average_wait_seconds": 2044,
+          "language_wait_seconds": {
+            "English": 2039,
+            "Spanish": 2235,
+            "Vietnamese": 1289
+          },
+          "abandonment_rate": 0.36
+        },
+        {
+          "county": "San Mateo",
+          "calls_working_hours": 26382,
+          "calls_after_hours": 2567,
+          "total_calls": 28949,
+          "average_wait_seconds": 1967,
+          "language_wait_seconds": {
+            "Arabic": 1761,
+            "Chinese": 1727,
+            "English": 1953,
+            "Filipino": 2120,
+            "Korean": 2054,
+            "Laotian": 5,
+            "Russian": 1496,
+            "Spanish": 2009,
+            "Vietnamese": 1734,
+            "Other": 3052
+          },
+          "abandonment_rate": 0.37
+        },
+        {
+          "county": "Alameda",
+          "calls_working_hours": 49220,
+          "calls_after_hours": 3312,
+          "total_calls": 52532,
+          "average_wait_seconds": 1771,
+          "language_wait_seconds": {
+            "Arabic": 1307,
+            "Armenian": 1219,
+            "Cambodian": 1744,
+            "Chinese": 1542,
+            "English": 1798,
+            "Farsi": 574,
+            "Filipino": 1272,
+            "Korean": 1358,
+            "Russian": 2003,
+            "Spanish": 1691,
+            "Vietnamese": 1462
+          },
+          "abandonment_rate": 0.49
+        },
+        {
+          "county": "Santa Cruz",
+          "calls_working_hours": 12912,
+          "calls_after_hours": 1865,
+          "total_calls": 14777,
+          "average_wait_seconds": 1629,
+          "language_wait_seconds": {
+            "Chinese": 2622,
+            "English": 1665,
+            "Spanish": 1528
+          },
+          "abandonment_rate": 0.2
+        },
+        {
+          "county": "Ventura",
+          "calls_working_hours": 29580,
+          "calls_after_hours": 3049,
+          "total_calls": 32629,
+          "average_wait_seconds": 1552,
+          "language_wait_seconds": {
+            "Arabic": 1270,
+            "Chinese": 978,
+            "English": 1356,
+            "Farsi": 621,
+            "Filipino": 1154,
+            "Korean": 3382,
+            "Russian": 1354,
+            "Spanish": 2004,
+            "Vietnamese": 616
+          },
+          "abandonment_rate": 0.2
+        },
+        {
+          "county": "Yuba",
+          "calls_working_hours": 8210,
+          "calls_after_hours": 448,
+          "total_calls": 8658,
+          "average_wait_seconds": 1540,
+          "language_wait_seconds": {
+            "Chinese": 2025,
+            "English": 1555,
+            "Spanish": 1449
+          },
+          "abandonment_rate": 0.4
+        },
+        {
+          "county": "Kings",
+          "calls_working_hours": 10236,
+          "calls_after_hours": 1008,
+          "total_calls": 11244,
+          "average_wait_seconds": 1138,
+          "language_wait_seconds": {
+            "English": 1102,
+            "Spanish": 1256
+          },
+          "abandonment_rate": 0.28
+        },
+        {
+          "county": "Butte",
+          "calls_working_hours": 9213,
+          "calls_after_hours": 816,
+          "total_calls": 10029,
+          "average_wait_seconds": 1096,
+          "language_wait_seconds": {
+            "English": 1140,
+            "Spanish": 459
+          },
+          "abandonment_rate": 0.3
+        },
+        {
+          "county": "Yolo",
+          "calls_working_hours": 8136,
+          "calls_after_hours": 1029,
+          "total_calls": 9165,
+          "average_wait_seconds": 1019,
+          "language_wait_seconds": {
+            "Chinese": 1583,
+            "English": 979,
+            "Farsi": 190,
+            "Russian": 939,
+            "Spanish": 1267,
+            "Vietnamese": 1578
+          },
+          "abandonment_rate": 0.15
+        },
+        {
+          "county": "Marin",
+          "calls_working_hours": 4845,
+          "calls_after_hours": 1594,
+          "total_calls": 6439,
+          "average_wait_seconds": 748,
+          "language_wait_seconds": {
+            "Chinese": 1090,
+            "English": 738,
+            "Spanish": 769
+          },
+          "abandonment_rate": 0.17
+        },
+        {
+          "county": "Solano",
+          "calls_working_hours": 18565,
+          "calls_after_hours": 1174,
+          "total_calls": 19739,
+          "average_wait_seconds": 737,
+          "language_wait_seconds": {
+            "Chinese": 2179,
+            "English": 779,
+            "Filipino": 519,
+            "Spanish": 584,
+            "Vietnamese": 890,
+            "Other": 1287
+          },
+          "abandonment_rate": 0.1
+        },
+        {
+          "county": "Placer",
+          "calls_working_hours": 13096,
+          "calls_after_hours": 705,
+          "total_calls": 13801,
+          "average_wait_seconds": 629,
+          "language_wait_seconds": {
+            "English": 618,
+            "Korean": 1422,
+            "Russian": 1002,
+            "Spanish": 680
+          },
+          "abandonment_rate": 0.17
+        },
+        {
+          "county": "Sutter",
+          "calls_working_hours": 6160,
+          "calls_after_hours": 547,
+          "total_calls": 6707,
+          "average_wait_seconds": 496,
+          "language_wait_seconds": {
+            "English": 473,
+            "Spanish": 610
+          },
+          "abandonment_rate": 0.16
+        },
+        {
+          "county": "Santa Clara",
+          "calls_working_hours": 56751,
+          "calls_after_hours": 6196,
+          "total_calls": 62947,
+          "average_wait_seconds": 297,
+          "language_wait_seconds": {
+            "Chinese": 257,
+            "English": 310,
+            "Farsi": 153,
+            "Filipino": 227,
+            "Korean": 238,
+            "Russian": 234,
+            "Spanish": 279,
+            "Vietnamese": 275
+          },
+          "abandonment_rate": 0.05
+        },
+        {
+          "county": "Sonoma",
+          "calls_working_hours": 12953,
+          "calls_after_hours": 4234,
+          "total_calls": 17187,
+          "average_wait_seconds": 287,
+          "language_wait_seconds": {
+            "English": 261,
+            "Filipino": 13,
+            "Spanish": 372,
+            "Vietnamese": 246
+          },
+          "abandonment_rate": 0.07
+        },
+        {
+          "county": "Napa",
+          "calls_working_hours": 3968,
+          "calls_after_hours": null,
+          "total_calls": 3968,
+          "average_wait_seconds": 210,
+          "language_wait_seconds": {
+            "English": 212,
+            "Spanish": 204
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "Merced",
+          "calls_working_hours": 56,
+          "calls_after_hours": null,
+          "total_calls": 56,
+          "average_wait_seconds": 163,
+          "language_wait_seconds": {
+            "English": 117,
+            "Spanish": 375
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Luis Obispo",
+          "calls_working_hours": 2727,
+          "calls_after_hours": 117,
+          "total_calls": 2844,
+          "average_wait_seconds": 107,
+          "language_wait_seconds": {
+            "English": 95,
+            "Spanish": 156
+          },
+          "abandonment_rate": null
+        },
+        {
+          "county": "San Diego",
+          "calls_working_hours": 176537,
+          "calls_after_hours": 4902,
+          "total_calls": 181439,
+          "average_wait_seconds": 86,
+          "language_wait_seconds": {
+            "English": 90,
+            "Spanish": 75
+          },
+          "abandonment_rate": 0.04
+        },
+        {
+          "county": "San Francisco",
+          "calls_working_hours": 42219,
+          "calls_after_hours": 3478,
+          "total_calls": 45697,
+          "average_wait_seconds": 35,
+          "language_wait_seconds": {
+            "Arabic": 9,
+            "Chinese": 35,
+            "English": 29,
+            "Filipino": 99,
+            "Korean": 13,
+            "Laotian": 17,
+            "Russian": 120,
+            "Spanish": 56,
+            "Vietnamese": 156
+          },
+          "abandonment_rate": 0.01
+        },
+        {
+          "county": "San Joaquin",
+          "calls_working_hours": 67,
+          "calls_after_hours": null,
+          "total_calls": 67,
+          "average_wait_seconds": 11,
+          "language_wait_seconds": {
+            "English": 11,
+            "Spanish": 14,
+            "Vietnamese": 3
+          },
+          "abandonment_rate": 0.0
+        },
+        {
+          "county": "Riverside",
+          "calls_working_hours": 185,
+          "calls_after_hours": null,
+          "total_calls": 185,
+          "average_wait_seconds": 10,
+          "language_wait_seconds": {
+            "Chinese": 3,
+            "English": 9,
+            "Spanish": 17
+          },
+          "abandonment_rate": 0.0
+        }
+      ]
+    }
+  ]
+}
