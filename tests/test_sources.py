@@ -41,6 +41,20 @@ def test_union_bank_agent_anytime(helplines):
     assert all("9" in n.extras for n in helplines["zero_out_bank"].nodes.values() if n.type == "menu")
 
 
+def test_web_verified_menu_fragments_keep_their_scope_tags(helplines):
+    icici = helplines["icici_fragment"]
+    assert icici.structure_tag == "PARTIAL"
+    assert icici.tasks[0].path == ["0", "1"]
+    assert "icici.bank.in" in " ".join(icici.notes)
+    rail = helplines["railway_139_2016"]
+    assert rail.structure_tag == "HISTORICAL"
+    assert rail.tasks[0].path == ["6", "1"]
+    assert "2016" in " ".join(rail.notes)
+    passport = helplines["gov_docs"]
+    assert passport.structure_tag == "ASSUMED"  # official service facts do not publish menu keys
+    assert "passportindia.gov.in" in " ".join(passport.notes)
+
+
 def test_telecom_short_code_rule(helplines):
     sc = helplines["telecom"].shortcode
     assert sc["code"] == "199" and sc["network_only"]
