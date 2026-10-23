@@ -16,6 +16,51 @@
 </script>
 </head>
 <body>
+<section id="judge" aria-label="HoldForMe simulation">
+  <div class="judge-top">
+    <a class="judge-brand" href="#judge"><span class="judge-mark">H</span> HoldWorld <span class="judge-sub">SIMULATION</span></a>
+    <div class="judge-modes" role="group" aria-label="View mode">
+      <button class="on" data-mode="watch">Watch</button>
+      <button data-mode="explore">Explore</button>
+      <button data-mode="try">Try it yourself</button>
+    </div>
+    <button class="judge-proof" id="judge-proof">Proof <span>↗</span></button>
+  </div>
+  <div class="proof-backdrop" id="proof-backdrop" hidden></div>
+  <aside class="proof-drawer" id="proof-drawer" hidden aria-label="Simulation evidence">
+    <div class="proof-drawer-head"><div><span class="race-eyebrow">EVIDENCE DRAWER</span><h2>Proof behind the simulation</h2></div><button id="proof-close" aria-label="Close proof">×</button></div>
+    <div id="proof-content"></div>
+    <button id="proof-all" class="btn primary wide">Open all evidence →</button>
+  </aside>
+  <div class="judge-content">
+    <div class="judge-context"><span class="live-dot"></span><span id="judge-context">Loading a paired simulation run…</span><span class="judge-seed" id="judge-seed">RECORDED TRACE</span></div>
+    <section class="try-sim" id="try-yourself" hidden aria-label="Interactive IVR simulation"></section>
+    <div class="film-stage" id="film-stage">
+      <canvas id="film-canvas" aria-label="Autoplaying simulation scene"></canvas>
+      <div class="film-copy" id="film-copy"><span id="film-scene-number">SCENE 01 / 06</span><h1 id="film-title">The problem at scale</h1><p id="film-caption">A real day of customer-care calls, replayed from recorded arrivals.</p></div>
+      <div class="film-endcard" id="film-endcard" hidden><span>THE RACE · AGGREGATE RESULTS</span><h2 id="endcard-title">Your time, returned</h2><p id="endcard-copy">Across 192 matched simulation calls</p><div class="endcard-metrics"><div><strong id="endcard-saved">—</strong><small>ESTIMATED USER TIME SAVED</small></div><div><strong id="endcard-success">—</strong><small>HOLDFORME SUCCESS RATE</small></div><div><strong id="endcard-false">—</strong><small>FALSE ALARMS PER CALL</small></div></div><button id="endcard-explore" class="btn primary">Explore a call trace →</button></div>
+      <div class="film-controls"><div id="film-dots" aria-label="Film scenes"></div><button id="film-replay">Replay film ↻</button><button id="film-skip">Skip scene →</button></div>
+    </div>
+    <div class="race-grid" hidden>
+      <article class="race-panel human" id="race-human">
+        <div class="race-head"><div><span class="race-eyebrow">YOU, CALLING YOURSELF</span><h1>On hold with the bank</h1></div><span class="race-state" id="human-state">CALLING</span></div>
+        <div class="phone-scene"><div class="scene-orbit"><div class="scene-phone">☎</div><div class="scene-wave"></div></div><div class="scene-copy"><span class="scene-kicker" id="human-kicker">OUTGOING CALL</span><strong id="human-line">Dialling the helpline…</strong><span id="human-sub">The same queue and time of day</span></div></div>
+        <div class="race-events" id="human-events"></div>
+        <div class="race-metrics"><div><small>YOUR TIME</small><strong id="human-time">00:00</strong></div><div><small>CALL ATTEMPTS</small><strong id="human-attempts">—</strong></div><div><small>OUTCOME</small><strong id="human-outcome">In progress</strong></div><div><small>PLATFORM COST</small><strong id="human-cost">—</strong></div></div>
+        <button class="trace-link" id="human-trace">Inspect this recorded call <span>↗</span></button>
+      </article>
+      <article class="race-panel agent" id="race-agent">
+        <div class="race-head"><div><span class="race-eyebrow">HOLDFORME, CALLING FOR YOU</span><h1>Your afternoon, returned</h1></div><span class="race-state" id="agent-state">CALLING</span></div>
+        <div class="phone-scene"><div class="scene-orbit"><div class="scene-phone">✳</div><div class="scene-wave"></div></div><div class="scene-copy"><span class="scene-kicker" id="agent-kicker">NAVIGATING MENU</span><strong id="agent-line">Finding the right team…</strong><span id="agent-sub">Keys selected from the spoken menu</span></div></div>
+        <div class="race-events" id="agent-events"></div>
+        <div class="race-metrics"><div><small>YOUR TIME</small><strong id="agent-time">00:00</strong></div><div><small>HOLD ABSORBED</small><strong id="agent-hold">00:00</strong></div><div><small>FALSE ALARMS</small><strong id="agent-false">0</strong></div><div><small>PLATFORM COST</small><strong id="agent-cost">—</strong></div></div>
+        <button class="trace-link" id="agent-trace">Inspect this recorded call <span>↗</span></button>
+      </article>
+    </div>
+    <div class="race-footer"><div class="race-progress"><span id="race-progress"></span></div><div class="race-footnote"><span id="race-caption">Same helpline. Same task. Same simulation seed.</span><button id="race-replay">Replay race ↻</button></div></div>
+      <div class="judge-data"><span>QUEUE <b>440,837 real calls</b></span><i></i><span>MENUS <b>sources shown in evidence</b></span><i></i><span>REPLAY <b>recorded simulation traces</b></span><button id="judge-explore">Explore the evidence and stress tests →</button></div>
+  </div>
+</section>
 <div id="app">
   <aside id="nav">
     <div class="brand">
@@ -24,6 +69,7 @@
     </div>
     <nav id="chapters"></nav>
     <div class="nav-foot">
+      <button id="back-to-watch" class="btn ghost wide">← Watch mode</button>
       <button id="tour-btn" class="btn primary wide">▶ Take the tour</button>
       <div class="tagkey">
         <span class="tag DATA">DATA</span><span class="tag OFFICIAL">OFFICIAL</span><span class="tag STD">STD</span><span class="tag ATLAS">ATLAS</span><span class="tag ASSUMED">ASSUMED</span>

@@ -157,6 +157,71 @@ export function renderEvidence(root) {
     h("div", { class: "card" }, h("h3", {}, "Tasks completed"), barsH(succ, { max: 100, fmt: (v) => Math.round(v), unit: "%", width: 440, labelW: 110 })),
     h("div", { class: "card" }, h("h3", {}, "Your own time per task"), h("div", { class: "sub" }, "A human caller spends the whole call; AI callers cost you only alerts, OTPs and the conversation itself."), barsH(umin, { fmt: (v) => v.toFixed(1), unit: " min", width: 440, labelW: 110 })),
     h("div", { class: "card" }, h("h3", {}, "False alarms per call"), h("div", { class: "sub" }, "Your phone rang, but it was a recording."), barsH(fa, { fmt: (v) => v.toFixed(2), width: 440, labelW: 110 }))));
+  if (HW.noise_sweep?.length) {
+    const noiseSeries = ARM_ORDER.filter((a) => HW.noise_sweep.some((r) => r.arm === a)).map((arm) => ({
+      name: ARMS[arm].name, color: ARMS[arm].color,
+      points: HW.noise_sweep.filter((r) => r.arm === arm).map((r) => [r.wer * 100, r.success[0] * 100]),
+    }));
+    root.append(h("div", { class: "card", style: { marginTop: "14px" }, id: "noise-sweep" },
+      h("h3", {}, "Call success as the phone line gets noisier", tag("DATA")),
+      h("div", { class: "sub" }, "Poor-channel replay at 10–50% word error rates. Each point uses 30 seeds in the full run; the legend names each caller. S12 is grounded at the published 34.8% worst-case phone error rate."),
+      lines(noiseSeries, { width: 820, height: 250, xfmt: (v) => `${Math.round(v)}%`, yfmt: (v) => `${Math.round(v)}%`, xlabel: "word error rate", ylabel: "call success", marks: [{ x: 35, text: "published worst case", dy: 0 }] })));
+  }
+  if (HW.sensitivity?.length) {
+    const factors = [...new Set(HW.sensitivity.map((r) => r.factor))];
+    const maxDelta = Math.max(1, ...HW.sensitivity.map((r) => Math.abs(r.delta_pp)));
+    const grid = h("div", { class: "sensitivity-chart" });
+    for (const factor of factors) {
+      const pts = HW.sensitivity.filter((r) => r.factor === factor);
+      const left = pts[0], mid = pts[1], right = pts[2];
+      const endpoint = (r, side) => h("div", { class: `tornado-end ${side}` },
+        h("span", { class: "tornado-label" }, `${r.value}${factor === "Speech error rate" ? "%" : ""} · ${Math.round(r.success[0] * 100)}%`),
+        h("span", { class: "tornado-track" }, h("i", { style: { width: `${Math.abs(r.delta_pp) / maxDelta * 100}%`, background: r.delta_pp < 0 ? "#d95926" : "#199e70" } })));
+      grid.append(h("div", { class: "tornado-row" }, h("b", {}, factor), endpoint(left, "left"),
+        h("span", { class: "tornado-zero" }, `${Math.round(mid.success[0] * 100)}%`), endpoint(right, "right")));
+    }
+    root.append(h("div", { class: "card", style: { marginTop: "14px" }, id: "sensitivity-tornado" },
+      h("h3", {}, "Which assumptions move success?", tag("ASSUMED")),
+      h("div", { class: "sub" }, "One factor changes at a time across its own representative task. Bars show percentage-point change from the middle setting; 30 paired seeds per point. These are directional sensitivity checks, not causal estimates."),
+      grid));
+  }
+  if (HW.prewarn?.points?.length) {
+    const p = HW.prewarn;
+    const bestPoint = p.points.find((x) => x.lead_s === p.selected_lead_s);
+    const fallbackRecovered = bestPoint?.fallback_recovered || 0;
+    const prewarnSummary = p.target_met
+      ? `Modeled lead: ${p.selected_lead_s} s before estimated pickup; fallback recovered ${fallbackRecovered} missed first alerts.`
+      : `No tested policy reaches 90%. Best observed: ${p.selected_lead_s} s early, ${Math.round(bestPoint.ready_by_pickup_plus_patience * 100)}% ready; fallback recovered ${fallbackRecovered} missed first alerts.`;
+    root.append(h("div", { class: "card", style: { marginTop: "14px" }, id: "prewarn-policy" },
+      h("h3", {}, "When should HoldForMe ring you?", tag("ASSUMED")),
+      h("div", { class: "sub" }, `Pre-warn timing sweep uses 1,000 paired samples per lead. Queue prediction error has an assumed 25 s standard deviation. The model gives a 60 s app heads-up when possible and retries one missed alert after 12 s; both behaviors are assumptions. It selects the smallest early-ready time that meets 90% readiness, or reports the best observed readiness if no lead meets the target.`),
+      h("div", { class: "callout" }, prewarnSummary),
+      lines([{ name: "ready by pickup + patience", color: "#3987e5", points: p.points.map((x) => [x.lead_s, x.ready_by_pickup_plus_patience * 100]) }],
+        { width: 780, height: 210, xfmt: (v) => `${Math.round(v)} s`, yfmt: (v) => `${Math.round(v)}%`, xlabel: "alert lead before estimated pickup", ylabel: "handoff readiness" })));
+  }
+  const paired = new Map();
+  for (const row of HW.arm_rows || []) {
+    if (row[0] !== "A" && row[0] !== "D") continue;
+    const key = `${row[1]}|${row[2]}|${row[3]}`;
+    const pair = paired.get(key) || {};
+    pair[row[0]] = row; paired.set(key, pair);
+  }
+  const matched = [...paired.values()].filter((p) => p.A && p.D);
+  const savedMinutes = matched.reduce((sum, p) => sum + (p.A[7] - p.D[7]), 0);
+  const hfmRows = matched.map((p) => p.D), totalCost = hfmRows.reduce((sum, r) => sum + (r[10] || 0), 0);
+  const resolved = hfmRows.filter((r) => r[4]).length;
+  const savedHours = savedMinutes / 60;
+  const avgCost = totalCost / Math.max(1, hfmRows.length);
+  const costResolved = totalCost / Math.max(1, resolved);
+  const perHourSaved = savedHours > 0 ? totalCost / savedHours : null;
+  root.append(h("div", { class: "card", style: { marginTop: "14px" }, id: "unit-economics" },
+    h("h3", {}, "Unit economics", tag("ASSUMED")),
+    h("div", { class: "sub" }, `Matched human and HoldForMe rows (${matched.length} calls). Spend uses the current platform model; Indian telephony pricing is still a placeholder.`),
+    h("div", { class: "economics-grid" },
+      econ("Mean HoldForMe call cost", fmt.inr(avgCost)),
+      econ("Cost per resolved call", fmt.inr(costResolved)),
+      econ("Rupees per hour saved", perHourSaved === null ? "—" : fmt.inr(perHourSaved)),
+      econ("Mean user time saved", `${fmt.num(savedMinutes / Math.max(1, matched.length), 2)} min`))));
   // by goal type
   const goals = HW.arms.by_goal;
   const gt = h("table", { class: "t" }, h("tr", {}, h("th", {}, "Goal type (Sierra's three)"), ...ARM_ORDER.map((a) => h("th", {}, ARMS[a].name))),
@@ -219,13 +284,36 @@ function memoryCard() {
 
 function cityCurves() {
   const c = HW.city;
-  const wrap = h("div", { class: "grid g2", style: { marginTop: "14px" }, id: "ev-city" });
-  const col = { none: "#d95926", deadline_20min: "#3987e5", handshake: "#199e70" };
-  const name = { none: "AI holders never hang up", deadline_20min: "AI gives up after 20 min", handshake: "+ bank voicebot handshake (20% shorter calls)" };
+  const wrap = h("div", { class: "grid g3", style: { marginTop: "14px" }, id: "ev-city" });
+  const col = { none: "#d95926", deadline_20min: "#3987e5", callback: "#9085e9", offpeak: "#c98500", handshake: "#199e70" };
+  const name = { none: "Never hang up", deadline_20min: "20 min deadline", callback: "Scheduled callback", offpeak: "Join off-peak", handshake: "Bank voicebot handshake" };
   for (const [hid, d] of Object.entries(c)) {
-    const series = Object.entries(d).map(([k, rows]) => ({ name: name[k], color: col[k], points: rows.map((r) => [r.alpha * 100, r.hum_wait]) }));
-    wrap.append(h("div", { class: "card" }, h("h3", {}, `${helplineName(hid)}: what happens at scale`), h("div", { class: "sub" }, "Human callers' average wait as more callers use an AI that never hangs up. Abandonment is what keeps a queue stable, so AI holders push waiting onto the people who call themselves. This is the number that doesn't flatter us."),
+    const policies = Object.entries(d).filter(([, rows]) => Array.isArray(rows));
+    const series = policies.flatMap(([k, rows]) => [
+      { name: `${name[k]} · sim`, color: col[k], points: rows.map((r) => [r.alpha * 100, r.hum_wait]) },
+      ...(rows[0].erlang_a_wait == null ? [] : [{ name: `${name[k]} · Erlang-A`, color: col[k], dash: "4 3", points: rows.map((r) => [r.alpha * 100, r.erlang_a_wait]) }]),
+    ]);
+    const rec = d.recommendation;
+    wrap.append(h("div", { class: "card" }, h("h3", {}, `${helplineName(hid)}: what happens at scale`), h("div", { class: "sub" }, "Human callers' average wait as more callers use an AI holder. Solid/dotted series compare three simulated days per point with a stationary Erlang-A approximation where its assumptions apply. Callback and off-peak arrivals are shifted in the day model; these are still modeled scenarios."),
+      h("div", { class: "callout", style: { marginBottom: "10px" }, html: `At 25% adoption, the rule-based recommendation is <b>${name[rec.policy]}</b>: ${fmt.sec(rec.human_wait_delta_s)} added human wait, ${fmt.sec(rec.ai_wait_s)} mean AI queue wait (20 min cap).` }),
       lines(series, { width: 560, height: 220, xfmt: (v) => `${Math.round(v)}%`, yfmt: (v) => fmt.sec(v), xlabel: "share of callers using an AI holder", ylabel: "human wait" })));
+  }
+  if (HW.disruption?.none) {
+    const d = HW.disruption, pol = ["none", "deadline_20min", "handshake"];
+    wrap.append(h("div", { class: "card" }, h("h3", {}, "Airline surge: 3x incoming demand", tag("ASSUMED")),
+      h("div", { class: "sub" }, "An illustrative disruption scenario with volume tripled and staffing held fixed. It is an assumption sweep, not a claim about a specific airline event."),
+      lines(pol.map((k) => ({ name: name[k], color: col[k], points: d[k].map((r) => [r.alpha * 100, r.hum_wait]) })),
+        { width: 560, height: 220, xfmt: (v) => `${Math.round(v)}%`, yfmt: (v) => fmt.sec(v), xlabel: "AI-holder share", ylabel: "human wait" })));
+  }
+  if (HW.calendar?.weekday) {
+    const cal = HW.calendar;
+    wrap.append(h("div", { class: "card" }, h("h3", {}, "Calendar and seasonal demand"),
+      h("div", { class: "sub" }, "Weekday index is measured from the 1999 source centre and is not India-specific. The festive peak multipliers are assumed; this chart shows the bank queue response with staffing held fixed."),
+      h("h4", {}, "Observed weekday arrivals (weekly mean = 1.0)"),
+      columns(cal.weekday.map((x) => x.index), { width: 520, height: 130, color: "#3987e5", fmt: (x) => `${x.toFixed(2)}x`, xlab: (i) => cal.weekday[i].label, labelEvery: 1 }),
+      h("h4", {}, "Assumed festive volume peak"),
+      lines([{ name: "bank human wait", color: "#d95926", points: cal.peak_sweep.map((x) => [x.volume_multiplier, x.mean_human_wait_s]) }],
+        { width: 520, height: 190, xfmt: (v) => `${v.toFixed(2)}x`, yfmt: (v) => fmt.sec(v), xlabel: "arrival volume multiplier", ylabel: "human wait" })));
   }
   return wrap;
 }
@@ -259,7 +347,7 @@ export function renderParity(root) {
     t.append(h("tr", {}, h("td", {}, h("span", { class: "chip", style: { borderColor: prodColor[prod], color: "var(--text)" } }, prod)), h("td", {}, feat), h("td", { class: "muted" }, comp), h("td", {}, txt), h("td", {}, h("span", { class: `pill ${st}` }, st === "pass" ? "covered" : st === "part" ? "partial" : "gap"))));
   }
   root.append(h("div", { class: "card" }, t),
-    h("div", { class: "note", style: { marginTop: "12px" } }, "Not built yet (phase 2): real audio through Asterisk over SIP with RFC 2833 tones, prompts voiced by Sarvam or Cartesia TTS, and a YAMNet listener. Sierra runs its simulator over the real phone network; HoldWorld's line layer simulates the audio events, with timings from the standards."));
+    h("div", { class: "note", style: { marginTop: "12px" } }, "Audio tooling is scaffolded: a Sarvam cache script, optional YAMNet classifier, and authenticated Plivo stream adapter are in the repo. No provider audio or live call is included until credentials, public WSS, and licensed assets are supplied. Asterisk/SIPp infrastructure is still pending."));
 }
 
 // ---------------------------------------------------------------------------------- provenance
@@ -268,6 +356,8 @@ export function renderData(root) {
   root.append(header("9 · Where every number comes from", "Provenance",
     `Every parameter the simulation uses is registered with one of five tags. <b>DATA</b>: measured in a real dataset. <b>OFFICIAL</b>: published by the company, regulator or platform. <b>STD</b>: a technical standard. <b>ATLAS</b>: to be measured by calling real Indian helplines. <b>ASSUMED</b>: nothing published exists, so the value is swept over a range. This table is generated from the code, so the screen and the model cannot disagree.`));
   const counts = h("div", { class: "row" }, ...Object.entries(pv.counts).map(([t, n]) => h("button", { class: "btn", onclick: () => filt(t) }, tag(t), ` ${n}`)), h("button", { class: "btn", onclick: () => filt(null) }, "all"));
+  const atlas = HW.atlas || { calls: 0, by_helpline: {} };
+  const atlasCovered = Object.values(atlas.by_helpline).filter((x) => x.n >= 3).length;
   const tbody = h("tbody");
   const table = h("table", { class: "t", id: "prov-table" }, h("thead", {}, h("tr", {}, h("th", {}, "Parameter"), h("th", {}, "Value"), h("th", {}, "Tag"), h("th", {}, "Source"), h("th", {}, "Note / sweep"))), tbody);
   const filt = (t) => {
@@ -282,7 +372,7 @@ export function renderData(root) {
     }
   };
   filt(null);
-  root.append(h("div", { class: "card" }, counts, h("div", { class: "scroll", style: { marginTop: "10px" } }, table)));
+  root.append(h("div", { class: "callout", style: { marginBottom: "12px" }, html: `India Hold Atlas: <b>${atlas.calls || 0}</b> recorded calls across <b>${atlasCovered}</b> helplines with at least three measurements. Put field observations in <code>data/atlas/measurements.csv</code>, then rerun the simulation to replace supported assumptions.` }), h("div", { class: "card" }, counts, h("div", { class: "scroll", style: { marginTop: "10px" } }, table)));
   const hls = h("div", { class: "grid g3", style: { marginTop: "14px" } });
   for (const hl of Object.values(HW.helplines)) {
     const src = pv.sources[hl.source] || {};
@@ -313,4 +403,8 @@ export function renderProof(root) {
       h("table", { class: "t" }, ...ts.map((t) => h("tr", {}, h("td", {}, h("span", { class: `pill ${t.status === "passed" ? "pass" : "fail"}` }, t.status === "passed" ? "✓" : "✗")), h("td", {}, t.name.replace(/^test_/, "").replace(/_/g, " ")), h("td", { class: "muted", style: { textAlign: "right" } }, `${t.time.toFixed(2)}s`))))));
   }
   root.append(grid);
+}
+
+function econ(label, value) {
+  return h("div", { class: "econ" }, h("small", {}, label), h("strong", {}, value));
 }
