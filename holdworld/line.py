@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from . import perception as pc
 from .people import Persona, User
 from .platforms import Platform
-from .provenance import P
+from .provenance import P, REGISTRY
 from .spec import (FIELD_TEXT, SECRET_FIELDS, SYSTEM_TEXT, Helpline, Node, Task, language_prompt, menu_prompt)
 
 FRAME = 0.5
@@ -439,7 +439,8 @@ class CallEnv:
             elif a.alert == "primed":
                 self.user.primed = True
             elif a.alert == "otp":
-                self._push(_Ev(self.t + self.user.otp_delay(), "agent_event", ("otp", self.persona.truth["otp"])))
+                delay = self.user.otp_delay() * self.scn.get("otp_delay_mult", 1.0)
+                self._push(_Ev(self.t + delay, "agent_event", ("otp", self.persona.truth["otp"])))
             elif a.alert in ("press_key", "secret"):
                 if self.mode != "M2":
                     self._push(_Ev(self.t + 2, "agent_event", ("user_cannot_type", None)))
@@ -690,7 +691,8 @@ class CallEnv:
         hl, rng, h = self.hl, self.rng, self.hl.hold
         start = self.cursor
         deadline = start + wait
-        every = self.scn.get("announce_every_s", h["announce_every_s"])
+        atlas_interval = P("queue.announce_every_s") if REGISTRY["queue.announce_every_s"].tag == "ATLAS" else h["announce_every_s"]
+        every = self.scn.get("announce_every_s", atlas_interval)
         agent_like_p = self.scn.get("agent_like_p", h["agent_like_p"])
         cb_at = h.get("callback_after_s") if offer_callback else None
         drop_rate = self.scn.get("drop_per_min", h["drop_per_min"]) / 60.0
@@ -883,8 +885,10 @@ class CallEnv:
             self._end("exec_hung_up", self.cursor)
             raise _End
         first_push = ev.value.intent == "push"
-        forced = self.scn.get("force_transfer") and self.transfers == 0   # the scenario forces one transfer, not a loop
-        if dept != target_dept or forced or (self.transfers == 0 and rng.random() < ex.get("transfer_p", 0) * 0.5):
+        max_transfers = int(self.scn.get("max_transfers", 1))
+        can_transfer = self.transfers < max_transfers
+        forced = self.scn.get("force_transfer") and can_transfer
+        if can_transfer and (dept != target_dept or forced or rng.random() < ex.get("transfer_p", 0) * 0.5):
             yield self._p(label, self._xs("transfer", dept=target_dept.replace("_", " ")), speaker="exec")
             self.transfers += 1
             yield from self._hold(self.wait_s * rng.uniform(0.15, 0.4), offer_callback=False)

@@ -8,6 +8,7 @@ from holdworld.line import DIGIT_S, WAIT, Action, CallEnv
 from holdworld.people import make_persona
 from holdworld.platforms import PLATFORMS
 from holdworld.provenance import P
+from holdworld.nav import parse_options
 
 
 def env_for(h, tid, mode="M1", platform="plivo_hybrid", wait=30.0, hour=12, scn=None, dial=None, seed=1):
@@ -32,6 +33,10 @@ def test_india_ringback_cadence(helplines):
     assert round(rings[0].end - rings[0].start, 2) == 1.0       # 0.4 on + 0.2 off + 0.4 on
     assert round(rings[1].end - rings[1].start, 2) == 2.0       # 2.0 off
     assert P("tone.ring.cadence") == [0.4, 0.2, 0.4, 2.0]
+
+
+def test_language_menu_parser_handles_asr_filler_between_press_and_digit():
+    assert parse_options("For English, press \u092e\u0947\u0902 2.") == [("2", "english", "press")]
 
 
 def test_dtmf_digit_takes_tone_plus_gap():
