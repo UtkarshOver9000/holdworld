@@ -1,184 +1,212 @@
 {
- "ran_at": "2026-10-22 19:12:53",
- "seconds": 51.2,
- "total": 81,
- "passed": 81,
+ "ran_at": "2026-10-23 22:44:48",
+ "seconds": 17.6,
+ "total": 88,
+ "passed": 88,
  "failed": 0,
  "skipped": 0,
  "python": "3.11.9",
  "tests": [
   {
+   "name": "test_transfer_chain_is_bounded_by_scenario_limit",
+   "module": "test_callers",
+   "time": 0.114,
+   "status": "passed",
+   "message": ""
+  },
+  {
    "name": "test_find_path_matches_canonical_paths",
    "module": "test_callers",
-   "time": 0.002,
+   "time": 0.001,
+   "status": "passed",
+   "message": ""
+  },
+  {
+   "name": "test_holdforme_selects_hindi_counter_ticket_over_e_ticket",
+   "module": "test_callers",
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_every_task_target_is_reachable",
    "module": "test_callers",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_oracle_is_near_perfect",
    "module": "test_callers",
-   "time": 0.47,
+   "time": 0.298,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_holdforme_beats_basic_agent",
    "module": "test_callers",
-   "time": 1.213,
+   "time": 0.535,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_holdforme_never_types_a_pin",
    "module": "test_callers",
-   "time": 0.039,
+   "time": 0.016,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_without_secret_guard_the_agent_types_the_pin",
    "module": "test_callers",
-   "time": 0.061,
+   "time": 0.016,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_recorded_greeting_rarely_fools_holdforme",
    "module": "test_callers",
-   "time": 0.22,
+   "time": 0.063,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_naive_detection_is_fooled_by_recorded_greetings",
    "module": "test_callers",
-   "time": 0.215,
+   "time": 0.058,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_short_code_is_mapped",
    "module": "test_callers",
-   "time": 0.097,
+   "time": 0.028,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_scripted_bot_breaks_when_menu_changes",
    "module": "test_callers",
-   "time": 0.028,
+   "time": 0.009,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_oracle_follows_the_changed_menu",
    "module": "test_callers",
-   "time": 0.039,
+   "time": 0.013,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_readback_captures_the_true_reference",
    "module": "test_callers",
-   "time": 0.183,
+   "time": 0.069,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_path_memory_shortens_the_second_call",
    "module": "test_callers",
-   "time": 0.111,
+   "time": 0.04,
+   "status": "passed",
+   "message": ""
+  },
+  {
+   "name": "test_poor_line_wait_gap_does_not_flip_the_agent_into_hold_mode",
+   "module": "test_callers",
+   "time": 0.005,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_humans_abandon_long_holds_with_real_patience",
    "module": "test_callers",
-   "time": 12.566,
+   "time": 4.178,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_stall_helps_against_impatient_executives",
    "module": "test_callers",
-   "time": 0.357,
+   "time": 0.122,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_platform_defaults_hurt",
    "module": "test_callers",
-   "time": 0.328,
+   "time": 0.129,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_handshake_with_bank_voicebot",
    "module": "test_callers",
-   "time": 0.127,
+   "time": 0.043,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_ai_disclosure_happens_before_task",
    "module": "test_callers",
-   "time": 0.025,
+   "time": 0.014,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_each_core_feature_is_used_somewhere[phrase_library]",
    "module": "test_callers",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_each_core_feature_is_used_somewhere[lexicon]",
    "module": "test_callers",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_each_core_feature_is_used_somewhere[readback]",
    "module": "test_callers",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_each_core_feature_is_used_somewhere[stall]",
    "module": "test_callers",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_each_core_feature_is_used_somewhere[otp_relay]",
    "module": "test_callers",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_india_ringback_cadence",
    "module": "test_line",
-   "time": 0.002,
+   "time": 0.001,
+   "status": "passed",
+   "message": ""
+  },
+  {
+   "name": "test_language_menu_parser_handles_asr_filler_between_press_and_digit",
+   "module": "test_line",
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_dtmf_digit_takes_tone_plus_gap",
    "module": "test_line",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
@@ -192,385 +220,406 @@
   {
    "name": "test_closed_hours",
    "module": "test_line",
-   "time": 0.004,
+   "time": 0.001,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_busy_disconnect",
    "module": "test_line",
-   "time": 0.004,
+   "time": 0.002,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_invalid_key_gets_invalid_prompt",
    "module": "test_line",
-   "time": 0.004,
+   "time": 0.001,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_barge_in_accepts_keys_during_prompt",
    "module": "test_line",
-   "time": 0.002,
+   "time": 0.001,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_non_barge_ivr_ignores_keys_during_disclaimer",
    "module": "test_line",
-   "time": 0.002,
+   "time": 0.001,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_wrong_entry_is_rejected",
    "module": "test_line",
-   "time": 0.016,
+   "time": 0.003,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_registered_only_service_refuses_cloud_number",
    "module": "test_line",
-   "time": 0.008,
+   "time": 0.003,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_every_frame_has_a_known_truth_label",
    "module": "test_line",
-   "time": 0.02,
+   "time": 0.008,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_executive_hangs_up_on_dead_air",
    "module": "test_line",
-   "time": 0.012,
+   "time": 0.004,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_bolna_default_call_cap",
    "module": "test_line",
-   "time": 0.006,
+   "time": 0.002,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_bolna_cannot_press_keys",
    "module": "test_line",
-   "time": 0.013,
+   "time": 0.003,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_recorded_prompts_use_lower_error_rate",
    "module": "test_line",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_mishear_hits_target_error_rate",
    "module": "test_line",
-   "time": 0.05,
+   "time": 0.021,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_same_seed_same_call",
    "module": "test_line",
-   "time": 0.023,
+   "time": 0.01,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_engine_matches_erlang_c",
    "module": "test_queue",
-   "time": 0.671,
+   "time": 0.24,
+   "status": "passed",
+   "message": ""
+  },
+  {
+   "name": "test_erlang_a_matches_erlang_c_without_abandonment",
+   "module": "test_queue",
+   "time": 0.0,
+   "status": "passed",
+   "message": ""
+  },
+  {
+   "name": "test_more_impatient_queue_reduces_erlang_a_wait",
+   "module": "test_queue",
+   "time": 0.001,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_every_caller_is_served_or_abandons",
    "module": "test_queue",
-   "time": 0.026,
+   "time": 0.01,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_infinite_patience_means_no_abandonment",
    "module": "test_queue",
-   "time": 0.024,
+   "time": 0.007,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_first_come_first_served",
    "module": "test_queue",
-   "time": 0.057,
+   "time": 0.009,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_priority_head_start_jumps_the_queue",
    "module": "test_queue",
-   "time": 0.002,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_staffing_changes_take_effect",
    "module": "test_queue",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_telecom_meets_trai_benchmark",
    "module": "test_queue",
-   "time": 19.332,
+   "time": 6.393,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_wait_table_has_open_hours",
    "module": "test_queue",
-   "time": 0.394,
+   "time": 0.134,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_more_ai_holders_means_longer_human_waits",
    "module": "test_queue",
-   "time": 0.988,
+   "time": 0.319,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_overloaded_line_without_abandonment_grows",
    "module": "test_queue",
-   "time": 0.649,
+   "time": 0.239,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_record_count_is_exact",
    "module": "test_real_data",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_all_twelve_months_present",
    "module": "test_real_data",
-   "time": 6.415,
+   "time": 2.31,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_working_days",
    "module": "test_real_data",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_abandonment_rate_in_published_range",
    "module": "test_real_data",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_mean_wait_of_served_callers",
    "module": "test_real_data",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_service_times_are_right_skewed_lognormal",
    "module": "test_real_data",
-   "time": 0.002,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_ivr_time_is_seconds_not_minutes",
    "module": "test_real_data",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_hangup_spike_after_first_message",
    "module": "test_real_data",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_hangup_spike_when_message_replays_near_60s",
    "module": "test_real_data",
-   "time": 0.002,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_patience_survival_is_monotone",
    "module": "test_real_data",
-   "time": 0.857,
+   "time": 0.302,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_patience_index_above_one",
    "module": "test_real_data",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_arrival_peak_in_working_hours",
    "module": "test_real_data",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_staffing_estimate_is_plausible",
    "module": "test_real_data",
-   "time": 0.205,
+   "time": 0.068,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_priority_customers_wait_less",
    "module": "test_real_data",
-   "time": 0.158,
+   "time": 0.058,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_wrapup_is_fitted_in_a_sane_range",
    "module": "test_real_data",
-   "time": 1.294,
+   "time": 0.349,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_replay_matches_held_out_days",
    "module": "test_real_data",
-   "time": 1.804,
+   "time": 0.578,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_patience_sampler_respects_conditioning",
    "module": "test_real_data",
-   "time": 0.002,
+   "time": 0.001,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_every_param_has_a_valid_tag_and_source",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_assumed_params_are_swept_or_explained",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_export_counts_all_tags",
    "module": "test_sources",
-   "time": 0.004,
+   "time": 0.001,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_sbi_structure_main_menu",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_sbi_counts_from_official_page",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_kvb_language_order",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_kvb_needs_customer_id_then_tpin",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_union_bank_agent_anytime",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
+   "status": "passed",
+   "message": ""
+  },
+  {
+   "name": "test_web_verified_menu_fragments_keep_their_scope_tags",
+   "module": "test_sources",
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_telecom_short_code_rule",
    "module": "test_sources",
-   "time": 0.002,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_india_tones_match_asterisk",
    "module": "test_sources",
-   "time": 0.002,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_dtmf_frequencies_itu_q23",
    "module": "test_sources",
-   "time": 0.002,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_platform_limits_from_docs",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_trai_benchmark_and_operator_ranges",
    "module": "test_sources",
-   "time": 0.001,
+   "time": 0.0,
    "status": "passed",
    "message": ""
   },
   {
    "name": "test_wer_range_from_measured_benchmarks",
    "module": "test_sources",
-   "time": 0.184,
+   "time": 0.074,
    "status": "passed",
    "message": ""
   }
