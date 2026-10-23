@@ -2,19 +2,22 @@
 import { HW, h, fmt, fitCanvas, visible, header, tag } from "./core.js";
 import { lines, scatter, columns } from "./charts.js";
 
-const Q = { t: 7 * 3600, playing: false, speed: 240, mode: "real", last: 0 };
+const Q = { t: 7 * 3600, playing: false, speed: 16, mode: "real", last: 0 };
 
 export function render(root) {
   const rd = HW.real_day, real = HW.real, ho = HW.holdout;
   const d = rd.date;
   const dateTxt = `${d.slice(4, 6)} ${["", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][+d.slice(2, 4)]} 19${d.slice(0, 2)}`;
-  root.append(header("2 · The queue, from real data", "A real call centre, replayed call by call",
-    `This is <b>${dateTxt}</b>, the busiest weekday in November 1999 at the "Anonymous Bank" call centre (${fmt.int(rd.events.length)} regular-service calls). Each dot arrives at its real time, waits as long as it really waited, and either reaches the agent who really took it (desks are the real agent names) or hangs up when the record says it did. Switch to <b>with AI holders</b> to re-run the same day with a share of callers who never hang up.`));
+  root.append(header("2 · Recent queue evidence", "What public call-centre data shows in 2026",
+    `A recent view of helpline demand comes first: California DHCS county reports from January–June 2026 include call volume, wait by language and abandonment. These are monthly aggregates, not individual call records, and they are not Indian bank measurements. The event-by-event playback below remains a separately labelled historical validation set.`));
+  renderModernQueueData(root);
+  root.append(header("Historical event replay · 1999", "A real call centre, replayed call by call",
+    `This is <b>${dateTxt}</b>, the busiest weekday in November 1999 at the "Anonymous Bank" call centre (${fmt.int(rd.events.length)} regular-service calls). Each dot arrives at its recorded time, waits for its recorded duration, then reaches the recorded agent or hangs up. Change the playback speed or switch to the clearly labelled simulated AI-holder scenarios. This historical Israeli call log validates queue behaviour; it does not describe today's Indian bank waits.`));
   const cv = h("canvas", { class: "queuecv", id: "queue-cv" });
   const play = h("button", { class: "btn primary", id: "queue-play", onclick: () => { Q.playing = !Q.playing; play.textContent = Q.playing ? "❚❚ Pause" : "▶ Play the day"; } }, "▶ Play the day");
   const scrub = h("input", { type: "range", min: 7 * 3600, max: 24 * 3600, step: 30, value: Q.t, oninput: (e) => { Q.t = +e.target.value; clock.textContent = fmt.hhmm(Q.t); draw(cv, stats); } });
   const clock = h("span", { class: "clock" }, "07:00");
-  const speed = h("div", { class: "seg" }, [60, 240, 900].map((v) => h("button", { class: v === Q.speed ? "on" : "", onclick: (e) => { Q.speed = v; [...speed.children].forEach((b) => b.classList.toggle("on", b === e.target)); } }, `${v}×`)));
+  const speed = h("div", { class: "seg", title: "1× is real time; slower playback makes individual arrivals easier to follow." }, [1, 4, 16, 60].map((v) => h("button", { class: v === Q.speed ? "on" : "", "aria-label": `Play at ${v} times real time`, onclick: (e) => { Q.speed = v; [...speed.children].forEach((b) => b.classList.toggle("on", b === e.target)); } }, `${v}×`)));
   const mode = h("div", { class: "seg", id: "queue-mode" }, [["real", "Real records"], ["0.0", "Re-simulated"], ["0.25", "+25% AI holders"], ["0.5", "+50% AI holders"]].map(([k, l]) => h("button", { class: k === Q.mode ? "on" : "", onclick: (e) => { Q.mode = k; [...mode.children].forEach((b) => b.classList.toggle("on", b === e.target)); } }, l)));
   const stats = h("div", { id: "queue-stats" });
   root.append(h("div", { class: "transport" }, play, speed, mode, scrub, clock));
@@ -47,6 +50,102 @@ export function render(root) {
   requestAnimationFrame(loop);
 }
 export const queue = { play: () => { Q.playing = true; const b = document.getElementById("queue-play"); if (b) b.textContent = "❚❚ Pause"; }, set: (o) => Object.assign(Q, o) };
+
+function renderModernQueueData(root) {
+  const body = h("div", { class: "recent-data-body" }, "Loading the saved 2026 county dataset…");
+  const panel = h("section", { class: "card recent-data", id: "queue-2026" },
+    h("div", { class: "row" }, h("div", { class: "kicker" }, "CONTEMPORARY PUBLIC DATA · 2026"), h("span", { class: "sp" }), tag("DATA")),
+    h("h3", {}, "California Medi-Cal call-centre reports, January–June 2026"),
+    h("p", { class: "recent-intro" }, "A six-month, county-by-county view with actual call totals, average wait by language, and abandonment. Choose a month to inspect the county data and language waits."),
+    body);
+  root.append(panel);
+
+  fetch(new URL("../data/medi_cal_2026.json", import.meta.url))
+    .then((response) => { if (!response.ok) throw new Error(`HTTP ${response.status}`); return response.json(); })
+    .then((payload) => {
+      const months = payload.months;
+      body.replaceChildren();
+      const monthSelect = h("select", { "aria-label": "Select a reporting month" }, months.map((month) => h("option", { value: month.month }, month.label)));
+      const metrics = h("div", { class: "recent-kpis" });
+      const trend = h("div", { class: "recent-table-wrap" });
+      const countyTable = h("div", { class: "recent-table-wrap" });
+      const countySelect = h("select", { "aria-label": "Select a county for language wait details" });
+      const languageTable = h("div", { class: "recent-table-wrap" });
+      const detailHeading = h("h4", {}, "Language wait times");
+      const detailScope = h("p", { class: "muted recent-note" });
+      const source = h("p", { class: "recent-note" },
+        h("a", { href: payload.source.dataset_url, target: "_blank", rel: "noreferrer" }, "California DHCS · source, definitions and license ↗"),
+        ` · Data updated ${payload.source.data_updated}; snapshot saved ${payload.source.snapshot_retrieved}.`);
+      body.append(
+        h("div", { class: "row recent-filter" }, h("label", {}, "Reporting month ", monthSelect)),
+        metrics,
+        h("div", { class: "recent-subhead" }, h("h4", {}, "Six-month trend"), h("span", { class: "muted" }, "County medians are unweighted; volume includes IVR and after-hours calls.")),
+        trend,
+        h("div", { class: "recent-subhead" }, h("h4", {}, "County detail"), h("span", { class: "muted" }, "Sorted by average all-language wait, longest first.")),
+        countyTable,
+        h("div", { class: "recent-subhead" }, detailHeading, h("label", {}, "County ", countySelect)),
+        detailScope,
+        languageTable,
+        h("p", { class: "recent-note" }, "A blank is not zero: some values were suppressed or not reported. Abandonment is for callers who entered a live-agent queue; it excludes IVR self-service."),
+        source);
+
+      const cell = (value) => h("td", {}, value);
+      const table = (heads, rows) => h("table", { class: "t" },
+        h("thead", {}, h("tr", {}, heads.map((label) => h("th", {}, label)))),
+        h("tbody", {}, rows));
+      const metric = (label, value, note) => h("div", { class: "recent-metric" },
+        h("span", {}, label), h("b", {}, value), h("small", {}, note));
+      const formatAbandon = (value) => value === null || value === undefined ? "—" : `${(value * 100).toFixed(0)}%`;
+
+      function renderMonth() {
+        const selected = months.find((month) => month.month === monthSelect.value) || months[0];
+        metrics.replaceChildren(
+          metric("Calls received", fmt.int(selected.total_calls), `${selected.counties_with_volume} counties · includes IVR and after-hours`),
+          metric("Median county average wait", fmt.sec(selected.county_median_wait_seconds), `${selected.counties_with_wait} county averages · all languages`),
+          metric("Median county abandonment", formatAbandon(selected.county_median_abandonment_rate), `${selected.counties_with_abandonment} reporting counties · unweighted median`));
+
+        trend.replaceChildren(table(
+          ["Month", "Total calls received", "Median county average wait", "Median county abandonment"],
+          months.map((month) => h("tr", { class: month.month === selected.month ? "selected-row" : "" },
+            cell(month.label), cell(fmt.int(month.total_calls)),
+            cell(`${fmt.sec(month.county_median_wait_seconds)} · ${month.counties_with_wait} counties`),
+            cell(`${formatAbandon(month.county_median_abandonment_rate)} · ${month.counties_with_abandonment} counties`)))));
+
+        const records = selected.counties;
+        countyTable.replaceChildren(table(
+          ["County", "Calls", "Working hours", "After hours", "Avg wait · all languages", "Abandonment"],
+          records.map((county) => h("tr", {},
+            cell(county.county), cell(fmt.int(county.total_calls)), cell(fmt.int(county.calls_working_hours)),
+            cell(fmt.int(county.calls_after_hours)), cell(fmt.sec(county.average_wait_seconds)),
+            cell(formatAbandon(county.abandonment_rate))))));
+
+        const options = [...records].sort((a, b) => a.county.localeCompare(b.county));
+        countySelect.replaceChildren(options.map((county) => h("option", { value: county.county }, county.county)));
+        const defaultCounty = records.find((county) => county.average_wait_seconds !== null)?.county || options[0]?.county;
+        if (defaultCounty) countySelect.value = defaultCounty;
+        renderLanguages();
+      }
+
+      function renderLanguages() {
+        const selected = months.find((month) => month.month === monthSelect.value) || months[0];
+        const county = selected.counties.find((row) => row.county === countySelect.value);
+        const languages = Object.entries(county?.language_wait_seconds || {}).sort((a, b) => a[0].localeCompare(b[0]));
+        detailHeading.textContent = `Language wait times · ${county?.county || "select a county"}`;
+        detailScope.textContent = `Monthly average time from entering the queue to an agent pickup. ${languages.length} language measurements were published for this county.`;
+        languageTable.replaceChildren(table(["Language", "Average wait"], languages.map(([language, wait]) => h("tr", {}, cell(language), cell(fmt.sec(wait))))));
+        if (!languages.length) languageTable.textContent = "No language-level values were published for this county and month.";
+      }
+
+      monthSelect.addEventListener("change", renderMonth);
+      countySelect.addEventListener("change", renderLanguages);
+      monthSelect.value = months[months.length - 1].month;
+      renderMonth();
+    })
+    .catch((error) => {
+      body.textContent = `The saved 2026 dataset could not be loaded (${error.message}). The source files and rebuild script are included in the repository.`;
+      console.warn("2026 queue dataset failed to load", error);
+    });
+}
 
 let REAL = [], SIMS = {}, servers = [], staffing = {};
 function prepare() {
