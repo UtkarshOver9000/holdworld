@@ -1,10 +1,10 @@
 // Judge Mode: an autoplaying comparison built from a matched pair of recorded traces.
-import { HW, h, loadTraces, decodeTrace, fmt, emit } from "./core.js";
+import { HW, h, loadTraces, decodeTrace, fmt, emit, fitCanvas } from "./core.js";
 
 const SCENE_SECONDS = 15;
 const END_CARD_SECONDS = 9;
 const FILM_SCENES = [
-  ["The problem at scale", "Real queue arrivals. Red marks show callers who gave up."],
+  ["The problem is current", "2026 county reports show millions of calls, long waits and frequent abandonment."],
   ["The menu maze", "Official bank menu. Each choice appears as HoldForMe navigates."],
   ["The human-sounding trap", "A recorded greeting fools the scripted bot. HoldForMe waits."],
   ["The handoff race", "Same helpline, task, and seed. Human versus HoldForMe."],
@@ -45,7 +45,10 @@ function totalDuration(seconds) {
 function outcome(r) { return (r.end_reason || "completed").replace(/_/g, " "); }
 
 export async function bootJudge() {
-  const pairs = await loadTraces();
+  const [pairs, modernQueue] = await Promise.all([
+    loadTraces(),
+    fetch(new URL("../data/medi_cal_2026.json", import.meta.url)).then((response) => response.ok ? response.json() : null).catch(() => null),
+  ]);
   const pair = byPair();
   if (!pair || !pairs[pair.A] || !pairs[pair.D]) {
     document.getElementById("judge-context").textContent = "Recorded traces are unavailable. Open Explore to inspect the dashboard.";
@@ -124,9 +127,11 @@ export async function bootJudge() {
     if (document.body.classList.contains("explore-mode") || document.body.classList.contains("try-mode") || now - lastFrame < 100) return;
     lastFrame = now;
     const total = SCENE_SECONDS * FILM_SCENES.length + END_CARD_SECONDS;
-    const elapsed = ((now - started) / 1000) % total;
+    const rawElapsed = ((now - started) / 1000) % total;
+    const elapsed = Number.isFinite(rawElapsed) ? (rawElapsed + total) % total : 0;
     const isEndCard = elapsed >= SCENE_SECONDS * FILM_SCENES.length;
-    const sceneIndex = Math.min(FILM_SCENES.length - 1, Math.floor(elapsed / SCENE_SECONDS));
+    const sceneIndex = Math.max(0, Math.min(FILM_SCENES.length - 1, Math.floor(elapsed / SCENE_SECONDS)));
+    const scene = FILM_SCENES[sceneIndex] || FILM_SCENES[0];
     const sceneElapsed = elapsed - sceneIndex * SCENE_SECONDS, f = isEndCard ? 1 : sceneElapsed / SCENE_SECONDS;
     stage.hidden = !isEndCard && sceneIndex === 3;
     race.hidden = isEndCard || sceneIndex !== 3;
@@ -134,10 +139,10 @@ export async function bootJudge() {
     canvas.hidden = isEndCard;
     document.getElementById("film-endcard").hidden = !isEndCard;
     document.getElementById("film-scene-number").textContent = isEndCard ? "END CARD" : `SCENE ${String(sceneIndex + 1).padStart(2, "0")} / 06`;
-    document.getElementById("film-title").textContent = isEndCard ? "Your time, returned" : FILM_SCENES[sceneIndex][0];
-    document.getElementById("film-caption").textContent = isEndCard ? "Estimated user time saved across the full simulation set." : FILM_SCENES[sceneIndex][1];
+    document.getElementById("film-title").textContent = isEndCard ? "Your time, returned" : scene[0];
+    document.getElementById("film-caption").textContent = isEndCard ? "Estimated user time saved across the full simulation set." : scene[1];
     [...filmDots.children].forEach((button, i) => button.classList.toggle("on", i === sceneIndex));
-    if (!isEndCard && sceneIndex !== 3) drawFilm(canvas, sceneIndex, sceneElapsed, filmTraces);
+    if (!isEndCard && sceneIndex !== 3) drawFilm(canvas, sceneIndex, sceneElapsed, filmTraces, modernQueue);
     let phase = PHASES[0];
     for (const p of PHASES) if (f >= p.at) phase = p;
     const index = PHASES.indexOf(phase);
@@ -157,7 +162,7 @@ export async function bootJudge() {
     document.getElementById("human-time").textContent = clock(humanSeconds * ratio);
     document.getElementById("agent-time").textContent = clock(agentSeconds * ratio);
     progress.style.width = `${elapsed / total * 100}%`;
-    document.getElementById("race-caption").textContent = isEndCard ? "Six recorded scenes · aggregate results · replay or explore a call trace." : sceneIndex === 3 ? phase.caption : FILM_SCENES[sceneIndex][1];
+    document.getElementById("race-caption").textContent = isEndCard ? "Six recorded scenes · aggregate results · replay or explore a call trace." : sceneIndex === 3 ? phase.caption : scene[1];
     if (f > .94) {
       document.getElementById("human-kicker").textContent = "YOUR TIME ON THE PHONE";
       document.getElementById("human-line").textContent = `${fmt.num(hR.user_minutes || hR.phone_busy_minutes || 0, 1)} minutes across ${hR.attempts || 1} attempt${(hR.attempts || 1) === 1 ? "" : "s"}`;
@@ -171,31 +176,35 @@ export async function bootJudge() {
   requestAnimationFrame(frame);
 }
 
-function drawFilm(canvas, scene, elapsed, traces) {
+function drawFilm(canvas, scene, elapsed, traces, modernQueue) {
   const { ctx, w, h: height } = fitCanvas(canvas);
   ctx.clearRect(0, 0, w, height);
   const pad = Math.min(54, w * .07), mid = height * .56, progress = Math.min(1, elapsed / SCENE_SECONDS);
   ctx.strokeStyle = "#18253a"; ctx.lineWidth = 1;
-  for (let y = 35; y < height - 24; y += 32) { ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke(); }
-  const text = (value, x, y, size = 12, color = "#a9b6cb", font = "IBM Plex Mono") => { ctx.font = `${size}px ${font}`; ctx.fillStyle = color; ctx.fillText(value, x, y); };
+  for (let y = 120; y < height - 64; y += 32) { ctx.beginPath(); ctx.moveTo(pad, y); ctx.lineTo(w - pad, y); ctx.stroke(); }
+  const text = (value, x, y, size = 12, color = "#a9b6cb", font = "IBM Plex Mono") => { ctx.font = `${size}px ${font}`; ctx.fillStyle = color; ctx.fillText(value, x, y < 50 ? 126 : y); };
   if (scene === 0) {
+    if (modernQueue?.months?.length) {
+      drawModernQueueScene(ctx, w, height, pad, progress, modernQueue, text);
+      return;
+    }
     const calls = HW.real_day?.events || [], shown = Math.floor(Math.min(1, progress * 1.6) * Math.min(calls.length, 900));
-    const cols = Math.max(12, Math.floor((w - 2 * pad) / 13)), rows = Math.ceil(shown / cols), startY = Math.max(54, mid - Math.min(rows * 10, height * .42));
+    const cols = Math.max(12, Math.floor((w - 2 * pad) / 13)), rows = Math.ceil(shown / cols), startY = Math.max(140, mid - Math.min(rows * 10, height * .34));
     for (let i = 0; i < shown; i++) {
       const e = calls[i], x = pad + (i % cols) * 13, y = startY + Math.floor(i / cols) * 10;
-      if (y > height - 22) continue;
+      if (y > height - 64) continue;
       const abandon = e[2] !== "A";
       ctx.globalAlpha = .55 + .45 * ((i % 7) / 7); ctx.fillStyle = abandon ? "#e66767" : "#3987e5";
       ctx.beginPath(); ctx.arc(x, y, abandon ? 2.6 : 2, 0, Math.PI * 2); ctx.fill();
     }
     ctx.globalAlpha = 1;
     text(`${shown.toLocaleString("en-IN")} calls in one recorded day`, pad, 30, 12, "#dce6f4");
-    text("RED DOTS  ·  callers who abandoned after waiting", pad, height - 16, 11, "#e58a8a");
+    text("RED DOTS  ·  callers who abandoned after waiting", pad, height - 48, 11, "#e58a8a");
     return;
   }
   if (scene === 1) {
     const tr = traces.menu, hl = tr && HW.helplines[tr.r.helpline], visited = tr?.visited || [];
-    const nodes = visited.slice(0, 6), y0 = 62, step = Math.min(55, (height - 105) / Math.max(1, nodes.length));
+    const nodes = visited.slice(0, 6), y0 = 145, step = Math.min(48, (height - 215) / Math.max(1, nodes.length));
     text("OFFICIAL MENU STRUCTURE · RECORDED HOLDForMe RUN", pad, 30, 11, "#91bfff");
     nodes.forEach((id, i) => {
       const node = hl?.nodes[id], y = y0 + i * step, x = pad + i * 23;
@@ -205,18 +214,18 @@ function drawFilm(canvas, scene, elapsed, traces) {
       text(`${String(i + 1).padStart(2, "0")}  ${node?.type || "menu"}  ·  ${id}`, x + 12, y + 22, 11, "#e0e9f7");
     });
     const sample = tr?.tx?.find((x) => x.who === "ivr" && x.text)?.text || "Spoken menu prompt from the trace";
-    text(sample.slice(0, Math.max(24, Math.floor((w - pad * 2) / 7))), pad, height - 18, 10, "#9aa9bf", "IBM Plex Sans");
+    text(sample.slice(0, Math.max(24, Math.floor((w - pad * 2) / 7))), pad, height - 48, 10, "#9aa9bf", "IBM Plex Sans");
     return;
   }
   if (scene === 2) {
     const bot = traces.trapBot, hold = traces.trapHold, cardW = (w - pad * 2 - 20) / 2;
     [[bot, "SCRIPTED BOT", "#c98500", pad], [hold, "HOLDFORME", "#3987e5", pad + cardW + 20]].forEach(([tr, label, color, x]) => {
-      ctx.fillStyle = "#0d1524"; ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.roundRect(x, 52, cardW, height - 85, 10); ctx.fill(); ctx.stroke();
-      text(label, x + 14, 76, 10, color);
-      text(tr ? (tr.r.success ? "Outcome: stayed on the right path" : `Outcome: ${outcome(tr.r)}`) : "Recorded run unavailable", x + 14, 102, 11, "#dbe5f4", "IBM Plex Sans");
+      ctx.fillStyle = "#0d1524"; ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.roundRect(x, 140, cardW, height - 210, 10); ctx.fill(); ctx.stroke();
+      text(label, x + 14, 166, 10, color);
+      text(tr ? (tr.r.success ? "Outcome: stayed on the right path" : `Outcome: ${outcome(tr.r)}`) : "Recorded run unavailable", x + 14, 192, 11, "#dbe5f4", "IBM Plex Sans");
       const line = tr?.tx?.find((x) => x.who !== "agent" && x.text)?.text || "Hi, I'm Priya. Your call is valuable to us.";
-      const wrapped = line.slice(0, 78); text(`“${wrapped}”`, x + 14, 132, 11, "#aab8cb", "IBM Plex Sans");
-      const baseY = height - 48, bx = x + 16, bw = cardW - 32;
+      const wrapped = line.slice(0, 78); text(`“${wrapped}”`, x + 14, 220, 11, "#aab8cb", "IBM Plex Sans");
+      const baseY = height - 90, bx = x + 16, bw = cardW - 32;
       if (tr?.r.arm === "D") {
         const belief = tr.belief || [], toY = (value) => baseY - (Math.max(-8, Math.min(4, value)) + 8) / 12 * 58;
         const threshold = toY(1.2);
@@ -236,17 +245,17 @@ function drawFilm(canvas, scene, elapsed, traces) {
     const count = Math.min(events.length, Math.ceil(progress * events.length));
     text(`RECORDED RUN  ·  ${tr ? HW.helplines[tr.r.helpline]?.name : "HoldForMe"}`, pad, 30, 11, "#91bfff");
     events.slice(0, count).forEach((ev, i) => {
-      const y = 54 + i * 38;
+      const y = 140 + i * 42;
       ctx.fillStyle = ev.who === "agent" ? "#17365c" : "#101c2c"; ctx.beginPath(); ctx.roundRect(pad + (ev.who === "agent" ? w * .22 : 0), y, w * .65, 29, 7); ctx.fill();
       const safe = ev.text.replace(/\b\d{4,}\b/g, "••••").replace(/(otp|pin|cvv|password)\s*[:=]?\s*[A-Z0-9-]+/gi, "$1 [withheld]");
       text(`${ev.who.toUpperCase()}  ·  ${safe.slice(0, 78)}`, pad + 10 + (ev.who === "agent" ? w * .22 : 0), y + 19, 10, ev.who === "agent" ? "#b8d7ff" : "#c4cede", "IBM Plex Sans");
     });
-    text("SECRETS ARE NEVER SPOKEN BY THE AGENT", pad, height - 16, 9, "#76cfae");
+    text("SECRETS ARE NEVER SPOKEN BY THE AGENT", pad, height - 48, 9, "#76cfae");
     return;
   }
   if (scene === 5) {
     const city = HW.city?.psu_bank, normal = city?.none || [], handshake = city?.handshake || [];
-    const x0 = pad + 30, y0 = height - 35, chartW = w - 2 * pad - 55, chartH = height - 100;
+    const x0 = pad + 30, y0 = height - 70, chartW = w - 2 * pad - 55, chartH = height - 205;
     text("MEAN HUMAN WAIT · SAME BANK QUEUE MODEL", pad, 28, 11, "#dce6f4");
     for (const value of [0, 30, 60, 90]) { const y = y0 - value / 90 * chartH; ctx.strokeStyle = "#1c2940"; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 + chartW, y); ctx.stroke(); text(`${value}s`, pad, y + 4, 9, "#718099"); }
     const plot = (data, color) => {
@@ -259,9 +268,49 @@ function drawFilm(canvas, scene, elapsed, traces) {
       text(`${Math.round(r.hum_wait)}s`, x + 8, y - 7, 10, color);
     };
     plot(normal, "#e66767"); plot(handshake, "#38c991");
-    text("AI-holder share →", x0 + chartW - 110, height - 12, 9, "#8795aa");
+    text("AI-holder share →", x0 + chartW - 110, height - 48, 9, "#8795aa");
     text("UNRESTRICTED", pad + 4, height - 52, 8, "#e66767"); text("VOICEBOT HANDSHAKE", pad + 4, height - 39, 8, "#38c991");
   }
+}
+
+function drawModernQueueScene(ctx, width, height, pad, progress, dataset, text) {
+  const months = dataset.months, maxCalls = Math.max(...months.map((month) => month.total_calls || 0));
+  const totalCalls = months.reduce((sum, month) => sum + (month.total_calls || 0), 0);
+  const monthCount = months.length, chartX = pad + 28, chartW = width - chartX - pad - 26;
+  const chartTop = 184, chartBottom = height * .66, chartHeight = chartBottom - chartTop;
+  const slot = chartW / monthCount, barW = Math.min(78, slot * .52);
+  ctx.textAlign = "left";
+  text("CALIFORNIA · DHCS MEDI-CAL · JAN–JUN 2026", pad, 28, 11, "#91bfff");
+  text(`${fmt.int(totalCalls)} reported calls · ${months[months.length - 1].counties_with_volume} counties per month`, pad, 150, 14, "#e6edf7");
+  text("AGGREGATE U.S. DATA · NOT AN INDIAN BANK SAMPLE", pad, 171, 9, "#98a7bd");
+  ctx.strokeStyle = "#1c2940"; ctx.lineWidth = 1;
+  for (let line = 1; line <= 3; line++) {
+    const y = chartBottom - chartHeight * line / 4;
+    ctx.beginPath(); ctx.moveTo(chartX, y); ctx.lineTo(chartX + chartW, y); ctx.stroke();
+  }
+  months.forEach((month, index) => {
+    const x = chartX + index * slot + (slot - barW) / 2;
+    const fullHeight = maxCalls ? (month.total_calls / maxCalls) * chartHeight : 0;
+    const grow = Math.min(1, Math.max(0, (progress * 1.6 - index * .08) / .7));
+    const barHeight = fullHeight * grow, y = chartBottom - barHeight;
+    const gradient = ctx.createLinearGradient(0, chartBottom, 0, y);
+    gradient.addColorStop(0, "#214b7a"); gradient.addColorStop(1, "#54a0f4");
+    ctx.fillStyle = "rgba(35,66,104,.38)"; ctx.beginPath(); ctx.roundRect(x, chartTop, barW, chartHeight, 6); ctx.fill();
+    ctx.fillStyle = gradient; ctx.beginPath(); ctx.roundRect(x, y, barW, Math.max(0, barHeight), 6); ctx.fill();
+    ctx.textAlign = "center";
+    if (grow > .7) text(`${(month.total_calls / 1e6).toFixed(2)}m`, x + barW / 2, y - 12, 10, "#cfe4ff");
+    text(month.label.slice(0, 3), x + barW / 2, chartBottom + 22, 10, "#a9b6cb");
+    const waitY = chartBottom + 55, abandonY = chartBottom + 76;
+    ctx.fillStyle = "#dca547"; ctx.beginPath(); ctx.arc(x + barW / 2, waitY - 4, 4, 0, Math.PI * 2); ctx.fill();
+    text(`${Math.round(month.county_median_wait_seconds / 60)}m`, x + barW / 2, waitY, 9, "#e7c887");
+    ctx.fillStyle = "#e66767"; ctx.beginPath(); ctx.arc(x + barW / 2, abandonY - 4, 4, 0, Math.PI * 2); ctx.fill();
+    text(`${Math.round(month.county_median_abandonment_rate * 100)}%`, x + barW / 2, abandonY, 9, "#f09a9a");
+  });
+  ctx.textAlign = "left";
+  text("CALL VOLUME", pad, chartBottom + 22, 8, "#7f91aa");
+  text("MEDIAN COUNTY WAIT", pad, chartBottom + 55, 8, "#dca547");
+  text("MEDIAN COUNTY ABANDONMENT", pad, chartBottom + 76, 8, "#e66767");
+  text("DHCS county-month averages · wait/abandonment medians are unweighted; values and language detail in Explore.", pad, height - 30, 9, "#8392a9", "IBM Plex Sans");
 }
 
 function explore(chapter) {
