@@ -78,8 +78,8 @@ SCENARIOS = [
              scn={"busy_disconnect_p": 0.6}, passes=_ok, source="common Indian helpline behaviour"),
     Scenario("S11", "Call drops 40 s into the hold", "resilience", "psu_bank", "psu_complaint",
              scn={"drop_at": 40.0}, passes=_ok, source="mobile network drops (TRAI QoS)"),
-    Scenario("S12", "Bad line: poor signal, 1.6x speech errors", "noise robustness", "psu_bank", "psu_balance",
-             scn={"snr": "poor", "wer_mult": 1.6}, passes=_ok, source="Gram Vaani phone WER 29.7-34.8%"),
+    Scenario("S12", "Bad line: 34.8% speech errors", "noise robustness", "psu_bank", "psu_balance",
+             scn={"snr": "poor", "wer_mult": 1.35}, passes=_ok, source="Gram Vaani phone WER 29.7-34.8%"),
     Scenario("S13", "User gives the operator short code 199", "short-code mapping", "telecom", "tel_network",
              mode="M2", dial="199", passes=_ok, source="Jio: 199 only from a Jio SIM"),
     Scenario("S14", "Transferred to another team, second hold", "re-entering hold", "psu_bank", "psu_dispute",
@@ -97,6 +97,15 @@ SCENARIOS = [
              mutate=_menu_changed, passes=_ok, source="Sierra: agents remember paths; menus change"),
     Scenario("S20", "Account menu needs a PIN", "never typing a PIN", "tpin_bank", "tpin_balance", mode="M2",
              passes=lambda r: r.success and r.secrets_by_agent == 0, source="KVB official: TPIN"),
+    Scenario("S21", "Two transfers before the right team answers", "transfer chains and re-introduction",
+             "psu_bank", "psu_dispute", scn={"force_transfer": True, "max_transfers": 2}, passes=_ok,
+             source="transfer-chain stress assumption"),
+    Scenario("S22", "Published 139 counter-ticket path (2016 excerpt)", "historical published IVR navigation",
+             "railway_139_2016", "rail_counter_cancel", passes=_ok,
+             source="Indian Railways 2016 PDF: https://sr.indianrailways.gov.in/ticker/1464264041236139-cancellation.pdf"),
+    Scenario("S23", "Published bank card-blocking path excerpt", "partial official IVR route",
+             "icici_fragment", "icici_card_block", passes=_ok,
+             source="ICICI official service guide: https://www.icici.bank.in/nri-banking/service-diy"),
 ]
 
 
