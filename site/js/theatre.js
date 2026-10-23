@@ -225,8 +225,8 @@ function speak(x) {
 // ---------------------------------------------------------------- phone + status
 function renderPhone(full) {
   const tr = ST.tr, t = ST.t, notes = els.phone.querySelector(".notes");
-  notes.innerHTML = "";
-  const add = (b, txt) => notes.append(h("div", { class: "note" }, h("b", {}, b), txt));
+  const items = [];
+  const add = (b, txt) => items.push([b, txt]);
   if (t < 3) add("HoldForMe", `Calling ${helplineName(tr.r.helpline)} for you…`);
   for (const x of tr.tx) {
     if (x.t > t) break;
@@ -238,6 +238,11 @@ function renderPhone(full) {
   if (ringing) add("Incoming call", "HoldForMe — executive waiting");
   if (tr.uj !== null && tr.uj !== undefined && t >= tr.uj) add("On call", `Connected to the executive at ${fmt.clock(tr.uj)}`);
   if (t >= tr.dur - 0.5) add("Call ended", tr.r.end_reason.replace(/_/g, " "));
+  const key = JSON.stringify(items);
+  if (notes.dataset.renderKey !== key) {
+    notes.replaceChildren(...items.map(([title, body]) => h("div", { class: "note" }, h("b", {}, title), body)));
+    notes.dataset.renderKey = key;
+  }
 }
 
 function statusUpdate() {
