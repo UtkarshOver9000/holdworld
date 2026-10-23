@@ -1,12 +1,13 @@
 # Data, sources and terms
 
-Every parameter is registered in `holdworld/provenance.py` with a tag and a source. The dashboard's provenance chapter is generated from it. Sources were read on 2026-10-21.
+Every parameter is registered in `holdworld/provenance.py` with a tag and a source. The dashboard's provenance chapter is generated from it. Sources were read on 2026-10-23.
 
 ## Real datasets
 
 | Dataset | What HoldWorld uses | Terms |
 |---|---|---|
 | **Anonymous Bank call-centre data**, Technion SEE Lab (every call of 1999, 440,837 non-phantom records, 17 fields per call) | Queue replay, hourly profiles, service times, the patience curve, the hold-out validation | "The data is free for use. If used, please notify Avi Mandelbaum … and do acknowledge the data source in any of your work." Not redistributed; `python -m holdworld fetch-data` downloads it from https://see-center.iem.technion.ac.il/databases/AnonymousBank/Data/ |
+| **County Medi-Cal Call Center Data**, California DHCS (Jan–Jun 2026; 34 counties/month) | Contemporary monthly call volume, county average queue waits by language, and reported abandonment. Snapshotted in `data/benchmarks/medi_cal_2026/`; processed for the site by `python scripts/prepare_medi_cal_2026.py`. | Public dataset under Creative Commons Attribution (CC BY). Source, resource links, metric definitions, suppression and scope limits: [`data/benchmarks/medi_cal_2026/README.md`](../data/benchmarks/medi_cal_2026/README.md). Aggregate U.S. county data; not a call-by-call trace or an Indian bank measure. |
 | Brown, Gans, Mandelbaum et al., JASA 2005 | The published findings HoldWorld reproduces (announcement hang-up spikes, lognormal service, Erlang-A over Erlang-C) | Citation |
 
 **Please notify Prof. Mandelbaum before publishing results built on the data, as its terms ask.**
@@ -22,6 +23,7 @@ Every parameter is registered in `holdworld/provenance.py` with a tag and a sour
 | TRAI QoS (PR 86/2025), Airtel May 2026, Jio June 2026 | 95% within 90 s; operator ranges |
 | Jio customer care numbers | 199/198 only from a Jio SIM |
 | NCH (PIB, Rajya Sabha), RBI Ombudsman | Complaint volumes by sector |
+| Ministry of Road Transport & Highways, PIB (14 Sep 2026) | Indian scale context: NHAI reports 1033 coverage above 146,000 km, multilingual 24/7 assistance and around 15,000 calls/day; not a bank queue measurement |
 | Bolna, Plivo, Exotel docs | Call limits, silence hang-up, DTMF ability, prices |
 
 ## Standards
