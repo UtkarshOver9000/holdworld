@@ -22,6 +22,17 @@ def test_engine_matches_erlang_c():
     assert abs(sim - analytic) / analytic < 0.12
 
 
+def test_erlang_a_matches_erlang_c_without_abandonment():
+    lam, mu, n = 2.0, 1.0, 3
+    assert cq.erlang_a_mean_wait(lam, mu, n, 0.0) == cq.erlang_c(lam, mu, n)[1]
+
+
+def test_more_impatient_queue_reduces_erlang_a_wait():
+    slow = cq.erlang_a_mean_wait(4.0, 1.0, 4, 1 / 600)
+    impatient = cq.erlang_a_mean_wait(4.0, 1.0, 4, 1 / 60)
+    assert impatient < slow
+
+
 def test_every_caller_is_served_or_abandons():
     cs = _mm_n(0.06, 1 / 200, 10, 3000, 1, patience=120.0)
     assert all(c.served or c.abandoned_at is not None for c in cs)

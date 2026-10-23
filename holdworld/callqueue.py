@@ -111,6 +111,36 @@ def erlang_c(lam: float, mu: float, n: int) -> tuple[float, float]:
     return pw, pw / (n * mu - lam)
 
 
+def erlang_a_mean_wait(lam: float, mu: float, n: int, theta: float) -> float:
+    """Stationary M/M/N+M expected time until service or abandonment.
+
+    Uses the birth-death stationary distribution and tagged-customer recursion;
+    returns infinity when no servers or arrivals are unavailable.
+    """
+    if lam <= 0:
+        return 0.0
+    if n <= 0 or mu <= 0:
+        return INF
+    if theta <= 0:
+        return erlang_c(lam, mu, n)[1]
+    probs = [1.0]
+    total = 1.0
+    for state in range(1, 10000):
+        service = min(state, n) * mu
+        abandonment = max(0, state - n) * theta
+        p = probs[-1] * lam / (service + abandonment)
+        probs.append(p)
+        total += p
+        if state > n + 20 and p < total * 1e-14:
+            break
+    probs = [p / total for p in probs]
+    wait_by_position = [0.0]
+    for ahead in range(1, len(probs) + 1):
+        down = n * mu + ahead * theta
+        wait_by_position.append((1.0 + down * wait_by_position[-1]) / (down + theta))
+    return sum(p * wait_by_position[max(0, state - n + 1)] for state, p in enumerate(probs))
+
+
 # --------------------------------------------------------------------------------------
 # Replay a real day
 # --------------------------------------------------------------------------------------
@@ -253,12 +283,26 @@ def nhpp_arrivals(rates: list[float], rng: random.Random, t0: float = 0, t1: flo
 
 
 def simulate_day(profile: Profile, rng: random.Random, alpha: float = 0.0, ai_patience: float = INF,
-                 ai_service_factor: float = 1.0, probe_every: float = 0.0) -> list[QCaller]:
+                 ai_service_factor: float = 1.0, probe_every: float = 0.0,
+                 ai_strategy: str = "wait") -> list[QCaller]:
     times = nhpp_arrivals(profile.arrivals, rng)
     callers = []
     for i, t in enumerate(times):
         ai = rng.random() < alpha
+        if ai and ai_strategy in ("callback", "offpeak"):
+            open_hours = [h for h, agents in enumerate(profile.agents) if agents > 0]
+            future = [h for h in open_hours if h * 3600 >= t]
+            if future:
+                if ai_strategy == "callback":
+                    target = min(future, key=lambda h: profile.arrivals[h])
+                else:
+                    load_cut = sorted(profile.arrivals[h] for h in open_hours)[max(0, len(open_hours) // 3 - 1)]
+                    eligible = [h for h in future if profile.arrivals[h] <= load_cut]
+                    target = eligible[0] if eligible else future[0]
+                t = target * 3600 + rng.random() * 3599
         svc = profile.model.sample_service(rng) * profile.service_scale * (ai_service_factor if ai else 1.0)
+        if ai and ai_strategy == "callback":
+            svc *= 0.8
         pat = ai_patience if ai else profile.model.sample_patience(rng)
         callers.append(QCaller(i, t, svc, pat, "ai" if ai else "human", t))
     if probe_every:
@@ -355,13 +399,17 @@ def calibrate_beta(make: Callable[[float], Profile], target: float, limit_s: flo
 # --------------------------------------------------------------------------------------
 # City: what happens when some callers never hang up
 # --------------------------------------------------------------------------------------
-def city(profile: Profile, alphas, seeds: int = 4, ai_patience: float = INF, ai_service_factor: float = 1.0):
+def city(profile: Profile, alphas, seeds: int = 4, ai_patience: float = INF, ai_service_factor: float = 1.0,
+         ai_strategy: str = "wait"):
+    patience_rng = random.Random(8711)
+    mean_patience = statistics.fmean(profile.model.sample_patience(patience_rng) for _ in range(5000))
+    mean_service = statistics.fmean(profile.model.service_pool[:20000]) * profile.service_scale
     rows = []
     for a in alphas:
         acc = {"hum_wait": [], "hum_ab": [], "ai_wait": [], "served": [], "util": []}
         for s in range(seeds):
             cs = simulate_day(profile, random.Random(7000 + s), alpha=a, ai_patience=ai_patience,
-                              ai_service_factor=ai_service_factor)
+                              ai_service_factor=ai_service_factor, ai_strategy=ai_strategy)
             hum = [c for c in cs if c.kind == "human"]
             ai = [c for c in cs if c.kind == "ai"]
             if hum:
@@ -373,5 +421,19 @@ def city(profile: Profile, alphas, seeds: int = 4, ai_patience: float = INF, ai_
             busy = sum(c.service for c in cs if c.served)
             cap = sum(profile.agents) * 3600
             acc["util"].append(busy / cap if cap else 0)
-        rows.append({"alpha": a, **{k: (statistics.fmean(v) if v else None) for k, v in acc.items()}})
+        analytic_wait, weight = 0.0, 0.0
+        human_theta = 1 / mean_patience
+        ai_theta = 0.0 if math.isinf(ai_patience) else 1 / ai_patience
+        theta = (1 - a) * human_theta + a * ai_theta
+        mixed_service = mean_service * ((1 - a) + a * ai_service_factor)
+        for hour, rate in enumerate(profile.arrivals):
+            lam = rate / 3600
+            if lam <= 0 or profile.agents[hour] <= 0:
+                continue
+            w = erlang_a_mean_wait(lam, 1 / mixed_service, profile.agents[hour], theta)
+            analytic_wait += w * rate
+            weight += rate
+        exact_overlay = ai_strategy not in ("callback", "offpeak")
+        rows.append({"alpha": a, **{k: (statistics.fmean(v) if v else None) for k, v in acc.items()},
+                     "erlang_a_wait": analytic_wait / weight if weight and exact_overlay else None})
     return rows
