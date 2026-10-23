@@ -43,6 +43,27 @@ h3 { font-size: 15px; margin: 0 0 8px; }
 .card.tight { padding: 10px 12px; }
 .card h3 { display: flex; align-items: center; gap: 8px; }
 .card .sub { color: var(--muted); font-size: 12.5px; margin: -4px 0 10px; }
+.recent-data { margin: 0 0 24px; padding: 18px; }
+.recent-data > h3 { margin: 8px 0 4px; font-size: 18px; }
+.recent-intro { max-width: 880px; margin: 0 0 14px; color: var(--text-2); }
+.recent-filter { margin: 10px 0 12px; }
+.recent-filter label, .recent-subhead label { display: flex; align-items: center; gap: 8px; color: var(--text-2); font-size: 12.5px; }
+.recent-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0 16px; }
+.recent-metric { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel-3); }
+.recent-metric > span { color: var(--text-2); font-size: 12px; }
+.recent-metric > b { font: 600 21px var(--mono); color: var(--text); }
+.recent-metric > small { color: var(--muted); font-size: 11px; }
+.recent-subhead { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 16px 0 6px; }
+.recent-subhead h4 { margin: 0; font-size: 14px; }
+.recent-subhead > span { font-size: 11px; }
+.recent-table-wrap { overflow: auto; max-width: 100%; border: 1px solid var(--line); border-radius: 8px; }
+.recent-data table.t { min-width: 700px; font-size: 12px; }
+.recent-data table.t th { background: var(--panel); }
+.recent-data table.t td { white-space: nowrap; }
+.recent-data .selected-row td { background: #10213b; }
+.recent-note { margin: 8px 0 0; color: var(--muted); font-size: 11.5px; }
+.recent-note a { color: #86b9ff; }
+.recent-data-body { color: var(--text-2); }
 .btn { font: 500 13px var(--sans); border: 1px solid var(--line-2); background: var(--panel-2); color: var(--text); padding: 7px 12px; border-radius: 8px; cursor: pointer; }
 .btn:hover { border-color: var(--s1); }
 .btn.primary { background: var(--s1); border-color: var(--s1); color: #fff; }
@@ -109,8 +130,8 @@ canvas { display: block; width: 100%; }
 .keypad div.hit small { color: #e6f0ff; }
 .phone { border: 1px solid var(--line-2); border-radius: 22px; padding: 12px; background: #05080d; min-height: 190px; position: relative; }
 .phone .notch { width: 70px; height: 6px; border-radius: 6px; background: var(--line-2); margin: 0 auto 10px; }
-.phone .note { background: #18233a; border-radius: 10px; padding: 8px 10px; margin-bottom: 6px; font-size: 12.5px; animation: pop .3s ease; }
-.phone .note b { display: block; font-size: 11px; color: var(--muted); font-weight: 600; }
+.phone .note { color: #dce6f4; background: #18233a; border: 1px solid #2b3d5c; border-radius: 10px; padding: 8px 10px; margin-bottom: 6px; font-size: 12.5px; animation: pop .3s ease; }
+.phone .note b { display: block; font-size: 11px; color: #a9bad1; font-weight: 600; }
 .phone.ringing { animation: ring 0.6s infinite; border-color: var(--s3); }
 @keyframes ring { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-1.2deg); } 75% { transform: rotate(1.2deg); } }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -161,11 +182,15 @@ table.t tr:hover td { background: #0f1828; }
 .econ small { color: var(--muted); font-size: 11px; }
 .econ strong { color: var(--text); font: 600 20px var(--mono); }
 .citybox { height: 520px; position: relative; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: #05080e; }
-.citybox .lab { color: var(--text); font: 600 11px var(--sans); background: #0b111cd0; border: 1px solid var(--line-2); padding: 3px 7px; border-radius: 6px; white-space: nowrap; pointer-events: none; }
+.citybox .lab { max-width: 150px; color: var(--text); font: 600 11px/1.25 var(--sans); text-align: center; background: #0b111ce8; border: 1px solid var(--line-2); padding: 4px 7px; border-radius: 6px; white-space: normal; pointer-events: none; box-shadow: 0 5px 18px #0008; }
 .citybox .lab small { display: block; color: var(--muted); font: 500 10px var(--mono); }
-.cityhud { position: absolute; left: 12px; top: 12px; right: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; pointer-events: none; }
+.cityhud { position: absolute; z-index: 3; left: 12px; top: 12px; right: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; pointer-events: none; }
 .cityhud > * { pointer-events: auto; }
 .cityclock { font: 600 22px var(--mono); background: #0b111cd0; border: 1px solid var(--line-2); padding: 4px 10px; border-radius: 8px; }
+.citybox > #city-info { z-index: 3; }
+.citybox .city-fallback { position: absolute; inset: 0; display: block; z-index: 0; }
+.city-fallback-status { position: absolute; z-index: 2; left: 14px; bottom: 13px; padding: 4px 8px; color: #9fb3cd; background: #0b111cdd; border: 1px solid var(--line-2); border-radius: 6px; font: 10px var(--mono); }
+.city-sla { font-size: 11px; margin-top: 6px; }
 .note { color: var(--text-2); font-size: 12.5px; background: var(--panel-3); border: 1px solid var(--line); border-left: 3px solid var(--s4); padding: 8px 10px; border-radius: 8px; }
 .callout { font-size: 13px; color: var(--text-2); }
 .callout b { color: var(--text); }
@@ -177,6 +202,10 @@ table.t tr:hover td { background: #0f1828; }
 #tour h3 { font-size: 17px; margin: 0 0 6px; }
 #tour p { color: var(--text-2); margin: 0 0 12px; font-size: 13.5px; }
 .tour-actions { display: flex; gap: 8px; align-items: center; }
+.tour-progress { height: 3px; margin: 0 0 12px; overflow: hidden; border-radius: 3px; background: #202d42; }
+.tour-progress span { display: block; width: 100%; height: 100%; background: var(--s1); }
+.tour-hint { color: var(--muted); font-size: 11px; }
+.tour-hint b { color: var(--text); font: 600 11px var(--mono); }
 @media (max-width: 1250px) { .theatre { grid-template-columns: 1fr 1fr; } .theatre .col.right { grid-column: span 2; } .kpis { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 860px) {
   body { overflow: auto; }
@@ -206,6 +235,8 @@ table.t tr:hover td { background: #0f1828; }
   .citybox { height: 420px; }
   .citybox .card { display: none; }
   .tour-card { width: calc(100vw - 24px) !important; left: 12px !important; }
+  .recent-kpis { grid-template-columns: 1fr; }
+  .recent-subhead { align-items: flex-start; flex-direction: column; }
 }
 @media (max-width: 860px) { html, body { overflow-x: hidden; } #chapters { overflow-x: auto; overflow-y: hidden; } }
 
