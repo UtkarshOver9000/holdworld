@@ -5,6 +5,7 @@ import * as theatre from "./theatre.js";
 import * as queue from "./queue.js";
 import * as S from "./sections.js";
 import { startTour } from "./tour.js";
+import { bootJudge } from "./judge.js";
 
 const CHAPTERS = [
   ["overview", "Overview", overview.render], ["call", "Call theatre", theatre.render], ["queue", "Real queue", queue.render],
@@ -15,6 +16,7 @@ const CHAPTERS = [
 
 function boot() {
   if (!HW) { document.body.innerHTML = "<p style='padding:40px'>Missing data/world.js. Run: python -m holdworld run</p>"; return; }
+  document.body.classList.add("judge-mode");
   const nav = $("#chapters");
   CHAPTERS.forEach(([id, name, fn], i) => {
     nav.append(h("a", { href: `#${id}`, "data-id": id }, h("span", { class: "n" }, String(i).padStart(2, "0")), name));
@@ -34,6 +36,14 @@ function boot() {
   }, { passive: true });
   links[0].classList.add("on");
   $("#tour-btn").addEventListener("click", startTour);
+  $("#back-to-watch").addEventListener("click", () => {
+    document.body.classList.remove("explore-mode");
+    document.body.classList.add("judge-mode");
+    $("#main").scrollTop = 0;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.querySelectorAll(".judge-modes button").forEach((button) => button.classList.toggle("on", button.dataset.mode === "watch"));
+  });
+  bootJudge().catch((e) => console.warn("Judge Mode trace unavailable", e));
   if (location.hash === "#tour") setTimeout(startTour, 1200);
 }
 boot();
