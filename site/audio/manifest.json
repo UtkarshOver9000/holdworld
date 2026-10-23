@@ -1,0 +1,14 @@
+{
+  "provider": "Sarvam Bulbul v4 Flash",
+  "disclosure": "Generated voice samples for the HoldWorld simulation; not recordings of a bank or customer.",
+  "clips": [
+    { "id": "en_main_menu", "language_code": "en-IN", "speaker": "shubh_en_recovery", "text": "For account services, press 1. For cards and cheque books, press 2. For deposits, loans and complaints, press 3. To speak to a customer care executive, press 9." },
+    { "id": "hi_main_menu", "language_code": "hi-IN", "speaker": "ritu_hi_customer", "text": "खाता सेवाओं के लिए 1 दबाएँ। कार्ड और चेकबुक के लिए 2 दबाएँ। जमा, ऋण और शिकायतों के लिए 3 दबाएँ। ग्राहक सेवा अधिकारी से बात करने के लिए 9 दबाएँ।" },
+    { "id": "en_hold", "language_code": "en-IN", "speaker": "shubh_en_recovery", "text": "All our representatives are assisting other customers. Please stay on the line. Your call is important to us." },
+    { "id": "hi_hold", "language_code": "hi-IN", "speaker": "ritu_hi_customer", "text": "हमारे सभी प्रतिनिधि दूसरे ग्राहकों की सहायता कर रहे हैं। कृपया लाइन पर बने रहें। आपका कॉल हमारे लिए महत्वपूर्ण है।" },
+    { "id": "en_greeting", "language_code": "en-IN", "speaker": "shubh_en_recovery", "text": "Hello, this is customer care. How may I help you today?" },
+    { "id": "hi_greeting", "language_code": "hi-IN", "speaker": "ritu_hi_customer", "text": "नमस्कार, मैं ग्राहक सेवा से बोल रहा हूँ। आज मैं आपकी क्या सहायता कर सकता हूँ?" },
+    { "id": "en_transfer", "language_code": "en-IN", "speaker": "shubh_en_recovery", "text": "I will transfer your call to the complaints team. Please stay on the line." },
+    { "id": "hi_transfer", "language_code": "hi-IN", "speaker": "ritu_hi_customer", "text": "मैं आपका कॉल शिकायत विभाग को स्थानांतरित कर रहा हूँ। कृपया लाइन पर बने रहें।" }
+  ]
+}
