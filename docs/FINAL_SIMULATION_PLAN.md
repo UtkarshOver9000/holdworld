@@ -6,6 +6,28 @@ The rule for everything below: **the simulation is the pitch.** A judge opens th
 
 ---
 
+## Execution status — 2026-10-23
+
+The full simulation was rerun on 2026-10-23. `python -m holdworld run` completed in 124.9 s and generated 780 calls per arm, 30 seeds per stress/noise/sensitivity point, 23 stress scenarios, 196 replay traces, and results for all 11 helpline profiles. The final test run passed 88/88; proof is saved in `results/tests.json`. HoldForMe task success is 69.2% (95% Wilson interval 65.9 to 72.4%) with zero false alerts per call; the human arm is 88.0% (85.5 to 90.1%).
+
+| Plan item | Status in this checkout |
+|---|---|
+| Judge Mode, six-scene Watch film, race HUD, Try it yourself, evidence drawer | Implemented. Browser trial uses a JS menu flow and browser speech/tones; it does not execute `line.py` in Pyodide, so it is illustrative rather than the same engine. |
+| Noise sweep and S12 channel grounding | Implemented and regenerated. S12 is 13.3% (4/30; 95% interval 5.3 to 29.7%) at the 34.8% speech-error setting. Numeric recognition and menu recovery remain weak. |
+| Unit economics and paired-call evidence | Implemented with platform assumptions labelled. Telecom price inputs remain placeholders where not verified. |
+| City-scale curves and fairness policies | 11 profiles; 20-minute deadline, scheduled-callback proxy, off-peak admission proxy, and voicebot handshake. A rule-based selector minimizes human wait subject to a 20-minute AI queue-wait cap. |
+| Public IVR menu research | Added an ICICI card-blocking excerpt (0 then 1), a historical 2016 Indian Railways route excerpt (6 then 1), and Passport Seva service facts. ICICI is partial, Railway is historical, and Passport Seva publishes no keypad menu. These are not field measurements. |
+| Real audio and listener | Sarvam cache generator, sample manifest, optional YAMNet scorer, and browser playback hook are implemented. No clips were generated because no Sarvam key is configured; YAMNet is not wired into simulation scoring. |
+| India Hold Atlas | CSV ingestion and parameter/wait updates are implemented. No field measurements have been collected; Atlas count is zero. |
+| Sensitivity and analytic queue check | Five-factor sensitivity sweep and tornado chart implemented; Erlang-A overlays added where stationary assumptions apply. |
+| Pre-warn timing | 1,000 samples per lead. Best observed readiness is 84.4% at an 80 s lead with an assumed 60 s app heads-up and one 12 s retry. The 90% target remains unmet. |
+| Live Plivo stream adapter | Authenticated WSS event receiver, DTMF/audio control endpoints, and metadata-only live wall API are implemented. It is not connected to HoldForMe scoring and has not been run against a Plivo account. |
+| Asterisk/SIPp | Local Compose/Dockerfile, queue config, and SIPp load scenario are added. The harness has not been run against Asterisk/SIPp and does not generate every Python IVR tree. |
+| LLM comparison and real-vs-sim scoring | Not measured. No LLM provider is configured, and there is no Atlas audio/menu set to compare. |
+| Submission recording and deployed-link review | Not performed; deployment remains for you after repo review. |
+
+Open items above require field calls, licensed audio, provider credentials, or a configured test system. Simulated evidence is labelled and is not represented as a real-world measurement.
+
 ## 1. Who is judging, and what they will do with our link
 
 **The event:** Bolna Buildathon at Symphony 2026.
@@ -27,9 +49,10 @@ The rule for everything below: **the simulation is the pitch.** A judge opens th
 2. If something is moving and obviously about a real problem, they stay. If it's a wall of tabs, they skim and leave.
 3. Before the interview, they come back looking for proof: does it work, is the data real, what breaks.
 
-**So the site needs two modes:**
-- **Watch mode** (default, autoplay): a 90-second, self-running film made of real simulation runs. No clicks needed.
-- **Explore mode** (one click): the judge drives it. Pick a helpline, pick a problem, press call, and watch, or play the human yourself.
+**The site has three entry points:**
+- **Watch** (default, autoplay): a six-scene film made from recorded simulation traces.
+- **Explore:** the judge picks a helpline, task, and run.
+- **Try it yourself:** an illustrative browser IVR with speech and keypad tones; it is not the Python engine and places no phone call.
 
 ---
 
@@ -39,28 +62,30 @@ The rule for everything below: **the simulation is the pitch.** A judge opens th
 |---|---|
 | Real queue data | 440,837 calls from a real bank call centre (Technion SEE Lab, 1999). Replay checked on 12 held-out days: wait correlation 0.990, hang-ups 16.7% real vs 16.8% simulated |
 | Measured human behaviour | Hang-up spikes at 8 s and 58 s, straight from the records (Brown et al. 2005's finding, reproduced) |
-| Helplines | 9 archetypes; 3 from official menus (SBI, KVB, Union Bank), 6 assumed until the Atlas |
+| Helplines | 11 profiles: 3 official full menus (SBI, KVB, Union Bank), 1 official partial route (ICICI), 1 historical official excerpt (Railway), 6 assumed |
 | Standards | India ringback cadence (Asterisk `[in]`), DTMF (ITU-T Q.23/Q.24), G.711 8 kHz, measured Hindi speech-to-text error rates |
 | Callers | Human, scripted bot, basic agent, HoldForMe (25 switchable components), Oracle |
-| Results (192 calls each) | HoldForMe 71% [64–77] with **zero false alarms**; human 86%; Oracle 99%; scripted bot 51%; basic agent 4% |
-| Stress suite | 20 scenarios. HoldForMe wins where others fail: recordings that sound human (80% vs bot 0%), changed menus (80% vs 0%), short code 199 (80% vs 0%), voice-only menus (90%) |
-| Scale finding | If half of a bank's callers used an AI that never hangs up, human waits go from 35 s to 76 s and hang-ups from 10.6% to 20.2% |
-| Handoff | Airline line: M1 + stall 83%, M3 (callback) 92%, M2 (merge) 58% |
+| Results (780 calls each) | HoldForMe 69.2% [65.9 to 72.4] with **zero false alerts per call**; human 88.0%; Oracle 97.4%; scripted bot 53.1%; basic agent 2.6% |
+| Stress suite | 23 scenarios, 30 seeds per cell. HoldForMe: S12 bad line 13.3%, S14 transfer 66.7%, S17 platform defaults 46.7%, S18 voicebot 76.7%, S20 PIN menu 60%, S21 two-transfer chain 56.7%, S22 historical Railway route 33.3%, S23 ICICI card-block path 76.7%; see generated matrix for intervals |
+| Scale finding | At 50% never-hanging-up AI holders, the bank archetype's mean human wait rises from 34.7 s to 75.9 s and abandonment from 10.6% to 20.2% (three simulated days per point) |
+| Handoff | Airline task, 12 seeds: M1 + stall 100%, M3 (callback) 100%, M2 (merge) 58%; intervals are wide at this sample size |
 | Telecom | Staffed to 97.1% answered within 90 s (TRAI benchmark 95%) |
-| Tests | 81/81, many on the real data; report saved in `results/tests.json` |
-| Dashboard | 11 chapters plus a 21-step tour; deployed static on Vercel |
+| Tests | 88/88 passed; proof saved in `results/tests.json`. Tests cover source scope and Hindi counter-ticket menu selection |
+| Dashboard | 11 chapters plus a 21-step tour; Vercel configuration is present, deployed link not rechecked |
 
-**Known weak spots** (fixes partly in code, not yet re-run in full):
+**Known weak spots** (latest full-run pass rates use 30 seeds per scenario):
 
-| Scenario | Before | Now | Next |
-|---|---|---|---|
-| S14: transfer, then a second hold | 0% | 7/12 in a quick check | Finish the fix: the simulator was forcing a transfer on every executive, and HoldForMe didn't re-introduce itself to the new person |
-| S18: bank's own voicebot | 20% | 9/12 | The handshake worked; the last frame was dropped before HoldForMe read the result |
-| S12: bad line | 0% | — | Re-ground the scenario at the worst *measured* error rate (34.8%) and add a noise sweep (§5.4) |
-| S17: platform on default settings | 40% | — | This is a real finding about Bolna's defaults, not a bug. Show it, don't hide it |
-| S20: PIN-gated menu | 50% | — | Split by mode: impossible in M1 (the user can't type into a cloud call), fine in M2 |
-| Language menu on noisy lines | occasional failures | — | Never pick "other languages"; wait for the menu to repeat (done, needs re-run) |
-
+| Scenario | Latest full run | Next |
+|---|---|---|
+| S12: bad line, 34.8% speech errors | 13.3% [5.3 to 29.7] | Keep numeric retrieval and Hindi menu recovery as explicit failure cases; real audio and a stronger recognizer are needed to measure and improve this credibly. |
+| S14: transfer, then a second hold | 66.7% [48.8 to 80.8] | Improve re-introduction and verification across transfers. |
+| S17: platform on default settings | 46.7% [30.2 to 63.9] | Improve behavior under platform limits and keep default-vs-tuned comparison visible. |
+| S18: bank's own voicebot | 76.7% [59.1 to 88.2] | Improve handshake fallback and final-frame handling. |
+| S20: PIN-gated menu | 60.0% [42.3 to 75.4] | Route secret entry to the user's keypad in M2; retain refusal in M1. |
+| S21: two-transfer chain | 56.7% [39.2 to 72.6] | Improve multi-step re-introduction and verification. |
+| S22: historical Railway counter-ticket excerpt | 33.3% [19.2 to 51.2] | Improve navigation under Hindi/noisy menu text. The menu source is a historical 2016 excerpt, not a verified current tree. |
+| S23: ICICI card-blocking excerpt | 76.7% [59.1 to 88.2] | The 0 > 1 fragment routes correctly often, but the source omits the rest of the menu and queue behavior is assumed. |
+| Pre-warn readiness | 84.4% best observed; 90% target not met | More retries alone do not establish the target. Validate user response and prediction error with measured data. |
 ---
 
 ## 3. The big change: Judge Mode (sim-first)
@@ -216,20 +241,16 @@ Add official IVR trees as they're found (HDFC, ICICI, Axis, Canara, IRCTC 139, L
 
 ---
 
-## 5. What to improve in HoldForMe (inside the sim)
+## 5. HoldForMe improvement status
 
-1. **Transfers (S14):** finish and re-run. Treat any fresh greeting after a conversation as a new person; re-introduce; reset verification. The simulator forces only one transfer.
-2. **Voicebot (S18):** keep the final-frame fix; add a fallback when the bot doesn't support a handshake (state the request in one sentence, ask for a human if bridging).
-3. **Bad lines (S12):**
-   - set the scenario at the worst published phone error rate (Gram Vaani 34.8%)
-   - add a **noise sweep** (error rate 10% → 50%) for every caller, shown as a degradation curve
-   - teach HoldForMe to listen up to three times when unsure, and to press `*` to repeat
-4. **Platform defaults (S17):** show side by side: same agent, Bolna defaults vs tuned settings. This is a useful finding for Bolna judges ("here's what your defaults do to holds").
-5. **PIN menus (S20):** route PIN steps to the user's own keypad in M2; in M1, say honestly that the call needs the user's phone.
-6. **Language menus:** never "other languages"; wait for the repeat; fall back to English.
-7. **Path memory:** show the second call to the same helpline getting shorter.
-8. **The understanding layer** (`understand.py`): swap the fuzzy classifier for a small LLM call behind the same interface. Measure the gain on the same 192-call set and the cost per call it adds.
-
+1. **Transfers (S14/S21):** bounded multi-transfer chains and re-introduction are implemented. Latest success is 66.7% for S14 and 56.7% for S21; improve verification and recovery further.
+2. **Voicebot (S18):** handshake fallback and final-frame handling are implemented; latest success is 77%.
+3. **Bad lines (S12):** 34.8% error grounding, the 10%-50% noise sweep, up-to-three menu hearings, and `*` repeat recovery are implemented. Latest success is 13.3% (4/30; 95% interval 5.3 to 29.7%), still an unresolved model weakness. A low-confidence fact can trigger one menu re-entry for more independent readings, but noisy navigation and numeric recognition remain weak.
+4. **Platform defaults (S17):** defaults-vs-tuned comparison is implemented; latest success is 47%.
+5. **PIN menus (S20):** M2 keypad relay and M1 secret-entry refusal are modeled; latest success is 60%.
+6. **Language menus:** unsupported choices are rejected, repeat is awaited, and English fallback is implemented.
+7. **Path memory:** first-call and repeat-call menu time are measured and shown in the dashboard; it uses shared memory between calls.
+8. **LLM understanding:** remains an external integration task. The fuzzy classifier is still the scored baseline; a provider-backed comparison needs a configured model endpoint and must be measured on the same call set.
 ---
 
 ## 6. Build order

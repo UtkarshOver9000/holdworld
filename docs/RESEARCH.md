@@ -2,9 +2,11 @@
 
 **Bolna Buildathon (Symphony 2026) · idea #1 "HoldForMe" · lane: simulation, evidence, stress testing**
 
-> Status: research only. No code written. Researched 2026-10-21 from public
-> sources; every external fact below has a source in §11 and the date it was read.
-> Where the web had no answer, this file says so. It does not guess.
+> Status: research baseline written 2026-10-21 and updated with public IVR
+> excerpts on 2026-10-23. Simulation implementation and current results are tracked
+> in [the final simulation plan](FINAL_SIMULATION_PLAN.md) and `results/results.md`.
+> This file distinguishes published menu fragments from current field measurements;
+> the India Hold Atlas still has zero recorded calls.
 
 > **Repo note.** This repository is AETHERGRID. HoldForMe should live in its
 > own repo. This file sits here only because this is where you are working today.
@@ -52,11 +54,12 @@
 | **Queue** | One call centre: arrivals, agents, service times, impatient callers (Erlang-A) | How long will this call actually wait, at this hour? |
 | **City** | Many helplines and many callers, some of them AI holders | What happens to everyone else when callers stop giving up? |
 
-**Calibrated by Phase 0, the India Hold Atlas.** No public data exists on
-per-call IVR depth or time-to-human for Indian helplines (§2.3). So the team
-calls about 24 real helplines in two time slots and logs a fixed set of
-fields. That fits the sim to India, and it is also the slide nobody else will
-have: *"we measured India's helplines."*
+**Calibrated by Phase 0, the India Hold Atlas.** Public sources contain a few
+menu fragments, but there is no comprehensive current dataset for Indian
+helpline trees, queue times, or executive silence tolerance. The team calls
+real helplines in two time slots and logs a fixed set of fields. That fits the
+sim to India, and it is also the slide nobody else will have: *"we measured
+India's helplines."*
 
 **What makes it ours and not a copy:** Sierra already built an IVR simulator
 over the real phone network (§4). Ours is the India version (Hindi/English
@@ -131,10 +134,10 @@ rule at all.
 ### 2.3 What is NOT measured anywhere (searched, not found)
 
 - Per-call time-to-human for Indian helplines, by sector or hour. Nothing independent turned up; only vendor blogs (Aircall's global "12 minutes").
-- IVR menu depth or structure for Indian helplines. The arXiv paper on IVR routing says real IVR structures "are often proprietary" and had to synthesise its own.
+- No comprehensive current dataset of Indian IVR trees. A few official fragments are public (see §11), while the arXiv paper on IVR routing says full structures are often proprietary.
 - Any India consumer app that calls customer care for you. None found.
 
-**That gap is the Atlas (§5.1).** It is cheap to fill and nobody has filled it.
+**That gap is the Atlas (§5.1).** The published fragments are not a substitute for current field measurements; the Atlas is still needed.
 
 ---
 
@@ -554,3 +557,8 @@ All read 2026-10-21 unless noted.
 
 **ASR**
 - Sarvam Saarika (Hindi WER 11.81% on Vistaar; not telephony-specific) — https://docs.sarvam.ai/api-reference-docs/getting-started/models/saarika.md
+
+**Public IVR excerpts added 2026-10-23**
+- ICICI Bank NRI service guide: press 0 for card block/unblock, then 1 to block. This is only the published fragment; the full menu and queue are not modeled as verified: https://www.icici.bank.in/nri-banking/service-diy
+- Indian Railways 139 cancellation PDF: a historical 2016 path, including 6 then 1 for counter-ticket cancellation. It is marked historical and not asserted to be current: https://sr.indianrailways.gov.in/ticker/1464264041236139-cancellation.pdf
+- Passport Seva call-centre FAQ: confirms the service number and that file-number status lookup is available through IVR, but publishes no keypad digits. Its simulated tree remains assumed: https://www.passportindia.gov.in/psp/FaqCallCentre
