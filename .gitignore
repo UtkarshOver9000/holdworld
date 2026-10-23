@@ -5,3 +5,6 @@ __pycache__/
 data/anonbank/raw/
 data/anonbank/cache.pkl
 results/junit.xml
+# Generated provider audio is cached locally; commit chosen audio explicitly after review.
+site/audio/*.wav
+site/audio/*.ulaw

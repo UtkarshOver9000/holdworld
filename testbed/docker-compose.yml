@@ -1,0 +1,24 @@
+services:
+  asterisk:
+    build: .
+    command: ["asterisk", "-f", "-vvv"]
+    ports:
+      - "5060:5060/udp"
+      - "10000-10020:10000-10020/udp"
+    volumes:
+      - ./asterisk/pjsip.conf:/etc/asterisk/pjsip.conf:ro
+      - ./asterisk/extensions.conf:/etc/asterisk/extensions.conf:ro
+      - ./asterisk/queues.conf:/etc/asterisk/queues.conf:ro
+      - ./asterisk/rtp.conf:/etc/asterisk/rtp.conf:ro
+    healthcheck:
+      test: ["CMD", "asterisk", "-rx", "core show uptime"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+  loadgen:
+    build: .
+    profiles: ["load"]
+    depends_on:
+      asterisk:
+        condition: service_healthy
+    command: ["sipp", "-sf", "/test/load.xml", "-i", "loadgen", "-m", "60", "-r", "2", "asterisk:5060"]

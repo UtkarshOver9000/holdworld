@@ -1,0 +1,3 @@
+# Optional offline audio analysis for generated or licensed demo audio.
+tensorflow-hub>=0.16
+scipy>=1.11
