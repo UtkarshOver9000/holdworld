@@ -119,7 +119,13 @@ def build(raw: dict, traces: dict, world=None) -> None:
         "arm_rows": [[r["arm"], r["helpline"], r["task"], r["seed"], r["success"], r["trace_id"], r["end_reason"],
                       r["user_minutes"], r["t_total"], r["time_to_human"], r["cost_inr"]] for r in raw["arms"]["rows"]],
         "ablation": raw["ablation"], "modes": raw["modes"]["table"], "handoff_grid": raw["handoff_grid"],
-        "platforms": raw["platforms"], "city": raw["city"], "path_memory": raw["path_memory"],
+        "prewarn": raw.get("prewarn", {}),
+        "platforms": raw["platforms"], "city": raw["city"], "disruption": raw.get("disruption", {}),
+        "calendar": raw.get("calendar", {}),
+        "path_memory": raw["path_memory"],
+        "noise_sweep": raw.get("noise_sweep", []),
+        "sensitivity": raw.get("sensitivity", []),
+        "atlas": raw.get("atlas", {"calls": 0, "by_helpline": {}, "measurements": {}}),
         "features": raw["features"], "provenance": raw["provenance"], "parity": PARITY, "helplines": helplines,
         "trace_ids": sorted(traces), "proof": proof,
     }
@@ -170,11 +176,30 @@ def write_markdown(raw: dict) -> None:
     L += ["", "## 4. Handoff modes (airline line)", ""]
     for k, w in raw["modes"]["table"].items():
         L.append(f"- {k}: {_pct(w)}")
+    pre = raw.get("prewarn", {})
+    if pre:
+        target_note = "90% readiness target met" if pre.get("target_met") else "90% readiness target not reached; selected the best observed rate"
+        L += ["", "Pre-warn policy: alert the user " + str(pre.get("selected_lead_s")) +
+              f" s before predicted pickup ({target_note}; 25 s prediction-error SD assumption).", ""]
     L += ["", "## 5. City: share of callers who never hang up", ""]
     for hid, d in raw["city"].items():
         for mit, rows in d.items():
+            if not isinstance(rows, list):
+                continue
             L.append(f"- {hid} / {mit}: " + "; ".join(
                 f"alpha {r['alpha']}: human wait {r['hum_wait']:.0f} s, human abandon {r['hum_ab'] * 100:.1f}%" for r in rows))
+    if raw.get("disruption"):
+        L += ["", "Airline disruption sensitivity: 3x volume (ASSUMED)"]
+        for policy in ("none", "deadline_20min", "handshake"):
+            L.append(f"- {policy}: " + "; ".join(f"alpha {r['alpha']}: human wait {r['hum_wait']:.0f} s" for r in raw["disruption"][policy]))
+    if raw.get("calendar"):
+        L += ["", "Weekday pattern: observed 1999 call-centre arrivals; festive peak multipliers below are ASSUMED."]
+        L.append("- " + "; ".join(f"{r['label']} {r['index']:.2f}x" for r in raw["calendar"]["weekday"]))
+        L.append("- " + "; ".join(f"{r['volume_multiplier']:.2f}x volume: {r['mean_human_wait_s']:.0f} s mean wait" for r in raw["calendar"]["peak_sweep"]))
+    L += ["", "## 6. One-factor sensitivity (success rate)", "",
+          "| Assumption | Setting | n | Success | Change from middle (pp) |", "|---|---:|---:|---:|---:|"]
+    for r in raw.get("sensitivity", []):
+        L.append(f"| {r['factor']} | {r['value']} | {r['n']} | {_pct(r['success'])} | {r['delta_pp']:+.1f} |")
     L += ["", f"Path memory: first call IVR {raw['path_memory']['first_call_ivr_s']} s, second call "
           f"{raw['path_memory']['second_call_ivr_s']} s", "",
           "Provenance counts: " + ", ".join(f"{k} {v}" for k, v in raw["provenance"]["counts"].items())]
