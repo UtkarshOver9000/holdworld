@@ -25,11 +25,11 @@ def load(path: Path) -> list[dict]:
 
 
 def summarize(rows: list[dict]) -> dict:
-    out = {"calls": len(rows), "by_helpline": {}}
+    out = {"calls": len(rows), "by_helpline": {}, "measurements": {}}
     for hid in sorted({r["helpline"] for r in rows}):
         rs = [r for r in rows if r["helpline"] == hid]
-        q = [x for x in (_num(r["queue_seconds"]) for r in rs) if x is not None]
-        ivr = [x for x in (_num(r["ivr_seconds"]) for r in rs) if x is not None]
+        q = [x for x in (_num(r.get("queue_seconds")) for r in rs) if x is not None]
+        ivr = [x for x in (_num(r.get("ivr_seconds")) for r in rs) if x is not None]
         out["by_helpline"][hid] = {"n": len(rs), "median_queue_s": statistics.median(q) if q else None,
                                    "median_ivr_s": statistics.median(ivr) if ivr else None}
     dead = [x for x in (_num(r.get("executive_dead_air_tolerance_s")) for r in rows) if x is not None]
@@ -38,6 +38,8 @@ def summarize(rows: list[dict]) -> dict:
     out["dead_air"] = dead
     out["announce"] = ann
     out["otp"] = otp
+    out["measurements"] = {"executive_dead_air_tolerance_s": len(dead), "announcement_interval_s": len(ann),
+                           "otp_seconds": len(otp)}
     return out
 
 
