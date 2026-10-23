@@ -1,12 +1,14 @@
 """The callers, the stress scenarios, and the features each reference product has."""
 import copy
 import statistics
+from types import SimpleNamespace
 
 import pytest
 
 from holdworld.agents import ALL_FEATURES, HoldForMe, Human, Oracle, Scripted, basic_agent, find_path
 from holdworld.episode import record_script, run_task
 from holdworld.scenarios import by_id
+from holdworld import nav
 
 
 def mode(h):
@@ -34,10 +36,28 @@ def scenario(sc_id, caller_fn, seeds, helplines, platform="plivo_hybrid"):
     return out
 
 
+def test_transfer_chain_is_bounded_by_scenario_limit(helplines):
+    rows = scenario("S21", lambda _h: HoldForMe(), 8, helplines)
+    assert all(cr.transfers <= 2 for cr, _ in rows)
+
+
 def test_find_path_matches_canonical_paths(helplines):
     for h in helplines.values():
         for t in h.tasks:
             assert find_path(h, t.target) == t.path, t.id
+
+
+def test_holdforme_selects_hindi_counter_ticket_over_e_ticket(helplines):
+    agent = HoldForMe()
+    agent.ctx = SimpleNamespace(task=helplines["railway_139_2016"].tasks[0],
+                                persona=SimpleNamespace(lang_pref="hi"))
+    agent.rejected = set()
+    opts = nav.parse_options(
+        "\u0915\u093e\u0909\u0902\u091f\u0930 \u091f\u093f\u0915\u091f \u0915\u0947 \u0932\u093f\u090f 1 \u0926\u092c\u093e\u090f\u0901\u0964 "
+        "\u0908-\u091f\u093f\u0915\u091f \u0915\u0947 \u0932\u093f\u090f 2 \u0926\u092c\u093e\u090f\u0901\u0964"
+    )
+    agent.hearings = 1
+    assert agent._choose(opts)[0] == "1"
 
 
 def test_every_task_target_is_reachable(helplines):
@@ -130,6 +150,14 @@ def test_path_memory_shortens_the_second_call(helplines):
         seconds.append(run_task(h, h.task("psu_complaint"), HoldForMe(), mode="M1", platform="plivo_hybrid", hour=11,
                                 seed=s * 10 + 1, wait_s=30, service_s=60, memory=mem, scn={"busy_disconnect_p": 0}).t_ivr)
     assert statistics.median(seconds) <= statistics.median(firsts)
+
+
+def test_poor_line_wait_gap_does_not_flip_the_agent_into_hold_mode(helplines):
+    h = helplines["psu_bank"]
+    result = run_task(h, h.task("psu_balance"), HoldForMe(), mode="M1", platform="plivo_hybrid", hour=11,
+                      seed=0, wait_s=60, service_s=120, scn={"snr": "poor", "wer_mult": 1.35},
+                      scenario="S12")
+    assert result.success
 
 
 def test_humans_abandon_long_holds_with_real_patience(helplines, model):

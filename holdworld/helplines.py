@@ -458,7 +458,7 @@ def gov_docs() -> Helpline:
     ]}
     return Helpline(
         id="gov_docs", display_name="Government documents helpline", brand=b, sector="government",
-        structure_source="assumption", structure_tag="ASSUMED", dial="1800-XXX-1800", shortcode=None,
+        structure_source="passport_seva_partial", structure_tag="ASSUMED", dial="1800-XXX-1800", shortcode=None,
         languages=[("1", "hi"), ("2", "en")], language_menu=True,
         welcome={"en": f"Welcome to the {b} helpline.", "hi": f"{b} हेल्पलाइन में आपका स्वागत है।"},
         disclaimer={"en": "Please note that this call may be recorded for quality and training purposes. Officials will never ask for your password or payment over the phone. Beware of fraudulent websites and agents. Applications can also be tracked online on our official portal.",
@@ -473,6 +473,10 @@ def gov_docs() -> Helpline:
             Task("gov_officer", "gov_docs", "reach_human", "Talk to an officer about a wrong address on my document",
                  ["officer"], "q_officer", ["3"]),
         ],
+        notes=["Passport Seva's official call-centre FAQ (read 2026-10-23) confirms the 1800-258-1800 number, "
+               "17-language 24x7 service, and IVR application-status lookup by file number. It does not publish "
+               "the option keys; this line's menu remains an assumed generic government-document tree. "
+               "Source: https://www.passportindia.gov.in/psp/FaqCallCentre"],
     )
 
 
@@ -510,7 +514,72 @@ def gas() -> Helpline:
     )
 
 
-BUILDERS = [psu_bank, tpin_bank, zero_out_bank, telecom, airline, ecommerce, electricity, gov_docs, gas]
+def icici_card_fragment() -> Helpline:
+    """A small, anonymized simulation of ICICI's published card-blocking path."""
+    b = "Bharat Card Services"
+    nodes = {n.id: n for n in [
+        menu("main", [o("0", "block or unblock a debit card", "डेबिट कार्ड ब्लॉक या अनब्लॉक करना", "card_menu")],
+             {"en": "Published IVR path excerpt"}),
+        menu("card_menu", [o("1", "block the card", "कार्ड ब्लॉक करना", "block")],
+             {"en": "Card services"}),
+        action("block", "hotlist_card"),
+    ]}
+    return Helpline(
+        id="icici_fragment", display_name="Published bank card IVR path", brand=b, sector="bank",
+        structure_source="icici_official_partial", structure_tag="PARTIAL", dial="not modeled",
+        shortcode=None, languages=[("2", "en")], language_menu=False,
+        welcome={"en": f"Welcome to {b}.", "hi": ""}, disclaimer={}, barge_in=True,
+        caller_id_auth=False, caller_id_auth_tag="ASSUMED", hours=(0, 24), root="main", nodes=nodes,
+        hold=hold(b),
+        queue={"volume_scale": 3.0, "beta": -0.2, "open": [0, 24], "tag": "ASSUMED",
+               "note": "queue profile is an archetype assumption; only the menu fragment is sourced"},
+        executive=executive(b),
+        tasks=[Task("icici_card_block", "icici_fragment", "execute_action", "Block my debit card",
+                    ["block", "card"], "block", ["0", "1"])],
+        notes=["ICICI official NRI service guide, read 2026-10-23: IVR press 0 for block/unblock, then 1 to block. "
+               "Only the published route is modeled; unlisted root options and the exact confirmation prompt are omitted. "
+               "Source: https://www.icici.bank.in/nri-banking/service-diy"],
+    )
+
+
+def railway_139_historical() -> Helpline:
+    """Historical official route excerpt; not presented as a current live menu."""
+    b = "Rail Passenger Helpdesk"
+    nodes = {n.id: n for n in [
+        menu("main", [o("6", "counter-ticket cancellation service (published excerpt)",
+                         "काउंटर टिकट रद्द करने की सेवा", "ticket_type")],
+             {"en": "2016 published path excerpt"}),
+        menu("ticket_type", [
+            o("1", "counter ticket", "काउंटर टिकट", "q_cancel"),
+            o("2", "e-ticket", "ई-टिकट", "web_only"),
+        ], {"en": "Ticket type"}, extras={"8": "main"}),
+        Node("web_only", "message", text={"en": "This historical 139 route covered counter-ticket cancellation only.",
+                                             "hi": "यह ऐतिहासिक 139 मार्ग केवल काउंटर टिकट रद्द करने के लिए था।"},
+             next="main"),
+        queue("q_cancel", "rail_ticket_cancellation"),
+    ]}
+    return Helpline(
+        id="railway_139_2016", display_name="Railway 139 (historical menu excerpt)", brand=b, sector="transport",
+        structure_source="railway_139_2016", structure_tag="HISTORICAL", dial="139", shortcode=None,
+        languages=[("1", "hi"), ("2", "en")], language_menu=True,
+        welcome={"en": f"Welcome to {b}.", "hi": f"{b} में आपका स्वागत है।"}, disclaimer={},
+        barge_in=True, caller_id_auth=False, caller_id_auth_tag="ASSUMED", hours=(0, 24), root="main", nodes=nodes,
+        hold=hold(b),
+        queue={"volume_scale": 5.0, "beta": -0.3, "open": [0, 24], "tag": "ASSUMED",
+               "note": "rail queue volume, staffing and waits are assumed"},
+        executive=executive(b, verify=["name", "pnr"]),
+        tasks=[Task("rail_counter_cancel", "railway_139_2016", "reach_human",
+                    "Reach an agent about cancelling a counter-booked railway ticket",
+                    ["counter", "cancel"], "q_cancel", ["6", "1"])],
+        notes=["Indian Railways official PDF describes this exact IVR route and the PNR/train/OTP steps after transfer. "
+               "The document says the path was introduced in 2016; it is historical and has not been verified as current. "
+               "Only the published path excerpt is modeled; queue behavior is assumed. "
+               "Source: https://sr.indianrailways.gov.in/ticker/1464264041236139-cancellation.pdf"],
+    )
+
+
+BUILDERS = [psu_bank, tpin_bank, zero_out_bank, telecom, airline, ecommerce, electricity, gov_docs, gas,
+            icici_card_fragment, railway_139_historical]
 
 
 def all_helplines() -> dict[str, Helpline]:
