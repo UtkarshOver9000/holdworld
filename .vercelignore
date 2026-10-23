@@ -1,0 +1,10 @@
+# Vercel only serves the static dashboard in site/. The Python simulator is not deployed.
+# Paths start with / so they match the repo root only (site/data/ must stay).
+/holdworld/
+/tests/
+/scripts/
+/data/
+/results/
+/docs/
+/pyproject.toml
+/requirements-dev.txt
