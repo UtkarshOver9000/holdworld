@@ -162,6 +162,7 @@ class HoldForMe(Caller):
         self.otp_typed_for = None
         self.ref_reads: list[str] = []
         self.fact_reads: list[str] = []
+        self.fact_route_retries = 0
         self.pushes = 0
         self.primed = False
         self.ai_exec = False
@@ -203,9 +204,13 @@ class HoldForMe(Caller):
         if obs.utt == self.cur_utt and obs.utt > 0 and obs.partial:
             self.utt_frames.append((obs.speech, obs.music, obs.synth, obs.room))
             self.utt_text = obs.partial
-        if obs.music > 0.6 and obs.speech < 0.5:
+        # IVR prompt gaps can look like music on a noisy line. Count only
+        # consecutive music-like frames outside an active utterance; otherwise
+        # the agent can enter hold mode during menu navigation and ignore the
+        # next menu entirely.
+        if obs.utt <= 0 and obs.music > 0.6 and obs.speech < 0.5:
             self.music_frames += 1
-            if self.phase == "ivr" and self.music_frames >= 2:
+            if self.phase == "ivr" and self.music_frames >= 5:
                 self._enter_hold(obs.t)
             if self.phase == "exec":
                 # music while talking to someone: a mid-call hold or a transfer, even if we missed the words.
@@ -213,8 +218,10 @@ class HoldForMe(Caller):
                 self.music_in_exec += 1
                 if self.music_in_exec >= 4:
                     self.exec_hold = True
-        elif self.phase == "exec":
-            self.music_in_exec = 0
+        else:
+            self.music_frames = 0
+            if self.phase == "exec":
+                self.music_in_exec = 0
         for fin in obs.finals:
             self._on_final(fin, obs)
         if self.phase == "hold" and not self.exec_hold and self.decided_human_t is None:
@@ -392,12 +399,24 @@ class HoldForMe(Caller):
         best_s, best = scored[0]
         second = scored[1][0] if len(scored) > 1 else -9
         # act on one hearing only when clearly ahead; otherwise listen once more (press * if offered)
-        tie = best_s - second < (2.5 if self.hearings < 2 else 0.0)
+        margin = 2.5 if self.hearings < 3 else 0.0
+        # A single concrete vocabulary hit with no competing hit is enough to
+        # choose. The margin is for competing interpretations, not a reason to
+        # ignore the only option that matches the requested task.
+        tie = best_s - second < margin and not (best_s >= 1.0 and second <= 0.0)
         if best_s <= 0:
+            # A noisy transcript can erase every task cue. If this menu offers
+            # repeat, ask for a clean second hearing instead of waiting for the
+            # IVR timeout (which used to consume all retries without repeating).
+            if self.has("lexicon") and self.hearings < 3:
+                star = next((o for o in opts if o[0] == "*"), None)
+                if star is not None:
+                    self._press("*", 0.4)
+                    return None
             if self.has("dead_end_escape"):
                 return next((o for o in opts if set(words_of(o[1])) & nav.AGENT_WORDS), None)
             return None
-        if tie and self.has("lexicon") and self.hearings < 2:
+        if tie and self.has("lexicon") and self.hearings < 3:
             star = next((o for o in opts if o[0] == "*"), None)
             if star is not None:
                 self._press("*", 0.4)   # 'to repeat this menu, press star'
@@ -405,6 +424,15 @@ class HoldForMe(Caller):
         return best
 
     def _menu(self, text, opts):
+        low = text.lower()
+        repeat_hint = ("repeat" in low or "again" in low or
+                       ("\u092e\u0947\u0928\u094d\u092f\u0942" in low and
+                        ("\u0938\u0941\u0928\u0928\u0947" in low or "\u0926\u094b\u092c\u093e\u0930\u093e" in low or
+                         "\u0926\u0941\u092c\u093e\u0930\u093e" in low) and "\u0926\u092c\u093e\u090f\u0901" in low))
+        # * is a common repeat fallback in Indian IVRs, but a particular menu
+        # may not support it; this noisy-line recovery is an explicit heuristic.
+        if repeat_hint and len(opts) >= 2 and not any(k == "*" for k, _, _ in opts):
+            opts = [*opts, ("*", "repeat this menu (assumed *)", "press")]
         self.prev_menu_text = text
         if self.has("menu_to_text"):
             self.result["menu_text"].append([lbl for _, lbl, _ in opts][:8])
@@ -537,6 +565,13 @@ class HoldForMe(Caller):
             return
         if kind == "after_fact":
             reads = self.ref_reads or self.fact_reads
+            if (self.ctx.task.goal_type == "retrieve_fact" and len(self.fact_reads) >= 3
+                    and not self._confident(self.fact_reads) and self.fact_route_retries < 1):
+                # This IVR permits three readings. If their digits disagree,
+                # restart the lookup once to collect independent ASR readings.
+                self.fact_route_retries += 1
+                self._press("0", 0.4)
+                return
             again = bool(reads) and self.has("readback") and len(reads) < 5 and not self._confident(reads)
             if again:
                 self._press("1", 0.4)
