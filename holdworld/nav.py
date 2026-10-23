@@ -10,6 +10,9 @@ EN_OPT = re.compile(r"(?:for|to) ([^.]+?),? press (\d|star|hash)(?: or say [^.]+
 EN_OPT_LOOSE = re.compile(r"(?:for|to) ([^.]+?),? (?:\S+ )?press (\d|star|hash)(?: or say [^.]+)?\.?", re.I)
 EN_SAY = re.compile(r"for ([^.]+?),? say '?([^.']+?)'?\.", re.I)
 EN_TO = re.compile(r"^\s*([^.]+?),? press (\d|star|hash)\.?$", re.I)
+# Language names carry more meaning than the intervening ASR filler. This
+# recovers common code-switched prompts such as "For English, press uh 2".
+EN_LANGUAGE_OPT = re.compile(r"\b(english|hindi)\b[^.]{0,48}?\bpress\b[^.]{0,16}?(\d)", re.I)
 HI_OPT = re.compile(r"([^।.]+?) के लिए (\d|स्टार|हैश) दबाएँ")
 HI_OPT_LOOSE = re.compile(r"([^।.]+?) (?:\S+ ){0,2}(\d|स्टार|हैश) दबाएँ")
 HI_SAY = re.compile(r"([^।.]+?) के लिए '?([^'।]+?)'? बोलें")
@@ -47,9 +50,12 @@ LEXICON = {
     "safety": ["safety", "सुरक्षा", "other", "अन्य"],
 }
 LEXICON["lodge"] = ["lodge", "lodging", "register", "registering", "raise", "दर्ज", "complaint"]
+# A counter-ticket task needs to distinguish the counter route from e-ticket.
+LEXICON["counter"] = ["counter", "\u0915\u093e\u0909\u0902\u091f\u0930"]
 # where a goal usually lives when no option names it directly (what a person infers)
 PARENT = {
-    "balance": ["phone", "banking", "account", "खाते", "खाता", "self", "information", "जानकारी", "फोन", "बैंकिंग"],
+    # Balance is specifically an account branch. Generic information also matched deposit/loan options.
+    "balance": ["banking", "account", "\u0916\u093e\u0924\u0947", "\u0916\u093e\u0924\u093e", "self", "\u092b\u094b\u0928", "\u092c\u0948\u0902\u0915\u093f\u0902\u0917"],
     "block": ["card", "कार्ड", "debit", "डेबिट"],
     "complaint": ["deposit", "loan", "complaints", "शिकायतों", "other", "अन्य"],
     "upi": ["blocking", "internet", "इंटरनेट"],
@@ -112,6 +118,10 @@ def parse_options(text: str) -> list[tuple[str, str, str]]:
             if also:
                 label = label + " " + also.group(1).strip().lower()
             out.append((KEYMAP.get(m.group(2).lower(), m.group(2)), label, "press"))
+            continue
+        m = EN_LANGUAGE_OPT.search(sent)
+        if m:
+            out.append((m.group(2), m.group(1).lower(), "press"))
             continue
         m = HI_OPT.search(sent) or HI_OPT_LOOSE.search(sent)
         if m:
