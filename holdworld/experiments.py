@@ -9,10 +9,12 @@ import math
 import random
 import statistics
 import time
-from dataclasses import asdict
+import zlib
+from dataclasses import asdict, replace
 from pathlib import Path
 
 from . import anonbank as ab
+from . import atlas as atlas_data
 from . import callqueue as cq
 from . import perception as pc
 from .agents import ALL_FEATURES, FEATURE_GROUP, FEATURE_TEXT, HoldForMe, Human, Oracle, Scripted, basic_agent
@@ -58,6 +60,14 @@ class World:
         self.calls = ab.load()
         self.model = ab.fit_model(self.calls)
         self.helplines = all_helplines()
+        atlas_path = ROOT / "data" / "atlas" / "measurements.csv"
+        atlas_rows = atlas_data.load(atlas_path) if atlas_path.exists() else []
+        self.atlas_summary = atlas_data.summarize(atlas_rows)
+        if atlas_rows:
+            atlas_data.apply(self.atlas_summary)
+        self.atlas_waits = {hid: [float(r["queue_seconds"]) for r in atlas_rows
+                                  if r.get("helpline") == hid and atlas_data._num(r.get("queue_seconds")) is not None]
+                            for hid in self.helplines}
         self.profiles, self.waits = {}, {}
         for hid, h in self.helplines.items():
             q = h.queue
@@ -74,6 +84,9 @@ class World:
             self.waits[hid] = cq.wait_table(self.profiles[hid], days=4 if quick else 10)
 
     def wait_for(self, hid, hour, rng):
+        observed = self.atlas_waits.get(hid, [])
+        if len(observed) >= 3:
+            return max(0.0, rng.choice(observed))
         w = self.waits[hid].sample(hour, rng)
         return 20.0 if w is None else max(5.0, w)
 
@@ -179,7 +192,7 @@ def exp_arms(world, seeds):
     for hid, h in world.helplines.items():
         for task in h.tasks:
             for seed in range(seeds):
-                rng = random.Random(seed * 1009 + hash(task.id) % 1000)
+                rng = random.Random(seed * 1009 + zlib.crc32(task.id.encode("utf-8")) % 1000)
                 hour = world.hour_for(hid, rng)
                 wait = world.wait_for(hid, hour, rng)
                 svc = world.service_for(hid, rng)
@@ -253,6 +266,81 @@ def exp_stress(world, n, arms=("B", "C", "D", "O"), features=None, label="D"):
     return rows, traces
 
 
+def exp_noise_sweep(world, n=30):
+    """Hold the task, seed, and poor phone channel fixed while sweeping ASR WER."""
+    log(f"noise sweep: 10-50% word error rate, all five callers, {n} seeds per cell")
+    h = world.helplines["psu_bank"]
+    task = h.task("psu_complaint")
+    targets = [round(x / 100, 2) for x in range(10, 51, 10)]
+    out = []
+    base = P("asr.wer.recorded") + 0.14  # recorded Hindi prompts on the poor SNR channel
+    for arm in ("A", "B", "C", "D", "O"):
+        for target in targets:
+            rows = []
+            for seed in range(n):
+                rng = random.Random(81000 + seed)
+                hour = 11
+                wait = world.wait_for("psu_bank", hour, rng)
+                service = world.service_for("psu_bank", rng)
+                caller = make_caller(arm, world, h, task)
+                cr = run_task(h, task, caller, mode="M1", platform=ARM_PLATFORM[arm], hour=hour, seed=seed,
+                              wait_s=wait, service_s=service,
+                              scn={"snr": "poor", "lang_pref": "hi", "wer_mult": target / base})
+                rows.append(cr)
+            out.append({"arm": arm, "wer": target, "n": len(rows),
+                        "success": wilson(sum(r.success for r in rows), len(rows)),
+                        "false_alerts_per_call": round(statistics.fmean(r.false_alerts for r in rows), 3),
+                        "mean_user_minutes": round(statistics.fmean(r.user_minutes for r in rows), 2)})
+    return out
+
+
+def exp_sensitivity(world, n=30):
+    """One-factor success sensitivity. Each factor uses its own representative task."""
+    log(f"assumption sensitivity: five factors, three levels, {n} seeds per point")
+    cases = [
+        ("Executive silence tolerance", "psu_bank", "psu_complaint", "M1", "exec_patience",
+         [(4.0, 6.0), (10.0, 14.0), (24.0, 30.0)], {}),
+        ("Speech error rate", "psu_bank", "psu_balance", "M1", "wer", [0.10, 0.35, 0.50], {"snr": "poor"}),
+        ("Executive AI refusal", "psu_bank", "psu_complaint", "M1", "refuse_ai_p", [0.0, 0.15, 0.40], {}),
+        ("OTP delivery delay", "telecom", "tel_cancel", "M2", "otp_delay_mult", [0.5, 1.0, 2.0], {}),
+        ("M2 keypad relay reliability", "telecom", "tel_network", "M2", "m2_dtmf_relay_p", [0.0, 0.5, 1.0], {}),
+    ]
+    out = []
+    for factor, hid, task_id, mode, key, levels, base_scn in cases:
+        h = world.helplines[hid]
+        task = h.task(task_id)
+        group = []
+        for value in levels:
+            scn = dict(base_scn)
+            if key == "wer":
+                scn["wer_mult"] = value / (P("asr.wer.recorded") + 0.14)
+                shown = round(value * 100)
+            else:
+                scn[key] = value
+                if key == "exec_patience":
+                    shown = f"{value[0]:g}-{value[1]:g} s"
+                elif key == "otp_delay_mult":
+                    shown = f"{value:g}x"
+                else:
+                    shown = f"{value * 100:.0f}%"
+            rows = []
+            for seed in range(n):
+                rng = random.Random(41000 + seed)
+                hour = 11
+                cr = run_task(h, task, make_caller("D", world, h, task), mode=mode, platform="plivo_hybrid",
+                              hour=hour, seed=seed, wait_s=world.wait_for(hid, hour, rng),
+                              service_s=world.service_for(hid, rng), scn=scn)
+                rows.append(cr)
+            group.append({"factor": factor, "value": shown, "n": len(rows),
+                          "success": wilson(sum(r.success for r in rows), len(rows))})
+        baseline = group[1]["success"][0]
+        for row in group:
+            row["delta_pp"] = round((row["success"][0] - baseline) * 100, 1)
+            row["baseline"] = baseline
+        out.extend(group)
+    return out
+
+
 def stress_table(rows):
     t = {}
     for r in rows:
@@ -320,6 +408,62 @@ def exp_handoff_grid():
     return {"patience": patience, "success": out}
 
 
+def exp_prewarn(world, n=1000):
+    """Compare predictive alert leads with a heads-up and one missed-ring retry."""
+    log(f"pre-warn timing policy: {n} paired samples per lead")
+    pool = world.waits["psu_bank"].by_hour.get(11, [])
+    if not pool:
+        pool = [world.wait_for("psu_bank", 11, random.Random(i)) for i in range(200)]
+    lo, hi = P("exec.dead_air_patience_s")
+    leads = list(range(0, 121, 10))
+    points = []
+    heads_up_s, retry_gap_s = 60.0, 12.0
+    for lead in leads:
+        on_time, single_on_time, early, late = 0, 0, [], []
+        missed, recovered = 0, 0
+        for seed in range(n):
+            rng = random.Random(92000 + seed)
+            wait = rng.choice(pool)
+            estimate = max(0.0, wait + rng.gauss(0, 25.0))  # queue prediction error is assumed
+            alert_at = max(0.0, estimate - lead)
+            heads_up_at = max(0.0, alert_at - heads_up_s)
+            primed = alert_at - heads_up_at >= 10.0
+            patience = rng.uniform(lo, hi)
+            response = User(rng, "M1", primed=primed).answer_delay()
+            single_lateness = (patience + 120.0) if response is None else alert_at + response - wait
+            single_on_time += single_lateness <= patience
+            lateness = single_lateness
+            if response is None:
+                missed += 1
+                retry = User(rng, "M1", primed=primed).answer_delay()
+                if retry is not None:
+                    lateness = alert_at + retry_gap_s + retry - wait
+                    recovered += lateness <= patience
+            on_time += lateness <= patience
+            early.append(max(0.0, -lateness))
+            late.append(max(0.0, lateness))
+        points.append({"lead_s": lead, "n": n, "ready_by_pickup_plus_patience": round(on_time / n, 4),
+                       "single_alert_ready_rate": round(single_on_time / n, 4),
+                       "missed_primary_alerts": missed, "fallback_recovered": recovered,
+                       "mean_early_ready_s": round(statistics.fmean(early), 1),
+                       "mean_late_s": round(statistics.fmean(late), 1),
+                       "heads_up_s": heads_up_s, "retry_gap_s": retry_gap_s})
+    eligible = [p for p in points if p["ready_by_pickup_plus_patience"] >= 0.9]
+    target_met = bool(eligible)
+    if eligible:
+        selected = min(eligible, key=lambda p: (p["mean_early_ready_s"], -p["ready_by_pickup_plus_patience"]))
+    else:
+        best_rate = max(p["ready_by_pickup_plus_patience"] for p in points)
+        selected = min((p for p in points if p["ready_by_pickup_plus_patience"] == best_rate),
+                       key=lambda p: p["mean_early_ready_s"])
+    return {"points": points, "selected_lead_s": selected["lead_s"], "success_target": 0.9,
+            "target_met": target_met,
+            "prediction_error_sd_s": 25, "heads_up_s": heads_up_s, "retry_gap_s": retry_gap_s,
+            "fallback": "one independent retry after missed primary alert (ASSUMED)",
+            "primed": "60 s app heads-up before voice ring when available (ASSUMED)",
+            "selection_rule": "minimize early-ready time among leads with >=90% handoff readiness; otherwise report best observed readiness"}
+
+
 def exp_platforms(world, seeds):
     log("platforms and cost per call")
     rows = []
@@ -341,14 +485,60 @@ def exp_platforms(world, seeds):
 def exp_city(world):
     log("city: what happens when callers stop hanging up")
     out = {}
-    for hid in ("psu_bank", "airline"):
+    for hid in world.profiles:
         prof = world.profiles[hid]
-        out[hid] = {
+        policies = {
             "none": cq.city(prof, [0.0, 0.1, 0.25, 0.5], seeds=3),
             "deadline_20min": cq.city(prof, [0.0, 0.1, 0.25, 0.5], seeds=3, ai_patience=1200.0),
+            "callback": cq.city(prof, [0.0, 0.1, 0.25, 0.5], seeds=3, ai_strategy="callback"),
+            "offpeak": cq.city(prof, [0.0, 0.1, 0.25, 0.5], seeds=3, ai_strategy="offpeak"),
             "handshake": cq.city(prof, [0.0, 0.1, 0.25, 0.5], seeds=3, ai_service_factor=0.8),
         }
+        base_wait = policies["none"][0]["hum_wait"]
+        at_quarter = [(name, rows[2]) for name, rows in policies.items() if rows[2]["ai_wait"] is not None]
+        eligible = [(name, row) for name, row in at_quarter if row["ai_wait"] <= 1200]
+        choice = min(eligible or at_quarter, key=lambda pair: (pair[1]["hum_wait"], pair[1]["ai_wait"]))
+        policies["recommendation"] = {"policy": choice[0], "adoption": 0.25,
+                                      "human_wait_delta_s": round(choice[1]["hum_wait"] - base_wait, 1),
+                                      "ai_wait_s": round(choice[1]["ai_wait"], 1), "ai_wait_cap_s": 1200,
+                                      "objective": "minimize added human wait subject to mean AI queue wait <= 20 min"}
+        out[hid] = policies
     return out
+
+
+def exp_disruption(world):
+    """Illustrative airline surge; the 3x multiplier is an explicit assumption."""
+    p = world.profiles["airline"]
+    surge = replace(p, arrivals=[x * 3 for x in p.arrivals])
+    return {"helpline": "airline", "volume_multiplier": 3.0, "tag": "ASSUMED",
+            "none": cq.city(surge, [0.0, 0.25, 0.5], seeds=5),
+            "deadline_20min": cq.city(surge, [0.0, 0.25, 0.5], seeds=5, ai_patience=1200.0),
+            "handshake": cq.city(surge, [0.0, 0.25, 0.5], seeds=5, ai_service_factor=0.8)}
+
+
+def exp_calendar(world):
+    """Historical weekday arrival shape plus an explicitly assumed peak-volume sweep."""
+    by_date = {}
+    by_weekday = {}
+    for call in world.calls:
+        if not call.wanted_agent:
+            continue
+        by_date[call.date] = (call.weekday, by_date.get(call.date, (call.weekday, 0))[1] + 1)
+    for day, (weekday, count) in by_date.items():
+        by_weekday.setdefault(weekday, []).append(count)
+    overall = statistics.fmean(count for _, count in by_date.values())
+    weekday = [{"day": i, "label": ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")[i],
+                "mean_calls": round(statistics.fmean(by_weekday.get(i, [0])), 1),
+                "index": round(statistics.fmean(by_weekday.get(i, [0])) / overall, 3)} for i in range(7)]
+    p = world.profiles["psu_bank"]
+    peaks = []
+    for mult in (1.0, 1.25, 1.5):
+        profile = replace(p, arrivals=[x * mult for x in p.arrivals])
+        point = cq.city(profile, [0.25], seeds=3)[0]
+        peaks.append({"volume_multiplier": mult, "mean_human_wait_s": round(point["hum_wait"], 1),
+                      "human_abandon": round(point["hum_ab"], 4)})
+    return {"weekday_source": "1999 call-centre records", "weekday": weekday,
+            "peak_sweep_tag": "ASSUMED", "peak_sweep": peaks}
 
 
 def exp_path_memory(world, seeds):
@@ -368,19 +558,24 @@ def exp_path_memory(world, seeds):
 def run_all(quick=False):
     t0 = time.time()
     RESULTS.mkdir(exist_ok=True)
-    seeds = 3 if quick else 8
+    seeds = 3 if quick else 30
     world = World(quick)
     real = exp_real_data(world)
     day = exp_real_day(world, real["wrapup_s"])
     waits = exp_waits(world)
     arm_rows, traces = exp_arms(world, seeds)
-    stress_rows, stress_traces = exp_stress(world, 3 if quick else 10)
+    stress_rows, stress_traces = exp_stress(world, 3 if quick else 30)
     traces.update(stress_traces)
+    noise_sweep = exp_noise_sweep(world, 3 if quick else 30)
+    sensitivity = exp_sensitivity(world, 3 if quick else 30)
     ablation = exp_ablation(world, 2 if quick else 5)
     modes = exp_modes(world, 4 if quick else 12)
     grid = exp_handoff_grid()
+    prewarn = exp_prewarn(world, 300 if quick else 1000)
     platforms = exp_platforms(world, 2 if quick else 4)
     city = exp_city(world)
+    disruption = exp_disruption(world)
+    calendar = exp_calendar(world)
     memory = exp_path_memory(world, 3 if quick else 8)
     raw = {
         "generated_at": time.strftime("%Y-%m-%d %H:%M:%S"),
@@ -393,10 +588,12 @@ def run_all(quick=False):
         "stress": {"table": stress_table(stress_rows), "rows": stress_rows,
                    "scenarios": [{"id": s.id, "title": s.title, "breaks": s.breaks, "helpline": s.helpline,
                                   "task": s.task, "mode": s.mode, "source": s.source} for s in SCENARIOS]},
-        "ablation": ablation, "modes": modes, "handoff_grid": grid, "platforms": platforms, "city": city,
+        "ablation": ablation, "modes": modes, "handoff_grid": grid, "prewarn": prewarn,
+        "platforms": platforms, "city": city, "disruption": disruption, "calendar": calendar,
+        "noise_sweep": noise_sweep, "sensitivity": sensitivity,
         "path_memory": memory,
         "features": [{"key": f, "group": FEATURE_GROUP[f], "text": FEATURE_TEXT[f]} for f in ALL_FEATURES],
-        "provenance": export(),
+        "provenance": export(), "atlas": world.atlas_summary,
         "runtime_s": round(time.time() - t0, 1),
     }
     (RESULTS / "raw.json").write_text(json.dumps(raw, default=str), encoding="utf-8")
