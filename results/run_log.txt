@@ -1,0 +1,9 @@
+[19:13:39] real data: summary, patience curve, hold-out replay check
+[19:13:51] wait by hour per helpline (Google's 'wait times')
+[19:13:54] arms: A B C D O across every task, 8 seeds
+[19:14:17] ablation: HoldForMe minus one component at a time, 5 runs per scenario
+[19:15:30] handoff modes M1 / M2 / M3 on the bank complaint line
+[19:15:32] platforms and cost per call
+[19:15:34] city: what happens when callers stop hanging up
+[19:15:54] done in 179.6 s
+site data: world.js 558 KB, traces.js 1651 KB (176 calls)

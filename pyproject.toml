@@ -1,0 +1,13 @@
+[project]
+name = "holdworld"
+version = "1.0.0"
+description = "A simulated India of customer-care phone lines, built on real data, for testing an AI agent that waits on hold for you."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
